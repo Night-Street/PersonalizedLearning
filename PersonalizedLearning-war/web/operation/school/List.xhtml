@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.School} #{messages.Maintain}"></h:outputLabel>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form">
+                 <h2 id="workingIndicator" style="display: none">
+                    <h:graphicImage library="images" name="pleaseWait.gif"/>
+                </h2>
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="4" >
+                        <h:inputText value="#{schoolController.searchName}" immediate="true">
+                            <f:ajax render="search"/>
+                        </h:inputText>
+                        <h:commandButton id="search" value="#{messages.Search} #{messages.School} " action="#{schoolController.search()}" immediate="true"
+                                          disabled="#{null==schoolController.searchName}"/>
+                        <h:commandButton value="#{messages.View} #{messages.All}" actionListener="#{schoolController.prepareList()}" immediate="true">
+                            <f:ajax render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="#{messages.Create}" action="#{schoolController.prepareCreate}" immediate="true" />
+                    </h:panelGrid>
+                    <h:outputLabel escape="false" value="#{messages.Empty}" rendered="#{schoolController.items.rowCount == 0}"/>
+                    <h:panelGroup rendered="#{schoolController.items.rowCount > 0}">
+                        <h:outputLabel value="#{schoolController.pagination.pageFirstItem + 1}..#{schoolController.pagination.pageLastItem + 1}/#{schoolController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{schoolController.pageOperation.previous()}" value="#{messages.Previous} #{schoolController.pagination.pageSize}" rendered="#{schoolController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{schoolController.pageOperation.next}" value="#{messages.Next} #{schoolController.pagination.pageSize}" rendered="#{schoolController.pagination.hasNextPage}"/>&nbsp;
+                        <h:dataTable value="#{schoolController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" columnClasses="editRemoveview">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="&nbsp;"/>
+                                </f:facet>
+                                <h:commandLink action="#{schoolController.prepareView}" value="#{messages.View}"/>
+                                <h:outputLabel value=" "/>
+                                <h:commandLink action="#{schoolController.prepareEdit}" value="#{messages.Edit}"/>
+                                <c:if test="#{roleinfoControllerA.isAdmin(teacherAdminController.logined)}">
+                                    <h:outputLabel value=" "/>
+                                    <h:commandLink action="#{schoolController.destroy}" value="#{messages.Destroy}"   onclick="if (! confirm('#{messages.Delete}?')) return false" />
+                                </c:if>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Name}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Major}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.majorid.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Belong}#{messages.School}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.parentid.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Edulevel}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.edulevel.name}"/>
+                            </h:column>
+
+                        </h:dataTable>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

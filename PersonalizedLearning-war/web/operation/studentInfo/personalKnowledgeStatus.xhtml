@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Knowledge}#{messages.Structure}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h:outputScript library="javaScript" name="graphlib-dot.js" target="head"/>
+            <h:outputScript library="javaScript" name="dagre-d3.js" target="head"/>
+            <h:outputStylesheet library="css" name="dagre.css"/>
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data">
+                <h:selectOneMenu value="#{subjectController.selected}" 
+                                 requiredMessage="#{messages.Select}#{messages.Subject}" immediate="true" required="true">
+                    <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"  itemValue="null"/>
+                    <f:selectItems value="#{subjectController.getSubject4SchoolList(studentController.logined.schoolId)}"/>
+                    <f:ajax render="knowledge"/>
+                </h:selectOneMenu>
+            </h:form>
+            <h:panelGroup id="knowledge">
+                <h:inputHidden p:id="inputGraph" value="#{knowledgeController.getKnowledgeRelationship4dagre4OneStudent(subjectController.selected,studentController.logined)}" />
+               <h:outputLabel value="#{knowledgeController.leadpointInformation}"/>
+                <svg width="960" height="600"> <g/></svg>
+                <script>
+                    var svg = d3.select("svg"),
+                            inner = d3.select("svg g"),
+                            zoom = d3.zoom().on("zoom", function () {
+                        inner.attr("transform", d3.event.transform);
+                    });
+                    svg.call(zoom);
+
+                    // Create and configure the renderer
+                    var render = dagreD3.render();
+
+                    var g;
+
+                    var inputGraph = document.querySelector("#inputGraph");
+                    try {
+                        g = graphlibDot.read(inputGraph.value);
+                    } catch (e) {
+                        inputGraph.setAttribute("class", "error");
+                        throw e;
+                    }
+
+                    g.graph().transition = function (selection) {
+                        return selection.transition().duration(500);
+                    };
+
+                    // Render the graph into svg g
+                    d3.select("svg g").call(render, g);
+                </script>
+            </h:panelGroup>
+
+
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGrid columns="3" id="school">
+            <c:forEach begin="0" end="#{schoolController.dropDownNumber}" var="index" >
+                <h:selectOneMenu value="#{schoolController.schools[index]}" rendered="#{schoolController.getMySwitch(index).status}" >
+                    <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                    <f:selectItems value="#{schoolController.getChildrens(index)}"/>
+                    <f:ajax render="school"/>
+                </h:selectOneMenu>
+            </c:forEach>
+        </h:panelGrid>
+    </cc:implementation>
+</html>

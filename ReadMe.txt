@@ -1,0 +1,1 @@
+当ear拷贝到linux服务器上时，要先修改hanlp.properties文件中data的路径

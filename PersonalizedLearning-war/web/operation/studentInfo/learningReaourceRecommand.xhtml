@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Learning}资源推送"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h:outputScript library="javaScript" name="graphlib-dot.js" target="head"/>
+            <h:outputScript library="javaScript" name="dagre-d3.js" target="head"/>
+            <h:outputStylesheet library="css" name="dagre.css"/>
+             <h:outputStylesheet library="css" name="a.css"/>
+            <h:panelGrid>
+                <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data" id="form">
+                    <div>
+                        <span>请选择你想要学习的课程：</span>
+                        <h:selectOneMenu style=" font-size: 15px;" value="#{subjectController.selected}" 
+                                         requiredMessage="#{messages.Select}#{messages.Subject}" immediate="true">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{subjectController.getSubjectList(1)}"/>
+                            <f:ajax render="form" listener="#{questionController.initFlag(-1)}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div>
+                        <span>请选择你想要学习的知识点：</span>
+                        <h:selectOneMenu style=" font-size: 15px;" value="#{knowledgeController.selected}" 
+                                         requiredMessage="#{messages.Select}#{messages.Knowledge}" id="knowledge">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{leadpointController.knowledgeListBySubjectId(subjectController.getSelected())}"/>
+                            <f:ajax render="form" listener="#{questionController.initFlag(0)}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <h:panelGroup id="myImages">
+                        <c:if test="#{learningresourceController.isExistImage()}">
+                            <span class="spanStyle">当前知识点暂无图像学习资源，请联系老师添加学习资源</span>
+                        </c:if>
+                        <h:panelGrid style="margin-top: 10px" columns="1" rendered="#{questionController.fileTypeFlag == 0}">
+                            <span>当前为图像学习资源：</span>
+                            <c:forEach items="#{learningresourceController.getAIPfileNames(0,knowledgeController.selected)}" var="imageName">
+                                <img src="#{publicFields.fileRepository}knowledgeResources/image/#{imageName}"/>
+                            </c:forEach>
+                            <c:if test="#{learningresourceController.isExistImageFoot()}">
+                                <span class="spanStyle">已学习完图像资源?请点击下一步继续学习</span>
+                            </c:if>
+                        </h:panelGrid>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="myVideos">
+                        <c:if test="#{learningresourceController.isExistVideo()}">
+                            <span class="spanStyle">当前知识点暂无视频学习资源，请联系老师添加学习资源</span>
+                        </c:if>
+                        <h:panelGrid style="margin-top: 10px" columns="1" rendered="#{questionController.fileTypeFlag == 1}">
+                            <span>当前为视频学习资源：</span>
+                            <c:forEach items="#{learningresourceController.getVideos(knowledgeController.selected)}" var="vidioMap">
+                                <video controls="controls">
+                                    <source src="#{publicFields.fileRepository}knowledgeResources/video/#{vidioMap.key}" type="#{vidioMap.value}"></source>
+                                </video>
+                            </c:forEach>
+                            <c:if test="#{learningresourceController.isExistVideoFoot()}">
+                                <span class="spanStyle">已学习完视频资源?请点击下一步继续学习</span>
+                            </c:if>
+                        </h:panelGrid>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="myAudios">
+                        <c:if test="#{learningresourceController.isExistAudio()}">
+                            <span style="display: block;font-size: 16px;margin: 10px,0,0,10px;">当前知识点暂无音频学习资源，请联系老师添加学习资源</span>
+                        </c:if>
+                        <h:panelGrid style="margin-top: 10px"  columns="1" rendered="#{questionController.fileTypeFlag == 2}">
+                            <span>当前为音频学习资源：</span>
+                            <c:forEach items="#{learningresourceController.getAIPfileNames(2,knowledgeController.selected)}" var="audio">
+                                <audio controls="controls" >
+                                    <source   src="#{publicFields.fileRepository}knowledgeResources/audio/#{audio}"  type="audio/mpeg"/>
+                                </audio>
+                            </c:forEach>
+                        </h:panelGrid>
+                        <h:panelGrid style="margin-top: 10px"  columns="1" rendered="#{questionController.fileTypeFlag == 3}">
+                            <span>当前为PDF学习资源：</span>
+                            <c:forEach items="#{learningresourceController.getAIPfileNames(3,knowledgeController.selected)}" var="pdfName">
+                                 <embed src="#{publicFields.fileRepository}knowledgeResources/pdf/#{pdfName}" width="300px" height="100px" />
+                            </c:forEach>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:commandButton value="下一步" action="#{questionController.next()}" rendered="#{questionController.fileTypeFlag > -1 and questionController.fileTypeFlag lt 2}" immediate="true">
+                            <f:ajax render="form btns"/>
+                        </h:commandButton>
+                        <h:panelGrid style=" margin-top: 10px;" columns="1" rendered="#{questionController.fileTypeFlag == 2}">
+                            <span style="font-size: 16px">全部学习资源学习完毕，请点击开始做题按钮进行自测！</span>
+                            <h:panelGroup>
+                                <h:commandButton value="开始做题" action="#{questionController.getQuestionPage()}" immediate="true"></h:commandButton>
+                                <span>自测题目正确率在90%以上，即认为已掌握该知识点！</span>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                    </h:panelGroup>     
+                </h:form>
+            </h:panelGrid>
+        </ui:define>
+    </ui:composition>
+</html>

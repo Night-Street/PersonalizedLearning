@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.CreatePraiseTitle}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+<!--            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.CreatePraiseLabel_id}" for="id"  dir="RTL" />
+                    <h:inputText id="id" value="#{praiseController.selected.id}" title="#{messages.CreatePraiseTitle_id}" required="true" requiredMessage="#{messages.CreatePraiseRequiredMessage_id}" />
+                    <h:outputLabel value="#{messages.CreatePraiseLabel_praiseDate}" for="praiseDate"   dir="RTL"/>
+                    <h:inputText id="praiseDate" value="#{praiseController.selected.praiseDate}" title="#{messages.CreatePraiseTitle_praiseDate}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{messages.CreatePraiseLabel_knowledgeId}" for="knowledgeId"   dir="RTL"/>
+                    <h:selectOneMenu id="knowledgeId" value="#{praiseController.selected.knowledgeId}" title="#{messages.CreatePraiseTitle_knowledgeId}" >
+                        <f:selectItems value="#{knowledgeController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{messages.CreatePraiseLabel_learningresourceId}" for="learningresourceId"   dir="RTL"/>
+                    <h:selectOneMenu id="learningresourceId" value="#{praiseController.selected.learningresourceId}" title="#{messages.CreatePraiseTitle_learningresourceId}" >
+                        <f:selectItems value="#{learningresourceController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{messages.CreatePraiseLabel_studentId}" for="studentId"   dir="RTL"/>
+                    <h:selectOneMenu id="studentId" value="#{praiseController.selected.studentId}" title="#{messages.CreatePraiseTitle_studentId}" required="true" requiredMessage="#{messages.CreatePraiseRequiredMessage_studentId}">
+                        <f:selectItems value="#{studentController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{praiseController.create}" value="#{messages.CreatePraiseSaveLink}" />
+                <!--<h:commandLink action="#{praiseController.prepareList}" value="#{messages.CreatePraiseShowAllLink}" immediate="true"/>
+                <h:link outcome="/index" value="#{messages.CreatePraiseIndexLink}"/>
+                -->
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

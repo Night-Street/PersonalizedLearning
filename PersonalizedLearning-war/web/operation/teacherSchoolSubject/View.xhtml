@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Teacher}#{messages.School}#{messages.Subject}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="2">
+                   <h:outputText value="#{messages.Teacher}#{messages.Account}"/>
+                    <h:outputText value="#{teacschoolsubjectController.selected.teacherid.name}" title="#{messages.Account}"/>
+                    <h:outputText value="#{messages.School}"/>
+                    <h:outputText value="#{teacschoolsubjectController.selected.schoolid.name}" title="#{messages.School}"/>
+                    <h:outputText value="#{messages.Subject}"/>
+                    <h:outputText value="#{teacschoolsubjectController.selected.subjectid.name}" title="#{messages.Subject}"/>
+                    <h:outputText value="#{messages.Begin}#{messages.From}"/>
+                    <h:outputText value="#{teacschoolsubjectController.selected.fromtime.toInstant()}" title="#{messages.Begin}#{messages.Time}"/>
+                    <h:outputText value="#{messages.End}"/>
+                    <h:outputText value="#{teacschoolsubjectController.selected.totime.toInstant()}" title="#{messages.End}"/>
+                    <h:commandButton value="#{messages.Create}" action="#{teacschoolsubjectController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{teacschoolsubjectController.prepareList()}" immediate="true"/>
+                    <h:commandButton action="#{teacschoolsubjectController.prepareEdit}" value="#{messages.Edit}"/>
+                
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

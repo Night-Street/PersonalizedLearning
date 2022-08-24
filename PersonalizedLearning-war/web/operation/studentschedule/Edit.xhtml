@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Student} #{messages.Schedule}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Name1}"  />
+                    <h:outputText value="#{studentscheduleController.selected.userid.secondname}#{studentscheduleController.selected.userid.firstname}"/>
+                    <h:outputText value="#{messages.Start} #{messages.Time}"/>
+                    <h:inputText value="#{item.starttime}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputText value="#{messages.End} #{messages.Time}"/>
+                    <h:inputText  value="#{item.endtime}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputText value="#{messages.Schedule} #{messages.Classification}"/>
+                    <h:selectOneMenu value="#{studentscheduleController.selected.belongclassid}">
+                        <f:selectItems value="#{scheduleclassControllerA.allList}"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="#{messages.Finished}"/>
+                    <h:selectBooleanCheckbox value="#{item.myresult}"/>
+                    <h:commandButton value="#{messages.Save}" action="#{studentscheduleController.update()}"/>
+                    <!--
+                    <h:commandButton value="#{messages.Create}" action="#{studentscheduleController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{studentscheduleController.prepareList()}" immediate="true"/>
+                    -->
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+        <h:panelGrid columns="1">
+            <h:panelGroup>
+                管理员角色的主要功能包括:
+                <ul>
+                    <li>教师维护：包括新增教师、修改教师和删除教师等;</li>
+                    <li>专业维护：包括专业的增删改查，以及对专业的课程安排，只有在这里安排了课程，才能给课程安排教师，即通过选择专业及班级，选择对应的课程，再选择对应的教师;</li>
+                    <li>教师上课安排：要想为某教师安排某班级的某课程，该教师必须被指定了对应的专业，然后才能安排该班级的课程；</li>
+                    <li>课程维护：包括课程的增删改查，在改的功能中，包括对该课程所属的专业，以及该课程的前驱课程的增加与删除；</li>
+                    <li>教师日程安排：</li>
+                    <li>学生日程安排：包括为学生指定考试日期，以及作业日期等，除了管理员具有该功能外，任课教师也具有该功能。</li>
+                </ul>
+                管理员角色的功能框架如下图：
+            </h:panelGroup>
+            <h:graphicImage library="guide" name="guideAdminscheme.jpg" width="650px"/>
+            <h:panelGroup>
+                首先，进入主页，占击右上角登录按钮，如下图：
+            </h:panelGroup>
+            <h:graphicImage library="guide" name="guidesecretarymainPage.png" width="650px"/>
+            <h:panelGroup>
+                在接下来的页面中，输入用户名和密码，并且选择对应的角色“”，点击登录按钮，如下图：
+            </h:panelGroup>
+            <h:graphicImage library="guide" name="guidesecretarylogin.png"  width="650px"/>
+            <h:panelGroup>
+                登录成功后，进入角色主页面，在左侧有相应的功能链接，如下图所示：
+            </h:panelGroup>
+        </h:panelGrid>
+    </h:body>
+</html>

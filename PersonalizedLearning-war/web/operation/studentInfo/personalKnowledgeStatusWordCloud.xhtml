@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Knowledge}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <div id="container" style="height: 400px;"></div>
+            
+            <h:inputHidden id="inputWord" value="#{knowledgeController.getKnowledgeRelationship4dagre(knowledgeController.selected)}" />
+            <div>
+                <script src="./node_modules/js2wordcloud/dist/js2wordcloud.js"></script>
+                <script>
+                    function   getnum() {
+                        return parseInt(Math.random() * 100);
+                    }
+                    var arr1 = new Array(10);
+                    arr1[0] = ['减肥而附加费', 10];
+                    for (var i = 1; i < arr1.length; i++) {
+                        var num = getnum();
+                        arr1[i] = ['谈笑风生', num];
+                    }
+                    console.log(arr1);
+                    var option = {
+                        // tooltip: {
+                        //     show: true,
+                        //     formatter: function(item) {
+                        //         return item[0] + ': 价值¥' + item[1] + '<br>' + '词云图'
+                        //     }
+                        // },
+                        // list: [['谈笑风生', 500], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 1000], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1], ['谈笑风生', 500000], ['谈笑风生', 50], ['谈笑风生', 40], ['谈笑风生', 40], ['谈笑风生', 30], ['谈笑风生', 30], ['谈笑风生', 20], ['谈笑风生', 20], ['谈笑风生', 1], ['谈笑风生', 1]],
+                        list: arr1,
+                        color: 'random-dark',
+                        // shape: 'circle',
+                        ellipticity: 1,
+                        minRotation: -1.57080,
+                        maxRotation: -1.57080,
+                        rotateRatio: .4,
+                        fontSizeFactor: 5,
+                        // 当词云值相差太大，可设置此值进字体行大小微调，默认0.1
+                        maxFontSize: 60,
+                        // 最大fontSize，用来控制weightFactor，默认60
+                        minFontSize: 20,
+                        gridSize: 10,
+                        ratationSteps: 2,
+                        rotationRation: .5,
+                        shuffle: 30,
+                        shape: 'circle',
+                        cardioid: 'diamond'
+                                //cardioid: 'square'
+
+
+                    };
+                    var wc = new Js2WordCloud(document.getElementById('container'));
+                    wc.setOption(option);
+
+                    window.onresize = function () {
+                        wc.resize();
+                    };
+                </script>
+
+        </ui:define>
+    </ui:composition>
+</html>

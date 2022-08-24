@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <fieldset>
+            <legend>事件管理系统设计与实现</legend>
+        <table>
+            <thead></thead>
+            <tr style="text-align: left"><th>事项</th><th >内容</th></tr>
+            <tr>
+                <td style="width:150px">开始时间</td><td>2020-03-26</td>
+            </tr>
+            <tr>
+                <td>背景描述</td><td>在学校的家长群里，班主任经常需要统计一些信息，如购买参考书的信息，交班费的信息等。这些事件管理具有繁琐，需要教师手工统计一些信息的缺点，耗费了教师大量的精力。为此，设计一个系统，用来对这些事件进行管理，从而减小教师的工作量。</td>
+            </tr><tr>
+                <td>需求分析</td><td>学生和教师登录系统后，系统检查当前是否有相关的事件，如有，则显示在主界面上。学生添写相应的统计信息，教师则查看相应的统计信息。
+                </td></tr>
+            <tr>
+                <td>需要设计的界面</td><td>登录界面、显示事件入口的主界面、事件统计处理事件（包括学生的录入信息界面，教师的统计界面）、事件维护界面（事件名称，事件起与止时间，事项（事项名称，事项类型（选是与否（如是，则需要添入数字）、数字、文本）））等。
+                </td>
+            </tr>
+            <tr>
+                <td>数据库设计</td><td>学校表，教师表，班级表，学生表，事件表（事件的维护等），事件信息表
+                    班级属于学校，学生属于班级，教师属于学校，教师联系班级；事件表针对班级，事件信息表联系事件表
+
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+    </body>
+</html>

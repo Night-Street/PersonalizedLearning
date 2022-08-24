@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.View}#{messages.Predicate}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <!--<h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="1">
+                    <hr/>
+                    <h:panelGrid columns="2" style="vertical-align: top">
+                        <h:outputLabel value="#{messages.Name}" for="pname"  dir="RTL"/>
+                        <h:outputLabel p:id="pname" value="#{predicateController.selected.pname}"/>
+                        <h:outputLabel value="#{messages.Alias}" for="myalias"  dir="RTL"/>
+                        <h:outputLabel p:id="myalias" value="#{predicateController.selected.myalias}" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" style="vertical-align: top">
+                        <h:outputLabel value="#{messages.Porder}" for="porder"  dir="RTL"/>
+                        <h:selectOneMenu  id="porder" value="#{predicateController.selected.porder}"  readonly="true">
+                            <f:selectItem itemLabel="#{messages.Please} #{messages.Select}"/>
+                            <f:selectItems value="#{predicateControllerA.allPorder}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.Reflexivity}" for="reflexivity"  dir="RTL"/>
+                        <h:selectOneRadio  id="reflexivity" value="#{predicateController.selected.reflexivity}" readonly="true" layout="lineDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                        <h:outputLabel value="#{messages.Transitivity}" for="transitivity"  dir="RTL"/>
+                        <h:selectOneRadio  id="transitivity" value="#{predicateController.selected.transitivity}" readonly="true" layout="lineDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                        <h:outputLabel value="#{messages.Symmetry}" for="symmetry"  dir="RTL"/>
+                        <h:selectOneRadio  id="symmetry" value="#{predicateController.selected.symmetry}" readonly="true" layout="lineDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" style="vertical-align: top">
+                        <h:outputLabel value="#{messages.Meaning}" for="meaning"  dir="RTL"/>
+                        <h:outputLabel p:id="meaning" value="#{predicateController.selected.meaning}"/>
+                        <h:outputLabel value="#{messages.Memo}" for="memo"  dir="RTL"/>
+                        <h:outputLabel p:id="memo" value="#{predicateController.selected.memo}"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

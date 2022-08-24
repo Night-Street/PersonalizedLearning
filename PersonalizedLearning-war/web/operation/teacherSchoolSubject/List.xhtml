@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Teacher}#{messages.School}#{messages.Subject}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form">
+                <h2 id="workingIndicator" style="display: none">
+                    <h:graphicImage library="images" name="pleaseWait.gif"/>
+                </h2>
+                <h:panelGrid rendered="#{roleinfoController.secretary}">
+                    <h:panelGrid columns="2" >
+                        <h:outputLabel value="#{messages.Please}#{messages.Select}#{messages.A}#{messages.Teacher}"/>
+                        <h:selectOneMenu value="#{teacherAdminController.selected}" required="true">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{teacherAdminController.teacherList}"  var="teacher" itemLabel="#{teacher.secondname}#{teacher.firstname}"/>
+                            <f:ajax render="forSet"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.Please}#{messages.Select}#{messages.A}#{messages.Class}"/>
+                        <h:selectOneMenu value="#{schoolController.selected}" required="true">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{schoolControllerA.schoolsOnLeaves}"/>
+                            <f:ajax render="subject4School1"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.Please}#{messages.Select}#{messages.A}#{messages.Subject}"/>
+                        <h:selectOneMenu value="#{subjectController.selected}" id="subject4School1"  required="true">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{subjectController.getSubject4SchoolList(schoolController.selected)}"/>
+                            <f:ajax render="forSet"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.End}"/>
+                        <h:inputText value="#{teacschoolsubjectController.fromTimeCalendar}" p:type="date">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:inputText>
+                    </h:panelGrid>
+                    <h:panelGrid columns="4" >
+                        <h:commandButton value="#{messages.Search} " action="#{teacschoolsubjectController.search()}"/>
+                        <h:commandButton value="#{messages.View} #{messages.All}" actionListener="#{teacschoolsubjectController.prepareList()}" immediate="true">
+                            <f:ajax render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="#{messages.Create}" action="#{teacschoolsubjectController.prepareCreate}" immediate="true" />
+                    </h:panelGrid>
+                </h:panelGrid>
+                <h:outputText escape="false" value="#{messages.Empty}" rendered="#{teacschoolsubjectController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{teacschoolsubjectController.items.rowCount > 0}">
+                    <h:outputText value="#{teacschoolsubjectController.pagination.pageFirstItem + 1}..#{teacschoolsubjectController.pagination.pageLastItem + 1}/#{teacschoolsubjectController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{teacschoolsubjectController.pageOperation.previous}" value="#{messages.Previous} #{teacschoolsubjectController.pagination.pageSize}" rendered="#{teacschoolsubjectController.pagination.hasPreviousPage}" immediate="true"/>&nbsp;
+                    <h:commandLink action="#{teacschoolsubjectController.pageOperation.next}" value="#{messages.Next} #{teacschoolsubjectController.pagination.pageSize}" rendered="#{teacschoolsubjectController.pagination.hasNextPage}"
+                                   immediate="true"/>&nbsp;
+                    <h:dataTable value="#{teacschoolsubjectController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all"  columnClasses="editRemoveview">
+                        <h:column  rendered="#{roleinfoController.secretary}">
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{teacschoolsubjectController.prepareView}" value="#{messages.View}" immediate="true"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{teacschoolsubjectController.prepareEdit}" value="#{messages.Edit}" immediate="true"/>
+                            <c:if test="#{roleinfoControllerA.isAdmin(teacherAdminController.logined)}">
+                                <h:outputText value=" "/>
+                                <h:commandLink action="#{teacschoolsubjectController.destroy}" value="#{messages.Destroy}" immediate="true"   onclick="if (!confirm('#{messages.Delete}?'))
+                                                return false" />
+                            </c:if>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.From}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fromtime}" title="yyyy-MM-dd">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.End}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.totime}" title="yyyy-MM-dd">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Teacher}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.teacherid.secondname} #{item.teacherid.firstname}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.School}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.schoolid.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Subject}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.subjectid.name}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Role}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form" prependId="false">
+                <h:panelGrid columns="1">
+                    <h:selectOneMenu value="#{roleinfoController.selected}" id="roleSelect" >
+                        <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                        <f:selectItems value="#{roleinfoControllerA.allSet}" var="role" itemLabel="#{messages.getString(role.rolename)}"/>
+                        <f:ajax render="resourcesInfo"/>
+                    </h:selectOneMenu>
+                    <h:selectManyCheckbox value="#{resourceinfoController.temResourceinfoList}" layout="pageDirection" id="resourcesInfo">
+                        <f:selectItems value="#{resourceinfoControllerA.allList}"/>
+                    </h:selectManyCheckbox>
+                    <h:commandButton value="#{messages.Alter}" action="#{resourceinfoController.editRoleResource()}"/>
+                </h:panelGrid>
+                <h:commandButton value="#{messages.Create} #{messages.New} #{messages.Role}" action="#{roleinfoController.create()}"  readonly="#{roleinfoController.createEnabled}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

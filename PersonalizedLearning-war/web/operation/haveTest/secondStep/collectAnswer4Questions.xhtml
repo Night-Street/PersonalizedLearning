@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>#{messages.Test}</title>
+        <h:outputScript library="javaScript" name="remoteMathJax.js" target="head"/>
+    </h:head>
+    <h:body>
+        <h:form  styleClass="jsfcrud_list_form" enctype="multipart/form-data">
+            <h:outputScript library="javaScript" name="ckeditor5-build-classic/ckeditor.js" target="head"/>
+            <c:if test="#{haveTest.timeOver}">
+                <h:outputLabel value="#{messages.TimeISOver}" style="color: red" />
+            </c:if>
+            <c:if test="#{!haveTest.timeOver}">
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="#{messages.Left}#{messages.Time}：#{haveTest.leftMinutes()}  #{messages.Minute}"/>
+                    <h:outputLabel value="#{haveTest.getIndex()+1}/#{haveTest.questionListSize()}"/>
+                </h:panelGrid>
+                <hr/>
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="#{messages.Createdby} #{messages.Name1}#{questionController.showedName(haveTest.question)}"/>
+                    <hr/>
+                    <h:outputLabel value="#{haveTest.questionType}"/>
+                    <hr/>
+                    <!--题干-->
+                    <h:outputText escape="false"   value="#{haveTest.getQuestionTitle(haveTest.question)}"  p:id="myeditor"/>
+                    <!--收集答案-->
+                    <c:if test="#{questionControllerA.isSingleFill(haveTest.question)}" >
+                        <h:inputText  id="answer1"  value="#{haveTest.studentanswer}" required="true" style="width: 100px"/>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isJudgment(haveTest.question)}" >
+                        <h:selectOneRadio id="judegement" value="#{haveTest.studentanswer}" required="true" layout="pageDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSingleSelection(haveTest.question)}">
+                        <h:selectOneRadio id="singleSelection" value="#{haveTest.studentanswer}" required="true" layout="pageDirection">
+                            <f:selectItem itemEscaped="false"  itemLabel="A. #{questionController.selectionString1}" itemValue="1"/>
+                            <f:selectItem itemEscaped="false" itemLabel="B. #{questionController.selectionString2}" itemValue="2"/>
+                            <f:selectItem itemEscaped="false" itemLabel="C. #{questionController.selectionString3}" itemValue="3"/>
+                            <f:selectItem itemEscaped="false" itemLabel="D. #{questionController.selectionString4}" itemValue="4"/>  
+                        </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isMultiSelection(haveTest.question)}" >
+                        <h:selectManyCheckbox id="multi-Selection"  value="#{haveTest.studentAnswer4multi}" required="true" layout="pageDirection">
+                            <f:selectItem itemEscaped="false" itemLabel="A.#{questionController.selectionString1}" itemValue="1"/>
+                            <f:selectItem itemEscaped="false" itemLabel="B.#{questionController.selectionString2}" itemValue="2"/>
+                            <f:selectItem itemEscaped="false" itemLabel="C.#{questionController.selectionString3}" itemValue="3"/>
+                            <f:selectItem itemEscaped="false"  itemLabel="D.#{questionController.selectionString4}" itemValue="4"/>  
+                            <f:selectItem itemEscaped="false" itemLabel="E.#{questionController.selectionString5}" itemValue="5"/> 
+                        </h:selectManyCheckbox>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isMULTIFILL(haveTest.question)}" >
+                        <h:panelGrid columns="#{haveTest.getNumber(question)}">
+                            <c:forEach items="#{haveTest.data}"  var="ans" varStatus="status">
+                                <h:inputText id="data"  value="#{ans}" required="true" style="width: 100px"/>
+                            </c:forEach>
+                        </h:panelGrid>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSimpleAnswer(haveTest.question)}" >
+                        <h:inputText id="answer2"  value="#{haveTest.studentanswer}" required="true" style="width: 100px"/>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isObjectiveProgram(haveTest.question)}">
+                        <h:inputFile  id="answer3"  value="#{haveTest.answerPart}" validator="#{haveTest.partValidator}" required="true"/>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSubjectiveProgram(haveTest.question)}">
+                        <h:inputFile id="answer4"  value="#{haveTest.answerPart}" validator="#{haveTest.partValidator}" required="true"/>
+                    </c:if>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <h:commandButton id="button2"  action="#{haveTest.previous()}"  value="#{messages.Previous}#{messages.Question}"  
+                                     rendered="#{haveTest.index!=0}"/>
+                    <h:commandButton id="button3"  action="#{haveTest.nextQues()}" value="#{messages.Next}#{messages.Question}" />
+                </h:panelGrid>
+                <hr/>
+                <h:panelGrid columns="1">
+                    <h:commandButton id="button4"  value="#{messages.Submit}" action="#{haveTest.submit()}"/>
+                </h:panelGrid>
+            </c:if>
+        </h:form>  
+    </h:body>
+</html>

@@ -1,0 +1,350 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <h:outputStylesheet name="blueprint/screen.css" library="css"/>
+        <h:outputStylesheet name="blueprint/main.css" library="css"/>
+        <!--[if lt IE 8]><h:outputStylesheet name="rel=blueprint/ie.css" library="css" /><![endif]-->
+        <!--[if gte IE 8]><h:outputStylesheet name="blueprint/ie8-and-up.css" library="css"/><![endif]-->
+        <!--[if IE 7]><h:outputStylesheet name="blueprint/ie7.css" library="css"/><![endif]-->
+        <!--[if IE 7]><h:outputStylesheet name="blueprint/ie6.css" library="css"/><![endif]-->
+        <title>#{messages.SystemNameRef}</title>
+    </h:head>
+    <h:body>
+    <!-- START MAIN CONTAINER -->
+    <div id="mainContainer" class="container">
+        <!-- START PAGE HEADER -->
+        <div id="header" class="span-24 last">
+
+            <!-- START CHANGE LANGUAGE -->
+            <div id="language">
+                <p>Change Language: <a href="/cn/cn-niv-visaapply.asp">Change to English</a></p>
+            </div>
+            <!-- END CHANGE LANGUAGE -->
+
+            <!-- START BANNER -->
+            <div id="logo">
+                <h1 class="shadow">#{messages.SystemNameRef}</h1>
+            </div>
+            <!-- END BANNER -->
+
+            <!-- START COUNTRY NAME FOR BANNER -->
+            <div id="country-specific">
+                <h3 class="shadow">在中国</h3>
+            </div>
+
+            <!-- END COUNTRY NAME FOR BANNER -->
+
+        </div>
+        <!-- END PAGE HEADER -->
+
+        <!-- START RED RIBBON NAVIGATION -->
+        <div id="nav" class="span-24 last">
+            <ul>
+                <li><a class="first" href="index.html?firstTime=No">主页</a></li>
+                <li><a target="_blank" href="https://cgifederal.secure.force.com/?language=Chinese%20(Simplified)&amp;country=China">登录</a></li>
+                <li><a href="cn-main-contactus.asp">联系我们</a></li>
+                <li><a href="cn-gen-faq.asp">常见问题(FAQ)</a></li>
+            </ul>
+        </div>
+
+        <!-- END RED RIBBON NAVIGATION -->
+
+        <!-- START MAIN CONTENT WRAP -->
+        <div id="mainContentWrap" class="span-24 last">
+
+            <!-- START ALERT RED RIBBON -->
+
+            <!-- END ALERT RED RIBBON -->
+
+            <!-- START MAIN CONTENT CONTAINER -->
+            <div id="mainContent" class="container">
+
+                <!-- START LEFT SIDEBAR -->
+                <div id="sidebar" class="span-6">
+                    <!-- START LEFT NAVIGATION MENU -->
+                    <div id="nav_side" class="accordion">
+                        <ul>
+                            <li><a href="#">非移民签证信息</a>
+                                <ul>
+                                    <li><a href="cn-niv-visatypeinfo.asp">签证类型</a></li>
+                                    <li><a href="cn-niv-visafeeinfo.asp">签证费</a></li>
+                                    <li><a href="cn-niv-paymentinfo.asp">银行和支付方式 </a></li>
+                                    <li><a href="cn-niv-ds160info.asp">DS-160表格信息</a></li>
+                                    <li><a href="cn-niv-waittimeinfo.asp">预约面谈等待时间</a></li>
+                                    <li><a href="cn-niv-photoinfo.asp">照片和指纹</a></li>
+                                    <li><a href="cn-niv-visawaiverinfo.asp">豁免签证计划</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">非移民签证申请</a>
+                                <ul>
+                                    <li><a href="cn-niv-visaapply.asp">申请签证</a></li>
+                                    <li><a href="cn-niv-paymentinfo.asp">支付签证费</a></li>
+                                    <li><a href="cn-niv-ds160complete.asp">完成DS-160表</a></li>
+                                    <li><a href="cn-niv-appointmentschedule.asp">安排面谈时间</a></li>
+                                    <li><a href="cn-niv-deliveryaddressmodify.asp">更改护照/文件送达地址</a></li>
+                                    <li><a href="cn-niv-passporttrack.asp">护照/签证取件地点</a></li>
+                                    <li><a href="cn-niv-expeditedappointment.asp">申请加急</a></li>
+                                    <li><a href="cn-niv-visarenew.asp">申请免面谈</a></li>
+                                    <li><a href="cn-niv-221ginfo.asp">需进一步审理的申请</a></li>
+                                    <li><a href="cn-niv-documentsubmissioninfo.asp">提交221(g)文件</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">移民签证信息</a>
+                                <ul>
+                                    <li><a href="cn-iv-visaapplyinfo.asp">移民签证信息</a></li>
+                                    <li><a href="cn-iv-visastatusinfo.asp">查看移民签证申请状态</a></li>
+                                    <li><a href="cn-iv-waittimeinfo.asp">移民签证等待时间</a></li>
+                                    <li><a href="cn-iv-appointmentschedule.asp">安排约见时间</a></li>
+                                    <li><a href="cn-iv-immigrantkvisa.asp">移民和K类签证费</a></li>
+                                    <li><a href="cn-iv-preparedocuments.asp">准备资料</a></li>
+                                    <li><a href="cn-niv-passporttrack.asp">护照/签证取件地点</a></li>
+                                    <li><a href="cn-iv-documentdelivery.asp">选择文件送达地址</a></li>
+                                    <li><a href="cn-iv-221ginfo.asp">需进一步处理的申请</a></li>
+                                    <li><a href="cn-iv-aftervisaapproval.asp">签证批准并签发之后</a></li>
+                                    <li><a href="cn-iv-sb1visas.asp">SB-1类签证： 回美签证</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">当地签证程序</a>
+                                <ul>
+                                    <li><a href="cn-svc-travelcoordinator.asp">旅行协调员</a></li>
+                                    <li><a href="cn-svc-groupappointment.asp">团组预约</a></li>
+                                    <li><a href="cn-svc-evus.asp">签证更新电子系统(EVUS)</a></li>
+                                    <li><a href="cn-svc-visachild.asp">儿童签证</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">地址</a>
+                                <ul>
+                                    <li><a href="cn-loc-post.asp">美国驻华大使馆和领事馆</a></li>
+                                    <li><a href="cn-niv-passporttrack.asp">护照/签证取件地点</a></li>
+                                    <li><a href="cn-loc-documentdropoff.asp">中信银行递送文件递交地点</a></li>
+                                    <li><a href="cn-loc-bank.asp">银行地址</a></li>
+                                </ul>
+                            </li>
+
+                            <li><a href="#">基本信息</a>
+                                <ul>
+                                    <li><a href="cn-gen-faq.asp">常见问题(FAQ)</a></li>
+                                    <li><a href="cn-gen-holidays.asp">节假日及闭馆说明</a></li>
+                                    <li><a href="cn-gen-rightsandprotection.asp">权利与保护</a></li>
+                                    <li><a href="cn-gen-helpfullinks.asp">帮助链接</a></li>
+                                    <li><a href="cn-niv-securityinfo.asp">安全条例</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="bottom" href="#">&nbsp;</a></li>
+                        </ul>
+
+                    </div>
+
+                    <script>
+                    //child
+                        var url = window.location.href;
+                        url = url.substr(url.lastIndexOf("/") + 1);
+                        $("#nav_side").find("a[href='" + url + "']").addClass("current");
+
+                    //accordion
+                        if ($(".current").length > 0)
+                        {
+                            $(".current").parent().parent().addClass('active');
+                        }
+                    </script>
+
+                    <!-- END LEFT NAVIGATION MENU -->
+                </div>
+                <!-- END LEFT SIDEBAR -->
+
+                <!-- START DASHBOARD -->
+                <div id="dashboard" class="span-15 last">
+
+                    <!-- START BREADCRUMB -->
+                    <div id="breadcrumbs">
+                        <p>您现在的位置: <a href="index.html?firstTime=No">主页</a> / 申请签证</p>
+                    </div>
+                    <!-- END BREADCRUMB -->
+
+                    <!-- START CONTENT -->
+                    <div class="editable" id="alert-box"><h2>申请签证</h2>
+                        <p><span class="tochead">当前页面</span></p>
+                        <ul class="blue_bullets">
+                            <li><a href="#概述">概述</a></li>
+                            <li><a href="#如何申请">如何申请</a></li>
+                        </ul>
+                        <hr/>
+                            <h4 id="概述">概述</h4>
+                            <p>请你确认是否需要申请签证。如果你已持有有效美国签证，而签证类别适用于你的旅游目的，或者你已持有符合<a href="cn-niv-visawaiverinfo.asp" target="_blank" rel="noopener noreferrer">签证豁免计划</a>资格的护照，那么你便可能毋须申请新的美国签证。如果你持有加拿大护照，请参阅以下网站<span class="s1"><a href="https://ca.usembassy.gov/visas/" target="_blank" rel="noopener noreferrer">https://ca.usembassy.gov/visas/</a>&nbsp;</span>及&nbsp;<span class="s1"><a href="https://ca.usembassy.gov/visas/do-i-need-a-visa/" target="_blank" rel="noopener noreferrer">https://ca.usembassy.gov/visas/do-i-need-a-visa/</a>&nbsp;</span>取得更多资讯。</p>
+                            <p style="color: red;">注意：如果您是14岁以下或者是80岁以上的申请人； 或者您上一个美国签证失效日期未超过<span style="text-decoration: underline;"><strong>12</strong></span>个月，并且您此次赴美与上次目的相同，那么你可以通过免面谈续签服务申请签证。<a href="cn-niv-visarenew.asp">点击这里</a>了解如何使用这项服务的信息。其他申请人必须遵照以下步骤进行申请。</p>
+                            <p>其他需要申请非移民签证的申请人，请遵循以下步骤进行操作。</p>
+                            <h4 id="如何申请">如何申请</h4>
+                            <h5>第1步</h5>
+                            <p>对于非移民签证申请人：</p>
+                            <p>请认真阅读<a href="cn-niv-visatypeinfo.asp">常见非移民签证</a>中的内容，确定需要申请的签证类型。每类签证都附有相应的申请条件和申请材料说明。根据您的具体情况，选择正确的签证类型。</p>
+                            <p>请务必通读<a href="cn-niv-visawaiverinfo.asp">豁免签证计划</a>中的信息，如果您所在国家为豁免签证计划成员，<strong>并且</strong>您本人出于商务/旅游目的前往美国，<strong>同时</strong>停留时间不超过90天，则无需申请签证。</p>
+                            <h5>第2步</h5>
+                            <p>下一步是填写<a href="https://ceac.state.gov/genniv/" target="_blank" rel="noopener noreferrer">DS-160表</a>，请提前通读<a href="cn-niv-ds160complete.asp">DS-160表格填写指南</a>，确保所有信息均正确无误。提交表格之后，将无法进行任何更改。如有疑问，可向移民律师或相关专业翻译人员咨询。预约中心无法提供有关填写DS-160表的支持服务。请牢记DS-160编号以便预约面谈时间。</p>
+                            <h5>第3步</h5>
+                            <p>一旦确定签证类型以后，就进入签证申请费的缴纳环节。请访问<a href="cn-niv-visafeeinfo.asp">签证申请费用页面</a>，了解各种签证类型和相应的签证费用（以美元和本币标示）。</p>
+                            <p>在支付签证费之前，请查看<a href="cn-niv-paymentinfo.asp">银行和支付方式</a>页面中的信息。其中包括如何支付签证费的详细介绍。支付完成后，系统将为您创建个人资料，请务必妥善保管收据，以便通过收据编号预约签证面谈。</p>
+                            <h5>第4步</h5>
+                            <p>现在即可开始预约面谈时间！</p>
+                            <p>请通过支付签证手续费时使用的凭证<a href="https://cgifederal.secure.force.com/?language=Chinese%20(Simplified)&amp;country=China" target="_blank" rel="noopener noreferrer">登录</a>个人资料页面。进入系统之后，即可看到控制面板。<br/> 点击左手侧菜单上的“安排面谈时间”(Schedule Appointment)。</p>
+                            <p>此操作将启动预约安排流程。请提供：</p>
+                            <ul class="blue_bullets">
+                                <li>护照号码：请确保您填写至个人档案的护照号码与您护照上所显示的完全一致，并且必须以英文字母开头（如适用）。</li>
+                                <li>签证申请缴费收据上的编号（如需查询该编号，请点击<a href="cn-niv-paymentinfo.asp">此处</a>。）</li>
+                                <li>DS-160确认页上的十(10)位条形码编号。<strong>请注意：当您输入个人信息时，为了避免输入有误，我们建议您将DS-160确认编号从CEAC网站发送给您的PDF电子确认页里复制，然后粘贴到“DS-160确认编号”栏里。请注意区分如0和O, 1 和I, l和I, S和8, S和5, B 和 8等相似字符。</strong></li>
+                            </ul>
+                            <p>在接下来的流程中，需要依次选择签证类型、输入个人信息、添加亲属、选择文件送达地址、确认签证费用的缴纳状态，最后一步是安排面谈时间。添加在此处的同行者必须与主申请人申请相同的签证类型。如果同行者需要申请不同签证，他或她需要单独申请。</p>
+                            <h5>第5步</h5>
+                            <p>请按照约定的时间到<a href="cn-loc-post.asp">美国大使馆</a>进行面谈。请浏览<a href="cn-niv-appointmentschedule.asp">安排面谈时间</a>页面，了解面谈时需要随身携带的材料。</p>
+                            <h5>第6步</h5>
+                            <p>如果签证获批，护照将寄送至您在预约面谈时选择的指定地点。</p></div>
+                    <!-- END CONTENT -->
+                </div>
+                <!-- END DASHBOARD -->
+            </div>
+            <!-- END MAIN CONTENT CONTAINER -->
+        </div>
+        <!-- END MAIN CONTENT WRAP -->
+    </div>
+    <!-- END MAIN CONTAINER -->
+
+    <!-- START FOOTER -->
+    <div id="footer" class="container">
+
+        <!-- START FOOTER COLUMN 1 -->
+        <div class="prepend-1 span-3">
+            <ul>
+                <li><a href="index.html?firstTime=No" class="lead">主页</a></li>
+            </ul>
+            <hr/>
+
+                <p class="small"><a href="cn-main-contactus.asp">© CGI Federal Inc.</a></p>
+        </div>
+        <!-- END FOOTER COLUMN 1 -->
+
+        <!-- START FOOTER COLUMN 2 -->
+        <div class="span-3">
+            <ul>
+                <li class="lead">非移民签证信息</li>
+                <li class="first"><a href="cn-niv-visatypeinfo.asp">签证类型</a></li>
+                <li><a href="cn-niv-visafeeinfo.asp">签证费</a></li>
+                <li><a href="cn-niv-paymentinfo.asp">银行和支付方式 </a></li>
+                <li><a href="cn-niv-ds160info.asp">DS-160表格信息</a></li>
+                <li><a href="cn-niv-waittimeinfo.asp">预约面谈等待时间</a></li>
+                <li><a href="cn-niv-photoinfo.asp">照片和指纹</a></li>
+                <li><a href="cn-niv-visawaiverinfo.asp">豁免签证计划</a></li>
+                <li><a href="cn-niv-securityinfo.asp">安全条例</a></li>
+            </ul>
+        </div>
+        <!-- END FOOTER COLUMN 2 -->
+
+        <!-- START FOOTER COLUMN 3 -->
+        <div class="span-3">
+            <ul>
+                <li class="lead">非移民签证申请</li>
+                <li class="first"><a href="cn-niv-visaapply.asp">申请签证</a></li>
+                <li><a href="cn-niv-paymentinfo.asp">支付签证费</a></li>
+                <li><a href="cn-niv-ds160complete.asp">完成DS-160表</a></li>
+                <li><a href="cn-niv-appointmentschedule.asp">安排面谈时间</a></li>
+                <li><a href="cn-niv-deliveryaddressmodify.asp">更改护照/文件送达地址</a></li>
+                <li><a href="cn-niv-passporttrack.asp">护照/签证取件地点</a></li>
+                <li><a href="cn-niv-expeditedappointment.asp">申请加急</a></li>
+                <li><a href="cn-niv-visarenew.asp">申请免面谈</a></li>
+                <li><a href="cn-niv-221ginfo.asp">需进一步审理的申请</a></li>
+            </ul>
+        </div>
+        <!-- END FOOTER COLUMN 3 -->
+
+        <!-- START FOOTER COLUMN 4 -->
+        <div class="span-3">
+            <ul>
+                <li class="lead">移民签证信息</li>
+                <li class="first"><a href="cn-iv-visaapplyinfo.asp">移民签证信息</a></li>
+                <li><a href="cn-iv-visastatusinfo.asp">查看移民签证申请状态</a></li>
+                <li><a href="cn-iv-waittimeinfo.asp">移民签证等待时间</a></li>
+                <li><a href="cn-iv-appointmentschedule.asp">安排约见时间</a></li>
+                <li><a href="cn-iv-immigrantkvisa.asp">移民和K类签证费</a></li>
+                <li><a href="cn-iv-preparedocuments.asp">准备资料</a></li>
+                <li><a href="cn-niv-passporttrack.asp">护照/签证取件地点</a></li>
+                <li><a href="cn-iv-documentdelivery.asp">选择文件送达地址</a></li>
+                <li><a href="cn-iv-221ginfo.asp">需进一步处理的申请</a></li>
+                <li><a href="cn-iv-aftervisaapproval.asp">签证批准并签发之后</a></li>
+                <li><a href="cn-iv-sb1visas.asp">SB-1类签证： 回美签证</a></li>
+            </ul>
+        </div>
+        <!-- END FOOTER COLUMN 4 -->
+
+        <!-- START FOOTER COLUMN 5 -->
+        <div class="span-3">
+            <ul>
+                <li class="lead">当地签证程序</li>
+                <li class="first"><a href="cn-svc-travelcoordinator.asp">旅行协调员</a></li>
+                <li><a href="cn-svc-groupappointment.asp">团组预约</a></li>
+                <li><a href="cn-svc-aandginfo.asp">外交和公务签证</a></li>
+                <li><a href="cn-svc-visachild.asp">儿童签证</a></li>
+                <li><a href="cn-svc-evus.asp">签证更新电子系统(EVUS)</a></li>
+            </ul>
+        </div>
+        <!-- END FOOTER COLUMN 5 -->
+
+        <!-- START FOOTER COLUMN 6 -->
+        <div class="span-3">
+            <ul>
+                <li class="lead">地址</li>
+                <li class="first"><a href="cn-loc-post.asp">美国驻华大使馆和领事馆</a></li>
+                <li><a href="cn-niv-passporttrack.asp">护照/签证取件地点</a></li>
+                <li><a href="cn-loc-documentdropoff.asp">中信银行递送文件递交地点</a></li>
+                <li><a href="cn-loc-bank.asp">银行地址</a></li>
+            </ul>
+        </div>
+        <!-- END FOOTER COLUMN 6 -->
+
+        <!-- START FOOTER COLUMN 7 -->
+        <div class="span-3 last" style="width:114px;">
+            <ul>
+                <li class="lead">基本信息</li>
+                <li class="first"><a href="cn-gen-faq.asp">常见问题(FAQ)</a></li>
+                <li><a href="cn-gen-holidays.asp">节假日及闭馆说明</a></li>
+                <li><a href="cn-gen-rightsandprotection.asp">权利与保护</a></li>
+                <li><a href="cn-gen-helpfullinks.asp">帮助链接</a></li>
+            </ul>
+        </div>
+        <!-- END FOOTER COLUMN 7 -->
+
+        <!-- START FOOTER DISCLAIMER -->
+        <div class="ftp">
+            美国国务院领事事务局<a target="_blank" href="http://travel.state.gov" title="http://travel.state.gov">网站</a>及领事馆网站是有关签证信息的权威来源。如果签证内容存在差异，应以上述网站的信息为准。
+        </div>
+        <!-- END FOOTER DISCLAIMER -->
+
+        <!-- START FOOTER PRIVACY AND ADMIN -->
+        <div class="termLnk">
+            <a href="cn-ftr-privacy.asp">隐私政策</a>
+        </div>
+        <!-- END FOOTER PRIVACY AND ADMIN -->
+
+    </div>
+
+    <!-- END FOOTER -->
+
+    <!-- START GOOGLE ANALYTICS -->
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script src="https://ssl.google-analytics.com/ga.js" type="text/javascript"></script>
+    <script>
+    try {
+        var pageTracker = _gat._getTracker("UA-20733580-1");
+
+        pageTracker._setCookiePath("/");
+        pageTracker._trackPageview();
+    } catch (err) {
+    }
+    </script>
+    <!-- END GOOGLE ANALYTICS -->
+
+
+</h:body>
+</html>

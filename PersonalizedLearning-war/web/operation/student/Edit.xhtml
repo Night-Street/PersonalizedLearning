@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Student}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <h:panelGrid width="100%">
+                    <h:graphicImage name="resetPassword.jpg" library="images" height="200px" width="200px"/>
+                    <h:commandLink value="#{messages.Reset}&nbsp;#{messages.Default}#{messages.Password}:#{messages.DefaultNumber}" action="#{studentController.resetPassword()}" 
+                                   immediate="true" disabled="#{schoolController.selected.id==null}"  class="mya"/>
+                </h:panelGrid>
+            </h:form>
+            <h:form styleClass="jsfcrud_list_form" >
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.School}"  dir="RTL"/>
+                    <h:selectOneMenu value="#{schoolController.selected}" required="true">
+                        <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                        <f:selectItems value="#{schoolController.currentSubjectSchools}"/>
+                        <f:ajax render="forSet listAll"/>
+                    </h:selectOneMenu> 
+                    <h:inputText value="#{studentController.searchName}" size="10" immediate="true">
+                        <f:ajax render="search"/>
+                    </h:inputText>
+                    <h:commandButton id="search" value="#{messages.Search}&nbsp;#{messages.Student}" action="#{studentController.search()}" immediate="true"
+                                     disabled="#{null==studentController.searchName}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Account}" for="name"   dir="RTL"/>
+                    <h:inputText id="name" value="#{studentController.selected.name}" title="#{messages.Account}" required="true" requiredMessage="#{messages.Name}"/>
+                    <h:outputLabel value="#{messages.Firstname}" for="firstname"   dir="RTL"/>
+                    <h:inputText id="firstname" value="#{studentController.selected.firstname}" title="#{messages.Firstname}" />
+                    <h:outputLabel value="#{messages.Secondname}" for="secondname"   dir="RTL"/>
+                    <h:inputText id="secondname" value="#{studentController.selected.secondname}" title="#{messages.Secondname}" />
+                    <h:outputLabel value="#{messages.Email}" for="email"   dir="RTL"/>
+                    <h:inputText id="email" value="#{studentController.selected.email}" title="#{messages.Email}" required="true"/><!--p:type="email" -->
+                    <h:outputLabel value="#{messages.Phone}" for="phone"   dir="RTL"/>
+                    <h:inputText id="phone" value="#{studentController.selected.phone}" title="#{messages.Phone}"/><!-- p:type="telphone"-->
+                    <h:outputLabel value="#{messages.School}" for="schoolId"   dir="RTL"/>
+                    <h:selectOneMenu id="schoolId" value="#{studentController.selected.schoolId}" title="#{messages.EditStudentTitle_schoolId}" required="true" requiredMessage="#{messages.School}">
+                        <f:selectItem itemLabel="#{messages.Please}#{messages.Select}" />
+                        <f:selectItems value="#{schoolControllerA.schoolsOnLeaves}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value=" "/>
+                    <h:panelGrid columns="3">
+                        <h:commandButton action="#{studentController.update}" value="#{messages.Save}"/>
+                        <h:commandButton value="#{messages.Create}" action="#{studentController.prepareCreate}" immediate="true" />
+                        <h:commandButton value="#{messages.View} #{messages.All}" action="#{studentController.prepareList()}" immediate="true"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

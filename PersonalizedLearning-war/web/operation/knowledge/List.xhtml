@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition template="/template.xhtml">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Knowledge}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h:outputScript library="javaScript" name="graphlib-dot.js" target="head"/>
+            <h:outputScript library="javaScript" name="dagre-d3.js" target="head"/>
+            <h:outputStylesheet library="css" name="dagre.css"/>
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:outputScript library="javaScript" name="remoteMathJax.js" target="head"/>
+            <h2 id="workingIndicator" style="display: none">
+                <h:graphicImage library="images" name="pleaseWait.gif"/>
+            </h2>
+            <h:form styleClass="jsfcrud_list_form" prependId="false"> 
+                <h:messages  id="myMessage" errorStyle="color: red"  infoStyle="color: green"   fatalStyle="color: red"  layout="table"   styleClass="message"/>
+                <h:panelGrid columns="3">
+                    <h:inputText id="searchText" value="#{knowledgeController.searchName}" immediate="true">
+                        <f:ajax render="search"/>
+                    </h:inputText>
+                    <h:commandButton id="search" value="#{messages.Search} #{messages.Knowledge}" action="#{knowledgeController.search()}" immediate="true">
+                        <f:ajax render="@form" onevent="showWorkingIndicator"/>
+                    </h:commandButton>
+                </h:panelGrid>
+                <h:panelGrid columns="1">
+                    <em:majorSubjectTemplate/>
+                </h:panelGrid>
+                <h:panelGrid columns="2"  id="knowledge" >
+                    <h:commandButton value="#{messages.View} #{messages.All}"  action="#{knowledgeController.prepareList()}"
+                                     disabled="#{subjectController.selectedNull}"/>
+                    <h:commandButton value="#{messages.Create}" action="#{knowledgeController.prepareCreate()}" immediate="true" disabled="#{subjectController.selectedNull}"/>
+                </h:panelGrid> 
+                <h:panelGrid id="mysubjectList">
+                    <h:outputLabel escape="false" value="#{messages.List}" rendered="#{knowledgeController.items.rowCount == 0}"/>
+                </h:panelGrid>
+                <h:panelGroup id="knowledgeTbl">
+                    <!-- 用“rendered=  null!=subjectController.selected.id}”可以实现如果没有选择课程，那么知识点就不显示，以提高页面响应速度，但是由于用户需要借助这个页面，显示自己所有的维护的数据，与课程没有关系，所以这里，就把这个条件去掉了  -->
+                    <h:panelGroup rendered="#{knowledgeController.items.rowCount > 0}" >
+                        <h:outputLabel value="#{knowledgeController.pagination.pageFirstItem + 1}..#{knowledgeController.pagination.pageLastItem + 1}/#{knowledgeController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{knowledgeController.pageOperation.previous}" value="#{messages.Previous} #{knowledgeController.pagination.pageSize}" rendered="#{knowledgeController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{knowledgeController.pageOperation.next}" value="#{messages.Next} #{knowledgeController.pagination.pageSize}" rendered="#{knowledgeController.pagination.hasNextPage}"/>&nbsp;
+                        <h:dataTable value="#{knowledgeController.items}"  var="item" border="0" cellpadding="2" cellspacing="0" 
+                                     p:id="tableData" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                                     columnClasses="editRemoveview">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="&nbsp;"/>
+                                </f:facet>
+                                <h:commandLink action="#{knowledgeController.prepareView}" value="#{messages.View}"/>
+                                <h:outputLabel value=" "/>
+                                <h:commandLink action="#{knowledgeController.prepareEdit}" value="#{messages.Edit}"
+                                               rendered="#{reexaminationController.isEditable(item, null)}"/>
+                                <h:outputLabel value=" "/>
+                                <h:commandLink action="#{knowledgeController.destroy}"  value="#{messages.Destroy}"
+                                               rendered="#{reexaminationController.isDeletable(item, null)}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Name}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Detail}"/>
+                                </f:facet>
+                                <h:outputText escape="false" value="#{item.details}"/>
+                                <!--显示图像、音频、视频或PDF文档-->
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Question}#{messages.Number}"/>
+                                </f:facet>
+                                <h:commandLink action ="#{questionController.prepareList(item.getQuestionSet())}" value="#{item.getQuestionSet().size()}" rendered="#{item.getQuestionSet().size()>0}"/>
+                                <h:outputLabel value="0" rendered="#{item.getQuestionSet().size()==0}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Subject}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.subjectId.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="点赞数"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.praiseCnt}"></h:outputLabel>
+                            </h:column>
+                            <h:column rendered='#{studentController.logined != null}'>
+                                <f:facet name="header">
+                                    <h:outputLabel value="点赞"/>
+                                </f:facet>
+                                <h:commandButton value="点赞" action="#{praiseController.praise(item,true)}"/>
+                            </h:column>
+                            <h:column rendered='#{studentController.logined != null}'>
+                                <f:facet name="header">
+                                    <h:outputLabel value="吐槽一下"/>
+                                </f:facet>
+                                <h:commandButton value="吐槽" action="#{praiseController.praise(item,false)}" onclick="judgePraise()"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Createdby} #{messages.Name1}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{knowledgeController.showedName(item)}"/>
+                            </h:column>
+                        </h:dataTable>
+                        <h:outputLabel value="#{knowledgeController.pagination.pageFirstItem + 1}..#{knowledgeController.pagination.pageLastItem + 1}/#{knowledgeController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{knowledgeController.pageOperation.previous}" value="#{messages.Previous} #{knowledgeController.pagination.pageSize}" rendered="#{knowledgeController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{knowledgeController.pageOperation.next}" value="#{messages.Next} #{knowledgeController.pagination.pageSize}" rendered="#{knowledgeController.pagination.hasNextPage}"/>&nbsp;
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+            <h:inputHidden p:id="inputGraph" p:name="inputGraph" value="#{knowledgeController.getKnowledgeRelationship4dagre(knowledgeController.selected)}" />
+            <input type="hidden" value="#{praiseController.msg}" id="msg"/>
+            <script>
+                function judgePraise() {
+                    var msg = document.getElementById("msg");
+                    if (msg.value !== '') {
+                        alert(msg.value);
+                    }
+                }
+            </script>
+
+            <svg width="960" height="600"> <g/></svg>
+            <script>
+                var svg = d3.select("svg"),
+                        inner = d3.select("svg g"),
+                        zoom = d3.zoom().on("zoom", function () {
+                    inner.attr("transform", d3.event.transform);
+                });
+                svg.call(zoom);
+
+                // Create and configure the renderer
+                var render = dagreD3.render();
+
+                var g;
+                var inputGraph = document.querySelector("#inputGraph").innerHTML;
+                try {
+                    g = graphlibDot.read(inputGraph);
+                } catch (e) {
+                    inputGraph.setAttribute("class", "error");
+                    throw e;
+                }
+
+                g.graph().transition = function (selection) {
+                    return selection.transition().duration(500);
+                };
+
+                // Render the graph into svg g
+                d3.select("svg g").call(render, g);
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

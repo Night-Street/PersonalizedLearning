@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGrid columns="4" >
+            <h:outputLabel value="#{messages.Major}"/>
+            <h:selectOneMenu value="#{majorController.selected}" immediate="true" required="true">
+                <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                <f:selectItems value="#{majorControllerA.allList}"/>
+                <f:ajax render="MajorSubjectCon  "/>
+            </h:selectOneMenu>
+            <h:outputLabel value="#{messages.Subject}"/>
+            <h:selectOneMenu value="#{subjectController.selected}" id="MajorSubjectCon" immediate="true" required="true">
+                <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}" itemValue="null"/> 
+                <f:selectItems value="#{subjectController.selectedSubjects4Major}"/>
+                <f:ajax render="knowledgeTbl knowledge mysubjectList" onevent="showWorkingIndicator"/>
+                <!--上面的knowledgeTbl knowledge mysubjectList都是在Knowledge的List页面中的-->
+            </h:selectOneMenu>
+        </h:panelGrid>
+    </cc:implementation>
+</html>

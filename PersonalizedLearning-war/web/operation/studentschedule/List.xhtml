@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Student} #{messages.Schedule}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form">
+                 <h2 id="workingIndicator" style="display: none">
+                    <h:graphicImage library="images" name="pleaseWait.gif"/>
+                </h2>
+                <h:panelGrid columns="2" >
+                    <h:outputLabel value="#{messages.Please} #{messages.Select} #{messages.School}"/>
+                    <h:selectOneMenu value="#{schoolController.selected}">
+                        <f:selectItem itemLabel="#{messages.Please} #{messages.Select}"/>
+                        <f:selectItems value="#{schoolControllerA.schoolsOnLeaves}"/>
+                        <f:ajax render="id4Submit"/>
+                    </h:selectOneMenu>
+                    <h:commandButton value="#{messages.View} #{messages.All}" actionListener="#{studentscheduleController.prepareList()}" immediate="true">
+                        <f:ajax render="@form"/>
+                    </h:commandButton>
+                    <h:commandButton value="#{messages.Create} #{messages.Schedule}" action="#{studentscheduleController.prepareCreate}" immediate="true" />
+                </h:panelGrid>
+                <h:outputText escape="false" value="#{messages.No}#{messages.Schedule}#{messages.Found}" rendered="#{studentscheduleController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{studentscheduleController.items.rowCount > 0}">
+                    <h:outputText value="#{studentscheduleController.pagination.pageFirstItem + 1}..#{studentscheduleController.pagination.pageLastItem + 1}/#{studentscheduleController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{studentscheduleController.pageOperation.previous}" value="#{messages.Previous} #{studentscheduleController.pagination.pageSize}" rendered="#{studentscheduleController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{studentscheduleController.pageOperation.next}" value="#{messages.Next} #{studentscheduleController.pagination.pageSize}" rendered="#{studentscheduleController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{studentscheduleController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" columnClasses="editRemoveview">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{studentscheduleController.prepareView}" value="#{messages.View}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{studentscheduleController.prepareEdit}" value="#{messages.Edit}"/>
+                            <c:if test="#{roleinfoControllerA.isAdmin(teacherAdminController.logined)}">
+                                <h:outputText value=" "/>
+                                <h:commandLink action="#{studentscheduleController.destroy}" value="#{messages.Destroy}"   onclick="if (! confirm('#{messages.Delete}?')) return false" />
+                            </c:if>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Student} "/>
+                            </f:facet>
+                            <h:outputText value="#{item.userid.secondname}#{item.userid.firstname}"/>
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Start} #{messages.Time}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.starttime.year+1900}-#{item.starttime.month+1}-#{item.starttime.date}:#{item.starttime.hours}-#{item.starttime.minutes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.End} #{messages.Time}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.endtime.year+1900}-#{item.endtime.month+1}-#{item.endtime.date}:#{item.endtime.hours}-#{item.endtime.minutes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Classification}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.belongclassid.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Finished}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox value="#{item.myresult}" readonly="true"/>
+                        </h:column>
+
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

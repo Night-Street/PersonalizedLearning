@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* CSS Document */
+
+hr { color: #fff; background-color: #fff; border: 1px dotted #ccc; border-style: none none dotted; margin:0; padding:0; }
+
+#homeMainWrap hr {color: #fff; background-color: #fff; border: 1px dotted #dddddd; border-style: none none dotted; margin:0; padding:0; }
+
+#homeMainWrap ul li a { background:url(../images/arrow_blue_right.png) no-repeat 7px 6px  #ffffff; }
+	#homeMainWrap ul a:hover { background:url(../images/arrow_blue_right.png) no-repeat 7px 6px  #ffffff; }
+	#dashboard .dashboard_button p { }
+	#dashboard .dashboard_button hr { margin:0; }

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Dream}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputLabel value=" #{messages.Incubate} #{messages.Dream}" style="color: red; font-size:3em; align-content: center"/>
+            <h:outputStylesheet library="css" name="jsfcrud.css"/>
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <!--词云的两个javascript-->
+            <h:outputScript library="javaScript" name="cloud.js" target="head"/>
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h2 id="workingIndicator" style="display: none">
+                <h:graphicImage library="images" name="pleaseWait.gif"/>
+            </h2>
+            <h:form>
+                <h:dataTable value="#{studentDreamController.items}" var="item" 
+                             border="0" cellpadding="2" cellspacing="0" 
+                             rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                             columnClasses="editRemoveview">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="&nbsp;"/>
+                        </f:facet>
+                        <h:commandLink  value="#{messages.Edit}" 
+                                        action="#{studentDreamController.prepareEdit4Teacher(item)}"/>
+                        <h:outputLabel value="&nbsp;&nbsp;&nbsp;"/>
+                        <h:commandLink  value="#{messages.View}#{messages.Realization}" 
+                                        action="#{realizationofmydreamController.getRealizationofmydream4Teacher(item)}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Name1}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.stuid.secondname} #{item.stuid.firstname}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Title}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.title}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Dream}"/>
+                        </f:facet>
+                        <h:outputText escape="false" value="#{item.mydream}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Realizationsteps}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.plan}" escape="false"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+            <h:outputLabel value="#{messages.Statistics}" style="color: red; font-size:3em; align-content: center"/>
+            <hr></hr>
+            <h:dataTable value="#{studentDreamController.wordCount.entrySet()}" var="item" 
+                         border="0" cellpadding="2" cellspacing="0" 
+                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                         columnClasses="editRemoveview">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="#{messages.Word}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.key}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="#{messages.Count}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.value}"/>
+                </h:column>
+            </h:dataTable>
+            <hr></hr>
+            <h:dataTable value="#{studentDreamController.wordId.entrySet()}" var="item" 
+                         border="0" cellpadding="2" cellspacing="0" 
+                         rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                         columnClasses="editRemoveview">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="#{messages.Word}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.key}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputLabel value="#{messages.Student}"/>
+                    </f:facet>
+                    <h:outputText value="#{studentDreamController.getStduentNames(item.value)}"/>
+                </h:column>
+            </h:dataTable>
+            <hr></hr>
+            <h:outputText value="#{studentDreamController.getWordCloud()}" p:id="wordCloud" style="size: 0;visibility: hidden"/>
+            <div id="my_dataviz"></div>
+            <h:outputScript library="javaScript" name="myDrawWordCloud.js" />
+            <script>
+                // set the dimensions and margins of the graph         
+                // set the dimensions and margins of the graph         
+                var margin = {top: 10, right: 10, bottom: 10, left: 10},
+                        width = 450 - margin.left - margin.right,
+                        height = 450 - margin.top - margin.bottom;
+
+                // append the svg object to the body of the page
+                var svg = d3.select("#my_dataviz").append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform",
+                                "translate(" + margin.left + "," + margin.top + ")");
+
+                // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
+                // Wordcloud features that are different from one word to the other must be here
+                var layout = d3.layout.cloud()
+                        .size([width, height])
+                        .words(myWords.map(function (d) {
+                            return {text: d.word, size: d.size};
+                        }))
+                        .padding(5) //space between words
+                        .rotate(function () {
+                            return ~~(Math.random() * 2) * 90;
+                        })
+                        .fontSize(function (d) {
+                            return d.size;
+                        }) // font size of words
+                        .on("end", draw);
+                layout.start();
+
+                // This function takes the output of 'layout' above and draw the words
+                // Wordcloud features that are THE SAME from one word to the other can be here
+                function draw(words) {
+                    svg.append("g")
+                            .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+                            .selectAll("text")
+                            .data(words)
+                            .enter().append("text")
+                            .style("font-size", function (d) {
+                                return d.size;
+                            })
+                            .style("fill", "#69b3a2")
+                            .attr("text-anchor", "middle")
+                            .style("font-family", "Impact")
+                            .attr("transform", function (d) {
+                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                            })
+                            .text(function (d) {
+                                return d.text;
+                            });
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

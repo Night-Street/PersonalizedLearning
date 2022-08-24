@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewStudentaccupointsTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+<!--            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewStudentaccupointsLabel_id}"/>
+                    <h:outputText value="#{studentaccupointsController.selected.id}" title="#{bundle.ViewStudentaccupointsTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewStudentaccupointsLabel_pointsNum}"/>
+                    <h:outputText value="#{studentaccupointsController.selected.pointsNum}" title="#{bundle.ViewStudentaccupointsTitle_pointsNum}"/>
+                    <h:outputText value="#{bundle.ViewStudentaccupointsLabel_modifyDate}"/>
+                    <h:outputText value="#{studentaccupointsController.selected.modifyDate}" title="#{bundle.ViewStudentaccupointsTitle_modifyDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewStudentaccupointsLabel_reason}"/>
+                    <h:outputText value="#{studentaccupointsController.selected.reason}" title="#{bundle.ViewStudentaccupointsTitle_reason}"/>
+                    <h:outputText value="#{bundle.ViewStudentaccupointsLabel_studentId}"/>
+                    <h:outputText value="#{studentaccupointsController.selected.studentId}" title="#{bundle.ViewStudentaccupointsTitle_studentId}"/>
+                    <h:outputText value="#{bundle.ViewStudentaccupointsLabel_teacherId}"/>
+                    <h:outputText value="#{studentaccupointsController.selected.teacherId}" title="#{bundle.ViewStudentaccupointsTitle_teacherId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{studentaccupointsController.destroyAndView}" value="#{bundle.ViewStudentaccupointsDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewStudentaccupointsEditLink}"/>
+                <br />
+                <h:commandLink action="#{studentaccupointsController.prepareCreate}" value="#{bundle.ViewStudentaccupointsCreateLink}" />
+                <br />
+                <h:commandLink action="#{studentaccupointsController.prepareList}" value="#{bundle.ViewStudentaccupointsShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewStudentaccupointsIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

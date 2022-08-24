@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Knowledge}#{messages.Learning}#{messages.Status}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h:outputScript library="javaScript" name="graphlib-dot.js" target="head"/>
+            <h:outputScript library="javaScript" name="dagre-d3.js" target="head"/>
+            <h:outputStylesheet library="css" name="dagre.css"/>
+            <h:form styleClass="jsfcrud_list_form" prependId="false" enctype="multipart/form-data">
+                <h:panelGrid columns="12">
+                    <h:outputLabel value="#{messages.Major}"/>
+                    <h:selectOneMenu value="#{majorController.selected}" immediate="true" required="true">
+                        <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}" itemValue="null"/> 
+                        <f:selectItems value="#{majorController.getMajors4Teacher()}"/>  <!--显示当前session下的老师所教的所有专业-->  
+                        <f:ajax render="subjects4CurrentMajor"/>  <!--更新当前所选专业下的课程选单-->  
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:outputLabel value="#{messages.Subject}"/>
+                    <h:selectOneMenu value="#{subjectController.selected}" id="subjects4CurrentMajor" immediate="true" required="true">
+                        <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}" itemValue="null"/> 
+                        <f:selectItems value="#{subjectController.getSelectedSubjects4Major()}"/> <!--显示当前所选专业下的所有课程-->
+                        <f:ajax render="classes4CurrentSubject"/>  <!--更新当前所选课程下的班级选单-->  
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:outputLabel value="#{messages.Class}"/>
+                    <h:selectOneMenu value="#{schoolController.selected}" id="classes4CurrentSubject" immediate="true" required="true">
+                        <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}" itemValue="null"/> 
+                        <f:selectItems value="#{teacschoolsubjectController.getClasses4TeacherSubject()}"/> <!--显示当前所选课程下的所有班级-->
+                        <f:ajax render="myGraph" listener="#{studentController.delSelectedStu()}"/> <!--更新myGraph-->
+                    </h:selectOneMenu>
+                </h:panelGrid>
+            </h:form>
+            <h:panelGroup id="myGraph">
+                <h:inputHidden id="inputGraph" value="#{knowledgeController.getAllStudentKnowledge()}" /> <!--选中班级后，会自动调用getAllStudentKnowledge方法生成班级学生的知识点掌握情况图-->
+                <svg width="960" height="600"> <g/></svg>
+                <script>
+                    var svg = d3.select("svg"),
+                            inner = d3.select("svg g"),
+                            zoom = d3.zoom().on("zoom", function () {
+                        inner.attr("transform", d3.event.transform);
+                    });
+                    svg.call(zoom);
+
+                    // Create and configure the renderer
+                    var render = dagreD3.render();
+
+                    var g;
+
+                    var inputGraph = document.querySelector("#inputGraph");
+                    try {
+                        g = graphlibDot.read(inputGraph.value);
+                    } catch (e) {
+                        inputGraph.setAttribute("class", "error");
+                        throw e;
+                    }
+
+                    g.graph().transition = function (selection) {
+                        return selection.transition().duration(500);
+                    };
+
+                    // Render the graph into svg g
+                    d3.select("svg g").call(render, g);
+                </script>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

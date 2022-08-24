@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Knowledge}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h:outputScript library="javaScript" name="graphlib-dot.js" target="head"/>
+            <h:outputScript library="javaScript" name="dagre-d3.js" target="head"/>
+            <h:outputStylesheet library="css" name="dagre.css"/>
+            <h:outputStylesheet library="css" name="a.css"/>
+            <h:panelGrid columns="1">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Createdby} #{messages.Name1}"/>
+                    <h:outputLabel value="#{knowledgeController.showedName(knowledgeController.selected)}" id="showedName"/>
+                    <h:outputLabel value="#{messages.Name}"/>
+                    <h:outputLabel value="#{knowledgeController.selected.name}" title="#{messages.Name}"/>
+                    <h:outputLabel value="#{messages.Detail}"/>
+                    <h:outputText escape="false"  value="#{knowledgeController.selected.details}"/>
+                </h:panelGrid>
+                <h:panelGrid>
+                    <c:forEach items="#{knowledgeController.getResourceString(knowledgeController.getLearningResource(0,knowledgeController.selected))}" var="imageName">
+                        <img src="#{publicFields.fileRepository}knowledgeResources/image/#{imageName}" />
+                    </c:forEach>
+                    <c:forEach items="#{learningresourceController.getVideos(knowledgeController.selected)}" var="item">
+                        <video  controls="controls">
+                            <source src="#{publicFields.fileRepository}knowledgeResources/video/#{item.key}" type="#{item.value}"></source>
+                        </video>
+                    </c:forEach>
+                    <c:forEach items="#{knowledgeController.getResourceString(knowledgeController.getLearningResource(2,knowledgeController.selected))}" var="audioName">
+                        <audio controls="controls" >
+                            <source src="#{publicFields.fileRepository}knowledgeResources/audio/#{audioName}" 
+                                    type="audio/mpeg" />
+                            #{messages.DoesnotSAudio}
+                        </audio>
+                    </c:forEach>
+                    <c:forEach items="#{knowledgeController.getResourceString(knowledgeController.getLearningResource(3,knowledgeController.selected))}" var="pdfName">
+                        <embed src="#{publicFields.fileRepository}knowledgeResources/pdf/#{pdfName}" width="600px" height="100px" />
+                    </c:forEach>
+                </h:panelGrid>
+            </h:panelGrid>
+            <h:form  >
+                <!--下面的命令按钮不加immediate="true"就会出错！！目前还没找到原因-->
+                <h:commandButton value="#{messages.ReexaminedPassed}" action="#{reexaminationController.setPassed(0)}" immediate="true" />
+                <hr/>
+                <h:outputLabel value="#{messages.Suggest}"/>
+
+                <h:inputTextarea value="#{reexaminationController.reexaminationSuggestion}"  p:id="myeditor" required="true"
+                                 p:placeholer="#{messages.Nomorethan}1000"/>
+                <h:commandButton value="#{messages.ReexaminedFailed}" action="#{reexaminationController.setPassFailed(0)}"/>
+                <hr/>
+            </h:form>
+            <h:inputHidden id="inputGraph" value="#{knowledgeController.getKnowledgeRelationship4dagre(knowledgeController.selected)}" />
+            <svg width="960" height="600"> <g/></svg>
+            <script>
+                var svg = d3.select("svg"),
+                        inner = d3.select("svg g"),
+                        zoom = d3.zoom().on("zoom", function () {
+                    inner.attr("transform", d3.event.transform);
+                });
+                svg.call(zoom);
+
+                // Create and configure the renderer
+                var render = dagreD3.render();
+
+                var g;
+
+                var inputGraph = document.querySelector("#inputGraph");
+                try {
+                    g = graphlibDot.read(inputGraph.value);
+                } catch (e) {
+                    inputGraph.setAttribute("class", "error");
+                    throw e;
+                }
+
+                g.graph().transition = function (selection) {
+                    return selection.transition().duration(500);
+                };
+
+                // Render the graph into svg g
+                d3.select("svg g").call(render, g);
+            </script>
+
+
+        </ui:define>
+    </ui:composition>
+
+</html>

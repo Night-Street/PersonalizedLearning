@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.ListPraiseTitle}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+<!--                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>-->
+                <h:outputLabel escape="false" value="#{messages.ListPraiseEmpty}" rendered="#{praiseController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{praiseController.items.rowCount > 0}">
+                    <h:outputLabel value="#{praiseController.pagination.pageFirstItem + 1}..#{praiseController.pagination.pageLastItem + 1}/#{praiseController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{praiseController.previous}" value="#{messages.Previous} #{praiseController.pagination.pageSize}" rendered="#{praiseController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{praiseController.next}" value="#{messages.Next} #{praiseController.pagination.pageSize}" rendered="#{praiseController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{praiseController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.ListPraiseTitle_id}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.ListPraiseTitle_praiseDate}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.praiseDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputLabel>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.ListPraiseTitle_knowledgeId}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.knowledgeId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.ListPraiseTitle_learningresourceId}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.learningresourceId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.ListPraiseTitle_studentId}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.studentId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{praiseController.prepareView}" value="#{messages.ListPraiseViewLink}"/>
+                            <h:outputLabel value=" "/>
+                            <h:commandLink action="#{praiseController.prepareEdit}" value="#{messages.ListPraiseEditLink}"/>
+                            <h:outputLabel value=" "/>
+                            <h:commandLink action="#{praiseController.destroy}" value="#{messages.ListPraiseDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{praiseController.prepareCreate}" value="#{messages.ListPraiseCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{messages.ListPraiseIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

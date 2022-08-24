@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.School} #{messages.Maintain}"></h:outputLabel>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Name}"   dir="RTL"/>
+                    <h:inputText  value="#{schoolController.selected.name}" title="#{messages.Name}" />
+                    <h:outputLabel value="#{messages.Major}"   dir="RTL"/>
+                    <h:selectOneMenu value="#{schoolController.selected.majorid}" title="#{messages.Major}" >
+                        <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                        <f:selectItems value="#{majorController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{messages.Belong}"   dir="RTL" />
+                    <h:selectOneMenu  value="#{schoolController.selected.parentid}" title="#{messages.Belong}" >
+                        <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                        <f:selectItems value="#{schoolController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{messages.Edulevel}"  dir="RTL" />
+                    <h:selectOneMenu  value="#{schoolController.selected.edulevel}">
+                        <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                        <f:selectItems value="#{edulevelControllerA.allSet}"/>
+                    </h:selectOneMenu>
+                    <h:commandButton action="#{schoolController.create}" value="#{messages.Save}" />
+                    <!--<h:commandButton value="#{messages.Create}" action="#{schoolController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{schoolController.prepareList()}" immediate="true"/>
+                    -->
+                    </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

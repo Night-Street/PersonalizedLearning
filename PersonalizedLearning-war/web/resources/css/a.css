@@ -1,0 +1,19 @@
+body,td,th {
+    font-family: 宋体, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+body {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+input[type="text"] {width:180px; height:22px}
+input[type="password"] {width:180px; height:22px}
+.STYLE4 {color: #FFFFFF; font-weight: bold; }
+.STYLE5 {color: red;font-weight: bold; }
+.STYLE6 {font-size: 14px; color: #FF0000;}
+.STYLE8 {font-size: x-large;color: #FFFFFF; font-weight: bold;}
+.navPoint { COLOR: white; CURSOR: hand; FONT-FAMILY: Webdings; FONT-SIZE: 9pt}
+.buttonStyle{width: 60px; height:40px; float:left; text-align: center;}
+.spanStyle{display: block;font-size: 16px;margin: 10px,0,0,10px;}

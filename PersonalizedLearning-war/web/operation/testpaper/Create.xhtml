@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Testpaper}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup rendered="#{teacschoolsubjectController.currentSchool4Teacher.isEmpty()}">
+                    <h:outputLabel value="#{messages.Please}#{messages.AskSecretary}"/>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{!teacschoolsubjectController.currentSchool4Teacher.isEmpty()}">
+                    <h:panelGrid columns="2" >
+                        <h:outputLabel value="#{messages.School}"/>
+                        <h:selectOneMenu value="#{schoolController.selected}" required="true">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{teacschoolsubjectController.currentSchool4Teacher}"/>
+                            <f:ajax render="studentList subject4School"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.Student}"/>
+                        <h:selectManyListbox value="#{studentController.selectedSchoolStudents}" id="studentList" required="true" size="10" style="width: auto">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{studentControllerA.getStudentList(schoolController.selected)}" var="student" />
+                        </h:selectManyListbox>
+                        <h:outputLabel value="#{messages.Subject}"/>
+                        <h:selectManyListbox value="#{testpaperController.subjectList4Testpaper}" id="subject4School"  size="3" required="true" style="width: auto">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{teacschoolsubjectController.currentSubject4Teacher}"/>
+                        </h:selectManyListbox>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Select}#{messages.Datetime}"/>
+                        <h:inputText p:type="date" value="#{testpaperController.selected.specifieddate}" required="true">
+                            <f:convertDateTime type="date"/>
+                        </h:inputText>
+                        <h:outputLabel value="#{messages.Select}#{messages.Start}#{messages.Time}"/>
+                        <h:inputText p:type="time" value="#{testpaperController.selected.start}" required="true" >
+                            <f:convertDateTime type="time" pattern="HH:mm"/>
+                        </h:inputText>
+                        <h:outputLabel value="#{messages.Select}#{messages.End}#{messages.Time}"/>
+                        <h:inputText p:type="time" value="#{testpaperController.selected.endtime}" required="true">
+                            <f:convertDateTime type="time"  pattern="HH:mm"/>
+                        </h:inputText>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Score}"/>
+                        <h:inputText value="#{testpaperController.selected.score}"/>
+                        <h:outputLabel value="#{messages.Difficulties}#{messages.Degree}"/>
+                        <h:inputText value="#{testpaperController.selected.degree}" />
+                        <h:outputLabel value="#{messages.Interval}(#{messages.Minute})"/>
+                        <h:inputText value="#{testpaperController.specifiedInterval}" validator="#{testpaperControllerA.specifiedIntervalValidator}"/>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:commandButton value="#{messages.Auto}#{messages.Generate}" action="#{testpaperController.creatTestpapers(0)}"/>
+                    <h:commandButton value="#{messages.HandMake}#{messages.Generate}" action="#{testpaperController.creatTestpapers(1)}"/>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

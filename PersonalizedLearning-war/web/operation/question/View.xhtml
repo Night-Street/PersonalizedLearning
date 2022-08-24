@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Question}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="remoteMathJax.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data">
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Createdby} #{messages.Name1}"/>
+                        <h:outputLabel value="#{questionController.showedName(questionController.selected)}"/>
+                    </h:panelGrid>
+                    <hr/>
+                    <ez:questionShow readonlyTureFalse="true" valueinfoEditable="false"/>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Time}:"/>
+                        <h:outputLabel value="#{questionController.selected.needtime}"/>
+                        <h:outputLabel value="#{messages.Score}:"/>
+                        <h:outputLabel value="#{questionController.selected.score}" title="#{messages.Score}"/>
+                        <!--<h:outputLabel value="#{messages.Analysis})"/>-->
+                        <h:outputLabel value="#{messages.Analysis}:"/>
+                        <h:outputText escape="false"    value="#{questionController.selected.analysis}" title="#{messages.Analysis}" id="myeditor"/>
+                        <h:outputLabel value="#{messages.Refer}:"/>
+                        <h:outputText escape="false"    value="#{questionController.selected.refer}" title="#{messages.Refer}"/>
+                    </h:panelGrid>
+                    
+
+                    <h:commandButton value="#{messages.Create}" action="#{questionController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{questionController.prepareList()}" immediate="true"/>
+                    <h:commandButton action="#{questionController.prepareEdit}" value="#{messages.Edit}"  rendered="#{reexaminationController.isEditable(null, questionController.selected)}"/>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

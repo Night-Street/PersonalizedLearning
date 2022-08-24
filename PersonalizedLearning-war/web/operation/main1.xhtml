@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"        
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="default.css" library="css"/>
+        <h:outputStylesheet name="cssLayout.css" library="css"/>
+        <h:outputStylesheet name="main.css" library="css"/>
+        <h:outputStylesheet name="a.css" library="css"/>
+        <h:outputStylesheet name="jsfcrud.css" library="css"/>
+        <h:outputStylesheet name="menu1.css" library="css" />
+        <h:outputScript name="tabjs.js" library="javaScript"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{publicFields.icon}"/>
+        <title>#{messages.SystemNameRef}</title>
+        <base target="_self"/>
+    </h:head>
+    <h:body >
+        <table width="100%"><tr><td id="gaLink" style="text-align:center;vertical-align:middle;">
+                    <h:outputLink value="colorRate/color1.xhtml">#{messages.Pagecolor}#{messages.Optimization}||
+                    </h:outputLink>
+                    <h:outputLink value="main.xhtml" id="iga">#{messages.Switch}#{messages.Main}
+                    </h:outputLink>
+                </td></tr><tr><td>
+                    <div id="top"  style="float:left;">
+                        <h:graphicImage
+                            library="images"
+                            name="top_logo.gif"
+                            style="width: 378px; align-self: flex-start"
+                            />
+                    </div>
+                    <div style="float:right; padding-right: 5% ;">
+                        <h:form styleClass="jsfcrud_list_form">
+                            <c:if test="#{!checkLogin.logined}">
+                                <h:outputLabel value="#{messages.Welcome}" />
+                                <h:commandButton
+                                    value="#{messages.Register}"
+                                    action="#{checkLogin.register}"
+                                    id="register"
+                                    />
+                                <h:commandButton
+                                    value="#{messages.Login}"
+                                    action="#{commonSession.login()}"
+                                    />
+                            </c:if>
+                            <c:if test="#{checkLogin.logined}">
+                                <h:outputLabel  value="#{messages.Welcome} #{checkLogin.user.secondname}#{checkLogin.user.firstname}"/><br />
+                                <h:commandButton action="#{commonSession.logout}" value="#{messages.Logout}"/>&nbsp;&nbsp;
+                                <c:if test="#{checkLogin.getCurrentTeacher()}">
+                                    <h:commandButton action="#{mySystemController.switch2Student()}" value="#{messages.Switch}#{messages.To}#{messages.Student}" />
+                                </c:if>
+                            </c:if>
+                        </h:form>
+                    </div>
+                </td>
+            </tr>
+            <tr><td>
+                    <div class="message"  style="border: 0">
+                        <h1>
+                            <h:messages   errorStyle="color: red"  infoStyle="color: green"   fatalStyle="color: red"  layout="table"   styleClass="message"/>
+                        </h1>
+                    </div>
+                </td>
+            </tr></table>
+        <table>
+            <tr><td style="padding-top: 5px;padding-bottom: 5px">
+                    <div align="center" id="left" class="left"  style="color:titleColor; background:backgroundColor;
+                         position:relative">
+                        <div id="daiwowan"  style="border: 0; width: 100%; height: 50px" align="center" >
+                            <h:form>
+                                <div id="dww-menu" class="mod-tab" align="center">
+                                    <div class="mod-hd" style="background-color: #3366ff">
+                                        <ul class="tab-nav" >
+                                            <c:forEach items="#{mainXhtml.resouceMap}" var="myresouce" varStatus="status">
+                                                <li class="nav_link" id="nav#{status.index}" onmouseover="javascript:doClick(this,#{mainXhtml.resouceMap.size()})">#{myresouce.root.name}</li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
+                                    <div class="mod-bd" style="background-color: #ccffff; float:left;">
+                                        <c:forEach items="#{mainXhtml.resouceMap}" var="myresouce" varStatus="status">
+                                            <div class="dis" id="sub#{status.index}" style="display: none;">
+                                                <c:forEach items="#{myresouce.children}" var="child">
+                                                    <h:commandLink value="#{child.name}" action="#{mainXhtml.setPageName(child.valueinfo)}" />&nbsp;&nbsp;|
+                                                </c:forEach>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </td></tr><tr><td>
+                    <div id="content" class="left_content" align="center" style="min-height: 400px; background:contentGroundColor;
+                         position:relative">
+                        <ui:include src="#{mainXhtml.pageName}.xhtml" />
+                    </div><div align="center" id="bottom"  style="color:titleColor; background:backgroundColor; 
+                               position:relative;">
+                        <h:outputLabel value="#{messages.CopyRight}" /><br/>
+                        <h:outputLabel value="#{messages.Email}:#{messages.ContactEmail}" />
+                    </div>
+                </td></tr>
+        </table>
+        <div style="display: none" id="ga_color">
+            #{colorController.bestColor}
+        </div>
+        <script>
+            a = "#{userMessagor.getAlertMessage()}";
+            if (a.length > 0)
+                alert(a);
+            //上面完成了向用户完成消息传递，下面进行颜色的替换
+            function parse(color) {
+                return "hsl(".concat(color.hue,
+                        ",").concat(color.saturation, "%,").concat(color.lightness, "%)");
+            }
+            let  color = JSON.parse(document.querySelector("#ga_color").innerText);
+            if (color !== 0) {
+                let style = document.createElement("style");
+                style.type = "text/css";
+                style.innerHTML = ".left_content{background:"
+                        + parse(color.content_background_color)
+                        + "}#top{color:".concat(parse(color.title_color), ";background:").concat(parse(color.background_color), ";}#left{color:").concat(parse(color.title_color), ";background:").concat(parse(color.aside_background_color), ";}td label{color:").concat(parse(color.font_color), ";}#bottom{color:").concat(parse(color.title_color), ";background:").concat(parse(color.background_color), ";}");
+                document.getElementsByTagName("HEAD").item(0).appendChild(style);
+            }
+        </script>
+    </h:body>
+</html>

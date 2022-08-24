@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateStudentaccupointsTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+<!--            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateStudentaccupointsLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{studentaccupointsController.selected.id}" title="#{bundle.CreateStudentaccupointsTitle_id}" required="true" requiredMessage="#{bundle.CreateStudentaccupointsRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateStudentaccupointsLabel_pointsNum}" for="pointsNum" />
+                    <h:inputText id="pointsNum" value="#{studentaccupointsController.selected.pointsNum}" title="#{bundle.CreateStudentaccupointsTitle_pointsNum}" required="true" requiredMessage="#{bundle.CreateStudentaccupointsRequiredMessage_pointsNum}"/>
+                    <h:outputLabel value="#{bundle.CreateStudentaccupointsLabel_modifyDate}" for="modifyDate" />
+                    <h:inputText id="modifyDate" value="#{studentaccupointsController.selected.modifyDate}" title="#{bundle.CreateStudentaccupointsTitle_modifyDate}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateStudentaccupointsLabel_reason}" for="reason" />
+                    <h:inputText id="reason" value="#{studentaccupointsController.selected.reason}" title="#{bundle.CreateStudentaccupointsTitle_reason}" />
+                    <h:outputLabel value="#{bundle.CreateStudentaccupointsLabel_studentId}" for="studentId" />
+                    <h:selectOneMenu id="studentId" value="#{studentaccupointsController.selected.studentId}" title="#{bundle.CreateStudentaccupointsTitle_studentId}" >
+                        <f:selectItems value="#{studentController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateStudentaccupointsLabel_teacherId}" for="teacherId" />
+                    <h:selectOneMenu id="teacherId" value="#{studentaccupointsController.selected.teacherId}" title="#{bundle.CreateStudentaccupointsTitle_teacherId}" >
+                        <f:selectItems value="#{teacherAdminController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{studentaccupointsController.create}" value="#{bundle.CreateStudentaccupointsSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{studentaccupointsController.prepareList}" value="#{bundle.CreateStudentaccupointsShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateStudentaccupointsIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,30 @@
+.allNews {
+    width:930px;
+}
+
+.allNewsTable {
+    width:300px;
+    margin-left:10px;
+    float:left;
+}
+
+.allNewsTable th {
+    text-indent:20px;
+    text-align:left;
+    font-size:13px;
+    border-left:4px solid #ccc;
+}
+
+
+.allNewsTable td {
+   border:none;
+   height:25px;
+   text-align:left;
+   text-indent:20px;
+   line-height:25px;
+}
+
+.allNewsTable td a{
+    display:block;
+    height:25px;
+}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Student}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form">
+                 <h2 id="workingIndicator" style="display: none">
+                    <h:graphicImage library="images" name="pleaseWait.gif"/>
+                </h2>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.School}"  dir="RTL"/>
+                    <h:selectOneMenu value="#{schoolController.selected}" required="true">
+                        <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                        <f:selectItems value="#{schoolController.currentSubjectSchools}"/>
+                        <f:ajax render="forSet listAll"/>
+                    </h:selectOneMenu> 
+                    <h:inputText value="#{studentController.searchName}" size="10" immediate="true">
+                        <f:ajax render="search"/>
+                    </h:inputText>
+                    <h:commandButton id="search" value="#{messages.Search}&nbsp;#{messages.Student}" action="#{studentController.search()}" immediate="true"
+                                     disabled="#{null==studentController.searchName}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="1">
+                    <h:panelGroup style="position: relative; float: left">
+                        <h:panelGroup style="position: relative; float: left; padding: 3px;">
+                            <h:graphicImage name="allStudents.jpg" library="images" height="200px" width="200px"/><br/>
+                            <h:commandLink id="listAll" value="#{messages.View}&nbsp;#{messages.All}" actionListener="#{studentController.prepareList()}" 
+                                         immediate="true" disabled="#{schoolController.selected.id==null}"  class="mya">
+                                <f:ajax render="@form"/>
+                            </h:commandLink>
+                        </h:panelGroup>
+                        <h:panelGroup style="position: relative; float: left; padding: 3px">
+                            <h:graphicImage name="batchStudent.jpg" library="images" height="200px" width="200px"/><br/>
+                            <h:commandLink value="#{messages.Batch}#{messages.Student}/#{messages.Upload}" action="#{studentController.getBatchStudent()}" class="mya"/>
+                        </h:panelGroup>
+                        <h:panelGroup style="position: relative; float: left; padding: 3px">
+                            <h:graphicImage name="SingleStudent.jpg" library="images" height="200px" width="200px"/><br/>
+                            <h:commandLink value="#{messages.Single}#{messages.Student}#{messages.Input}" action="#{studentController.getSingleStudent()}" class="mya"/>
+                        </h:panelGroup>
+                         <h:panelGroup style="position: relative; float: left; padding: 3px">
+                            <h:graphicImage name="studentDream.jpg" library="images" height="200px" width="200px"/><br/>
+                            <h:commandLink value="#{messages.Student}#{messages.Dream}" action="#{studentDreamController.getStudentDream4Teacher()}" class="mya"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+
+                    <h:outputLabel escape="false" value="#{messages.Empty}" rendered="#{studentController.items.rowCount == 0}"/>
+                    <h:panelGroup rendered="#{studentController.items.rowCount > 0}">
+                        <h:outputLabel value="#{studentController.pagination.pageFirstItem + 1}..#{studentController.pagination.pageLastItem + 1}/#{studentController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{studentController.pageOperation.previous}" value="#{messages.Previous} #{studentController.pagination.pageSize}" rendered="#{studentController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{studentController.pageOperation.next}" value="#{messages.Next} #{studentController.pagination.pageSize}" rendered="#{studentController.pagination.hasNextPage}"/>&nbsp;
+                        <h:dataTable value="#{studentController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" columnClasses="editRemoveview">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="&nbsp;"/>
+                                </f:facet>
+                                <h:commandLink action="#{studentController.prepareView}" value="#{messages.View}"/>
+                                <h:outputLabel value=" "/>
+                                <h:commandLink action="#{studentController.prepareEdit}" value="#{messages.Edit}"/>
+                                <c:if test="#{roleinfoControllerA.isAdmin(teacherAdminController.logined)}">
+                                    <h:outputLabel value=" "/>
+                                    <h:commandLink action="#{studentController.destroy}" value="#{messages.Destroy}"   onclick="if (! confirm('#{messages.Delete}?')) return false" />
+                                </c:if>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Account}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Class}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.schoolId.name}"/>
+                            </h:column> 
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Secondname}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.secondname}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Firstname}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.firstname}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Email}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.email}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Phone}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{item.phone}"/>
+                            </h:column>
+
+                        </h:dataTable>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

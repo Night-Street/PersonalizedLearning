@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    >
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="css/default.css" />
+        <h:outputStylesheet name="css/cssLayout.css" />
+        <h:outputStylesheet name="css/main.css" />
+        <h:outputStylesheet name="css/a.css" />
+        <h:outputStylesheet name="css/color.css" />
+        <h:outputScript name="a.js" library="javaScript"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{publicFields.icon}"/>
+        <title>#{messages.SystemNameRef}</title>
+    </h:head>
+    <h:body>
+        <div id="app">
+            <aside class="rate">
+                <h1>请给网页的配色进行打分</h1>
+                <h1>第{{ index }}组配色</h1>
+                <h2>整体颜色搭配</h2>
+                <star-rating :star-size="40" v-model="pageColorRate"></star-rating>
+                <h3>正文颜色</h3>
+                <star-rating :star-size="30" v-model="fontColorRate"></star-rating>
+                <h3>标题颜色</h3>
+                <star-rating :star-size="30" v-model="titleColorRate"></star-rating>
+                <h3>主体背景颜色</h3>
+                <star-rating
+                    :star-size="30"
+                    v-model="contentGroundColorRate"
+                    ></star-rating>
+                <h3>上下背景颜色</h3>
+                <star-rating
+                    :star-size="30"
+                    v-model="backgroundColorRate"
+                    ></star-rating>
+                <h3>侧边背景颜色</h3>
+                <star-rating
+                    :star-size="30"
+                    v-model="asideGroundColorRate"
+                    ></star-rating>
+                <h:inputHidden id="fontColor"  value="#{colorControllerView.fontColor}">
+                    <f:passThroughAttribute name="v-model" value="fontColor" />
+                </h:inputHidden>
+                <h:inputHidden id="titleColor"  value="#{colorControllerView.titleColor}">
+                    <f:passThroughAttribute name="v-model" value="titleColor" />
+                </h:inputHidden>
+                <h:inputHidden id="backgroundColor"  value="#{colorControllerView.backgroundColor}">
+                    <f:passThroughAttribute name="v-model" value="backgroundColor" />
+                </h:inputHidden>
+                <h:inputHidden id="asideGroundColor"  value="#{colorControllerView.asideGroundColor}">
+                    <f:passThroughAttribute name="v-model" value="asideGroundColor" />
+                </h:inputHidden>
+                <h:inputHidden id="contentGroundColor"  value="#{colorControllerView.contentGroundColor}">
+                    <f:passThroughAttribute name="v-model" value="contentGroundColor" />
+                </h:inputHidden>
+                <h:inputHidden id="pageColorRate"  value="#{colorControllerView.pageColorRate}">
+                    <f:passThroughAttribute name="v-model" value="pageColorRate" />
+                </h:inputHidden>
+                <h:inputHidden id="fontColorRate"  value="#{colorControllerView.fontColorRate}">
+                    <f:passThroughAttribute name="v-model" value="fontColorRate" />
+                </h:inputHidden>
+                <h:inputHidden id="titleColorRate"  value="#{colorControllerView.titleColorRate}">
+                    <f:passThroughAttribute name="v-model" value="titleColorRate" />
+                </h:inputHidden>
+                <h:inputHidden id="backgroundColorRate"  value="#{colorControllerView.backgroundColorRate}">
+                    <f:passThroughAttribute name="v-model" value="backgroundColorRate" />
+                </h:inputHidden>
+                <h:inputHidden id="asideGroundColorRate"  value="#{colorControllerView.asideGroundColorRate}">
+                    <f:passThroughAttribute name="v-model" value="asideGroundColorRate" />
+                </h:inputHidden>
+                <h:inputHidden id="contentGroundColorRate"  value="#{colorControllerView.contentGroundColorRate}">
+                    <f:passThroughAttribute name="v-model" value="contentGroundColorRate" />
+                </h:inputHidden>
+                <h:form id="ga_color">
+                    <h:commandButton  id="mySubmit" class="button" value="提交">
+                        <f:ajax event="click" execute="ga_color" listener="#{colorControllerView.gaSaveColor()}" onevent="ajaxClick" ></f:ajax>
+                    </h:commandButton>
+                </h:form>
+            </aside>
+            <aside class="config">
+                <h2>手动调整颜色</h2>
+                <ul>
+                    <li>
+                        <span>正文颜色</span>
+                        <span>
+                            <verte
+                                picker="square"
+                                v-model="fontColor"
+                                model="hsl"
+                                menu-position="right"
+                                ></verte>
+                        </span>
+                    </li>
+                    <li>
+                        <span>标题颜色</span>
+                        <span>
+                            <verte
+                                picker="square"
+                                v-model="titleColor"
+                                model="hsl"
+                                menu-position="right"
+                                ></verte>
+                        </span>
+                    </li>
+                    <li>
+                        <span>主体背景颜色</span>
+                        <span>
+                            <verte
+                                picker="square"
+                                v-model="contentGroundColor"
+                                model="hsl"
+                                menu-position="right"
+                                ></verte>
+                        </span>
+                    </li>
+                    <li>
+                        <span>上下背景颜色</span>
+                        <span>
+                            <verte
+                                picker="square"
+                                v-model="backgroundColor"
+                                model="hsl"
+                                menu-position="right"
+                                ></verte>
+                        </span>
+                    </li>
+
+                    <li>
+                        <span>侧边背景颜色</span>
+                        <span>
+                            <verte
+                                picker="square"
+                                v-model="asideGroundColor"
+                                model="hsl"
+                                menu-position="right"
+                                ></verte>
+                        </span>
+                    </li>
+                    <h:form id="customer_color">
+                        <h:inputHidden id="fontColor"  value="#{colorControllerView.fontColor}">
+                            <f:passThroughAttribute name="v-model" value="fontColor" />
+                        </h:inputHidden>
+                        <h:inputHidden id="titleColor"  value="#{colorControllerView.titleColor}">
+                            <f:passThroughAttribute name="v-model" value="titleColor" />
+                        </h:inputHidden>
+                        <h:inputHidden id="backgroundColor"  value="#{colorControllerView.backgroundColor}">
+                            <f:passThroughAttribute name="v-model" value="backgroundColor" />
+                        </h:inputHidden>
+                        <h:inputHidden id="asideGroundColor"  value="#{colorControllerView.asideGroundColor}">
+                            <f:passThroughAttribute name="v-model" value="asideGroundColor" />
+                        </h:inputHidden>
+                        <h:inputHidden id="contentGroundColor"  value="#{colorControllerView.contentGroundColor}">
+                            <f:passThroughAttribute name="v-model" value="contentGroundColor" />
+                        </h:inputHidden>
+                        <h:commandButton class="button" value="提交">
+                            <f:ajax event="click" execute="customer_color" listener="#{colorControllerView.saveColor()}" onevent="customer" ></f:ajax>
+                        </h:commandButton>
+                    </h:form>
+                </ul>
+            </aside>
+            <div id="color_content">
+                <div id="top" :style="{color:titleColor,background:backgroundColor}">
+                    <h:panelGrid columns="2" style="width: 100%">
+                        <h:graphicImage
+                            library="images"
+                            name="top_logo.gif"
+                            style="width: 378px"
+                            />
+                        <h:panelGrid
+                            columns="1"
+                            style="vertical-align: top;align-content: flex-end"
+                            styleClass="userInfo"
+                            >
+                            <h:form styleClass="jsfcrud_list_form">
+                                <c:if test="#{!checkLogin.logined}">
+                                    <h:outputLabel value="#{messages.Welcome}" />
+                                    <h:commandButton
+                                        value="#{messages.Register}"
+                                        action="#{checkLogin.register}"
+                                        id="register"
+                                        />
+                                    <h:commandButton
+                                        value="#{messages.Login}"
+                                        action="#{commonSession.login()}"
+                                        />
+                                </c:if>
+                                <c:if test="#{checkLogin.logined}">
+                                    <h:outputLabel
+                                        value="#{messages.Welcome}: #{checkLogin.user.secondname}#{checkLogin.user.firstname}"
+                                        /><br />
+                                    <h:commandButton
+                                        action="#{commonSession.logout}"
+                                        value="#{messages.Logout}"
+                                        />
+                                </c:if>
+                            </h:form>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </div>
+                <!--                <div class="message">
+                                    <h1>
+                                        <h:messages
+                                            errorStyle="color: red"
+                                            infoStyle="color: green"
+                                            layout="table"
+                                            styleClass="message"
+                                            />
+                                    </h1>
+                                </div>-->
+                <div>
+                    <div
+                        id="left"
+                        class="left"
+                        :style="{color:titleColor,background:asideGroundColor}"
+                        >
+                        <h:form styleClass="jsfcrud_list_form hgs">
+                            <c:forEach items="#{mainXhtml.resouceMap}" var="myresouce" varStatus="status">
+                                <table width="190px" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td height="31" background="../../javax.faces.resource/leftbg.gif?ln=images" class="menu" id="imgmenu#{status.index}"  onClick="showsubmenu(#{status.index})" style="cursor:hand; background-size: cover">&nbsp;&nbsp;
+                                            <img src="../../javax.faces.resource/20102162.gif?ln=images" align="middle" />&nbsp; 
+                                            #{myresouce.root.name}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="31" id="submenu#{status.index}" style="display:none">
+                                            <table width="186" border="0" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td height="5"></td>
+                                                </tr>
+                                                <c:forEach items="#{myresouce.children}" var="child">
+                                                    <tr>
+                                                        <td height="28" background="../../javax.faces.resource/tbg00000.gif?ln=images" >&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <img src="../../javax.faces.resource/20102163.gif?ln=images" align="absmiddle"/>&nbsp;
+                                                            <h:commandLink
+                                                                value="#{child.name}"
+                                                                action="#{mainXhtml.setPageName(child.valueinfo)}"
+                                                                />
+                                                            <f:passThroughAttribute name=":style" value="{color:titleColor}" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td height="5"></td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table></td></tr></table>
+                            </c:forEach>
+                        </h:form>
+
+                    </div>
+
+                    <div id="content" class="left_content" :style="{background:contentGroundColor}">
+                        <h2 :style="{color:titleColor}"
+                            >中国大学社会科学研究排行榜我校排名56位</h2
+                        >
+                        <p :style="{color:fontColor}"
+                            >近日，武书连正式公布《2019中国大学评价》，我校“社会科学研究”得分3.67分、全国排名第56位，较2018年全国排名第67位提升11位、排位上升20%，江苏省内大学排名第6位，全国师范院校排名第13位。我校“社会科学研究”排名首次进入全国前60位，实现新的跨越。</p
+                        >
+                    </div>
+                </div>
+                <div id="bottom" :style="{color:titleColor,background:backgroundColor}">
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="#{messages.CopyRight}" />
+                        <h:outputLabel value="#{messages.Email}:#{messages.ContactEmail}" />
+                    </h:panelGrid>
+                </div>
+            </div>
+        </div>
+        <div id="init_color" style="display: none">
+            #{colorController.pageColor}
+        </div>
+        <h:outputScript library="javaScript" name="vue.js"></h:outputScript>
+        <h:outputScript library="javaScript" name="lodash.js"></h:outputScript>
+        <h:outputScript library="javaScript" name="color-ga.js"  ></h:outputScript>
+        <h:outputScript library="javaScript" name="verte.js"></h:outputScript>
+        <h:outputScript library="javaScript" name="star-rating.min.js"></h:outputScript>
+        <h:outputScript library="javaScript" name="color.js"></h:outputScript>
+    </h:body>
+</html>

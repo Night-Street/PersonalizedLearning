@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Question}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data" prependId="false">
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="2">
+                        <h:inputText value="#{questionController.searchName}">
+                            <f:ajax render="search"/>
+                        </h:inputText>
+                        <h:commandButton id="search" value="#{messages.Search}" action="#{questionController.search()}" immediate="true"
+                                         disabled="#{null==questionController.searchName}" />
+                    </h:panelGrid>
+                    <!--因为题型要变化，所以题目答案的呈现方式会发生改变，所以不使用<ez:questionShow readonlyTureFalse="false" valueinfoEditable="true"/>了-->
+                    <h:panelGrid columns="1">
+                        <h:outputLabel value="#{messages.QuestionTitle}:"/>
+                        <h:inputTextarea value="#{questionController.selected.valueinfo}" id="myeditor"/>
+                        <c:if test="#{questionController.hasFigure()}">
+                            <h:graphicImage value="#{publicFields.fileRepository}#{questionController.imageURL()}" width="320px" height="180px" style="float:left"/>
+                            <h:commandButton action="#{questionController.deleteImage()}" value="#{messages.Delete}"  onclick="if (! confirm('#{messages.Delete}?')) return false" />
+                        </c:if>
+                        <c:otherwise>
+                            <h:outputLabel/>
+                        </c:otherwise>
+                        <h:inputFile value="#{questionController.imagePart}" required="false" validator="#{learningresourceControllerA.pictureValidate}"/>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Knowledge}"/>
+                        <h:selectOneMenu value="#{questionController.selected.knowledgeId}">
+                            <f:selectItems value="#{knowledgeControllerA.getKnowledgeList4Subject(questionController.selected.knowledgeId.subjectId)}"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="#{messages.Type}:#{questionControllerA.getTypeString(questionController.selected.type)}"  dir="RTL"/>->
+                        <h:selectOneMenu value="#{questionController.type}" immediate="true" required="true">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{questionControllerA.questionTypeItem}"/>
+                            <f:ajax render="concreatAnswer" immediate="true"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <hr/>
+                    <h:panelGrid id="concreatAnswer" columns="2">
+                        <!--单项填空题-->
+                        <h:outputLabel value="#{messages.Answer}"/>
+                        <h:panelGrid>
+                            <h:inputText value="#{questionController.selected.answer}" size="60"  required="true"
+                                         rendered="#{questionControllerA.isSingleFill(questionController.selected)}"/>
+                            <h:outputLabel value="#{messages.Singlefilldelimited}"  dir="RTL"  rendered="#{questionControllerA.isSingleFill(questionController.selected)}"/>
+                            <!--多项填空题-->
+                            <h:inputText value="#{questionController.selected.answer}" size="60"  required="true"
+                                         rendered="#{questionControllerA.isMULTIFILL(questionController.selected)}"/>
+                            <h:outputLabel value="#{messages.Multifilldelimited}"  dir="RTL"  rendered="#{questionControllerA.isMULTIFILL(questionController.selected)}"/>
+                        </h:panelGrid>
+                        <!--简答题-->
+                        <h:inputTextarea  value="#{questionController.selected.answer}"   required="true"
+                                          rendered="#{questionControllerA.isType(questionController.selected,1)}"/>  
+                        <!--单项选择题-->
+                        <h:panelGrid>
+                            <h:panelGrid columns="2" rendered="#{questionControllerA.isType(questionController.selected,3)}">
+                                A.<h:inputTextarea value="#{questionController.selectionString1}"  required="true"/>
+                                B.<h:inputTextarea value="#{questionController.selectionString2}"   required="true"/>
+                                C.<h:inputTextarea value="#{questionController.selectionString3}"  required="true"/>
+                                D.<h:inputTextarea value="#{questionController.selectionString4}"  required="true"/>
+                            </h:panelGrid>
+                            <h:selectOneRadio value="#{questionController.selected.answer}"
+                                              rendered="#{questionControllerA.isType(questionController.selected,3)}">
+                                <f:selectItems value="#{questionControllerA.secondContentOptions(questionController.selected)}"/>
+                            </h:selectOneRadio>
+                            <!--多项选择题-->
+                            <h:panelGrid columns="2" rendered="#{questionControllerA.isType(questionController.selected,6)}">
+                                A.<h:inputTextarea value="#{questionController.selectionString1}"  required="true"/>
+                                B.<h:inputTextarea value="#{questionController.selectionString2}"  required="true"/>
+                                C.<h:inputTextarea value="#{questionController.selectionString3}"  required="true"/>
+                                D.<h:inputTextarea value="#{questionController.selectionString4}"  required="true"/>
+                                E.<h:inputTextarea value="#{questionController.selectionString5}"   required="true"/>
+                            </h:panelGrid>
+                            <h:selectManyCheckbox value="#{questionController.multSelectionStrings}"  required="true"
+                                                  rendered="#{questionControllerA.isType(questionController.selected,6)}">
+                                <f:selectItems value="#{questionControllerA.secondContentOptions(questionController.selected)}"/>
+                            </h:selectManyCheckbox>
+                        </h:panelGrid>
+                        <!--判断题-->
+                        <h:selectOneRadio value="#{questionController.selected.answer}"   required="true"
+                                          rendered="#{questionControllerA.isType(questionController.selected,4)}">
+                            <f:selectItems value="#{questionControllerA.trueOrFalsItems}"/>
+                        </h:selectOneRadio>  
+                        <!--客观编程-->
+                        <h:inputTextarea  value="#{questionController.selected.answer}"  required="true"
+                                          rendered="#{questionControllerA.isType(questionController.selected,5)}"/>  
+                        <!--主观编程-->
+                        <h:inputTextarea  value="#{questionController.selected.answer}"  required="true"
+                                          rendered="#{questionControllerA.isType(questionController.selected,7)}"/>  
+                    </h:panelGrid>
+                    <hr/>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Time}"/>
+                        <h:panelGrid columns="2">
+                            <h:inputText value="#{questionController.selected.needtime}" required="true">
+                                <f:validateLongRange maximum="20" minimum="1"/>
+                            </h:inputText>
+                            <h:outputLabel value="#{messages.Minute}"/>
+                        </h:panelGrid>
+
+                        <h:outputLabel value="#{messages.Score}"/>
+                        <h:inputText value="#{questionController.selected.score}">
+                            <f:validateLongRange maximum="20" minimum="1"/>
+                        </h:inputText>
+                        <h:outputLabel value="#{messages.Knowledge}#{messages.Degree}"/>
+                        <h:selectOneMenu value="#{questionController.selected.degree}" required="true">
+                            <f:selectItems itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{questionControllerA.questionDegreeItem}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.Analysis}"/>
+                        <h:inputTextarea  value="#{questionController.selected.analysis}"/>
+                        <h:outputLabel value="#{messages.Refer}"/>
+                        <h:inputTextarea  value="#{questionController.selected.refer}"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+
+                <h:panelGrid columns="3">
+                    <h:commandButton action="#{questionController.update()}" value="#{messages.Save}"/>
+                    <h:commandButton value="#{messages.Create}" action="#{questionController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{questionController.prepareList()}" immediate="true"/>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Student} #{messages.Schedule}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="1">
+                    <h:selectOneMenu value="#{schoolController.selected}">
+                        <f:selectItem itemLabel="#{messages.Please} #{messages.Select}"/>
+                        <f:selectItems value="#{schoolControllerA.schoolsOnLeaves}"/>
+                        <f:ajax render="studentList"/>
+                    </h:selectOneMenu>
+                    <h:selectManyListbox value="#{studentscheduleController.leftSelectedStudentList}" id="studentList" size="8" >
+                        <f:selectItems value="#{studentscheduleController.rightStudentSet}" />
+                    </h:selectManyListbox>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="#{messages.Start} #{messages.Time}"/>
+                        <h:inputText p:type="date" value="#{studentscheduleController.selected.starttime}" required="true">
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:inputText>
+                        <h:outputText value="#{messages.End} #{messages.Time}"/>
+                        <h:inputText p:type="date"  value="#{studentscheduleController.selected.endtime}" required="true">
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:inputText>
+                        <h:outputText value="#{messages.Schedule} #{messages.Classification}"/>
+                        <h:selectOneMenu value="#{studentscheduleController.selected.belongclassid}">
+                            <f:selectItems value="#{scheduleclassControllerA.getAllList()}"/>
+                        </h:selectOneMenu>
+                        <h:commandButton action="#{studentscheduleController.studentscheduleSetCreate()}" value="#{messages.Save}" />
+                        <!--<h:commandButton value="#{messages.View} #{messages.All}" action="#{studentscheduleController.prepareList()}" immediate="true"/>-->
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

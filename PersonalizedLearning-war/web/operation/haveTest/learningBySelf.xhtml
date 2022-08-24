@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>#{messages.Test}</title>
+    </h:head>
+    <h:body> 
+        <h:form styleClass="jsfcrud_list_form">
+            <h:outputLabel value="#{messages.Subject}"/>
+            <h:selectOneMenu id="subject" value="#{subjectController.selected}" required="true" 
+                             requiredMessage="#{messages.Select}#{messages.Subject}" >
+                <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                <f:selectItems value="#{subjectController.getSubjectList(1)}"/>
+            </h:selectOneMenu>
+            <hr/>
+            <h:panelGrid columns="1">
+                <h:outputLabel value="#{messages.Learnbyself}"/>
+                <h:panelGroup class="commandGroupDiv">
+                    <h:panelGroup  class="commandDiv">
+                        <h:graphicImage name="selflearning/stepByStep.png" library="images" height="200px" width="200px"/>
+                        <br/>
+                        <h:commandLink id="link1" value="#{messages.Selfsteppractice}" action="#{haveTest.startSelfPractice()}" 
+                                        class="mya"/>
+                        <br/>
+                        <h:outputLabel value="#{messages.Selfprainfo}" />
+                    </h:panelGroup>
+                    <br/><br/><br/>
+                    <h:panelGroup  class="commandDiv">
+                        <h:graphicImage name="selflearning/machineGuide.jpg" library="images" height="200px" width="200px"/><br/>
+                        <h:commandLink  id="link2" value="#{messages.Machine}#{messages.Decide}" action="#{haveTest.machineDecide()}" 
+                                       class="mya"/>
+                        <br/>
+                        <h:outputLabel value="#{messages.Selfmacinfo}"/>
+                    </h:panelGroup>
+                    <br/><br/><br/>
+                     <h:panelGroup  class="commandDiv">
+                        <h:graphicImage name="selflearning/inall.png" library="images" height="200px" width="200px"/><br/>
+                        <h:commandLink   id="link3" value="#{messages.Selffullpractice}" action="#{haveTest.startSelfHomeworkPractice()}"
+                                        class="mya"/>
+                        <br/>
+                        <h:outputLabel value="#{messages.Selfhomeprainfo}"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>

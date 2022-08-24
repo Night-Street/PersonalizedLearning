@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Published}#{messages.Resource}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <fieldset title="#{messages.According}">
+                    <h:panelGrid columns="2">
+                        <h:selectOneRadio value="#{myPublishedAll.type}" immediate="true">
+                            <f:selectItem itemValue="0" itemLabel="#{messages.Class}"/>
+                            <f:selectItem itemValue="1" itemLabel="#{messages.Subject}"/>
+                            <f:ajax render="@form"/>
+                        </h:selectOneRadio>
+                    </h:panelGrid>
+                </fieldset>
+                <h:panelGrid columns="3" >
+                    <h:outputLabel value="#{messages.Major}"/>
+                    <h:selectOneMenu value="#{majorController.selected}" immediate="true" >
+                        <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                        <f:selectItems value="#{majorControllerA.allList}"/>
+                        <f:ajax render="MajorSchool MajorSubject"/>
+                    </h:selectOneMenu>
+                    <h:panelGrid columns="2" rendered="#{myPublishedAll.class}">
+                        <h:outputLabel value="#{messages.School}"/>
+                        <h:selectOneMenu value="#{schoolController.selected}" id="MajorSchool">
+                            <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                            <f:selectItems value="#{majorController.selected.getSchoolSet()}"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" rendered="#{myPublishedAll.subject}">
+                        <h:outputLabel value="#{messages.Subject}"/>
+                        <h:selectOneMenu value="#{subjectController.selected}" id="MajorSubject">
+                            <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                            <f:selectItems value="#{subjectController.selectedSubjects4Major}"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                </h:panelGrid>
+                <hr></hr>
+                <h:commandButton value="#{messages.Summarize}#{messages.Student}" action="#{myPublishedAll.collectMine()}"/>
+                <hr></hr>
+                <h:dataTable value="#{myPublishedAll.items}" id="dataTable" var="item" border="0" cellpadding="2" cellspacing="0" 
+                             rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                             columnClasses="editRemoveview">
+                     <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Name}"/>
+                        </f:facet>
+                        <h:outputLabel value="#{item.key.name}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Name1}"/>
+                        </f:facet>
+                        <h:outputLabel value="#{item.key.secondname}#{item.key.firstname}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Knowledge}#{messages.Count}"/>
+                        </f:facet>
+                        <h:outputLabel value="#{item.value.get(0).size()}"/>
+                    </h:column>
+                      <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Question}#{messages.Count}"/>
+                        </f:facet>
+                        <h:outputLabel value="#{item.value.get(1).size()}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

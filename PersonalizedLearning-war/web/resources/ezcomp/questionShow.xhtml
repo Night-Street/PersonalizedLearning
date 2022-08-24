@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <cc:interface> 
+        <cc:attribute name="valueinfoEditable"/>
+        <cc:attribute name="readonlyTureFalse"/>
+    </cc:interface>
+<!-- 使用该接口的有：question.viwer、MypublishedQuestionEdit、MypublishedQuestionView共3个页面 -->
+    <!-- IMPLEMENTATION -->
+
+    <cc:implementation> 
+        <h:panelGrid columns="1">
+            <h:outputLabel value="#{messages.QuestionTitle}:"/>
+            <h:inputTextarea value="#{questionController.selected.valueinfo}" 
+                             p:id="myeditor" readonly="#{!cc.attrs.valueinfoEditable}"/>
+        </h:panelGrid>
+        <h:panelGrid columns="1">
+            <c:if test="#{questionController.hasFigure()}">
+                <h:graphicImage value="#{publicFields.fileRepository}#{questionController.imageURL()}" width="320px" height="180px" style="float:left"/>
+                <h:commandButton action="#{questionController.deleteImage()}" value="#{messages.Delete}" 
+                                 onclick="return confirm('#{messages.Delete}?');" 
+                                 rendered="#{cc.attrs.valueinfoEditable}"/>
+            </c:if>
+            <c:otherwise>
+                <h:outputLabel/>
+            </c:otherwise>
+            <h:inputFile value="#{questionController.imagePart}" required="false" validator="#{learningresourceControllerA.pictureValidate}" rendered="#{cc.attrs.valueinfoEditable}"/>
+        </h:panelGrid>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="#{messages.Answer}:"/>
+            <h:panelGroup >
+                <h:inputTextarea value="#{questionController.selected.answer}" readonly="#{cc.attrs.readonlyTureFalse}"
+                                 rendered="#{questionControllerA.isTextare(questionController.selected)}"/>
+                <!--多项填空题-->
+                <h:panelGroup rendered="#{questionControllerA.isType(questionController.selected,8)}">
+                    <c:forEach items="#{questionController.getMultiFillValue()}" var="answer" varStatus="status">
+                        <h:inputText value="#{answer}" readonly="#{cc.attrs.readonlyTureFalse}"/>&nbsp;
+                    </c:forEach>
+                </h:panelGroup>
+                <h:panelGrid columns="2" rendered="#{questionControllerA.isSelectionQuestion(questionController.selected)}">
+                    A.<h:inputTextarea  value="#{questionController.selectionString1}"  readonly="#{cc.attrs.readonlyTureFalse}"/>
+                    B.<h:inputTextarea value="#{questionController.selectionString2}"   readonly="#{cc.attrs.readonlyTureFalse}"/>
+                    C.<h:inputTextarea value="#{questionController.selectionString3}"   readonly="#{cc.attrs.readonlyTureFalse}"/>
+                    D.<h:inputTextarea value="#{questionController.selectionString4}"  readonly="#{cc.attrs.readonlyTureFalse}"/>
+                    E.<h:inputTextarea value="#{questionController.selectionString5}"   readonly="#{cc.attrs.readonlyTureFalse}" 
+                                   rendered="#{questionControllerA.isMultiSelection(questionController.selected)}"/>
+                </h:panelGrid>
+                <!--单选题-->
+                <h:selectOneRadio value="#{questionController.selected.answer}" readonly="#{cc.attrs.readonlyTureFalse}" 
+                                  rendered="#{questionControllerA.isType(questionController.selected,3)}">
+                    <f:selectItems value="#{questionControllerA.secondContentOptions(questionController.selected)}"/>
+                </h:selectOneRadio>
+                <!-- 多选题 -->
+                <h:selectManyCheckbox value="#{questionController.multSelectionStrings}" readonly="#{cc.attrs.readonlyTureFalse}"
+                                      rendered="#{questionControllerA.isType(questionController.selected,6)}">
+                    <f:selectItems value="#{questionControllerA.secondContentOptions(questionController.selected)}"/>
+                </h:selectManyCheckbox>
+                <!-- 判断题 -->
+                <h:selectOneRadio value="#{questionController.selected.answer}" readonly="#{cc.attrs.readonlyTureFalse}"
+                                  rendered="#{questionControllerA.isType(questionController.selected,4)}"> 
+                    <f:selectItems value="#{questionControllerA.trueOrFalsItems}"/>
+                </h:selectOneRadio>
+
+                <!-- 客观编程题  -->
+                <h:panelGrid columns="1" rendered="#{questionControllerA.isType(questionController.selected,5)}">
+                    <h:inputTextarea value="#{questionController.selected.answer}" readonly="#{cc.attrs.readonlyTureFalse}"  p:id="myeditor"/>
+                    <h:outputLabel value="#{messages.TestData}#{messages.Input}#{messages.Split}#{messages.With}+++"/>
+                    <h:inputTextarea value="#{questionController.inputDataString}" readonly="#{cc.attrs.readonlyTureFalse}"  p:id="myeditor"/>
+                    <h:outputLabel value="#{messages.TestData}#{messages.Output}#{messages.Split}#{messages.With}+++"/>
+                    <h:inputTextarea value="#{questionController.outputDataString}" readonly="#{cc.attrs.readonlyTureFalse}"  p:id="myeditor"/>
+                </h:panelGrid>
+
+            </h:panelGroup>
+            <!--主观编程题-->
+            <h:panelGroup rendered="#{questionControllerA.isType(questionController.selected,7)}">
+                <h:inputTextarea value="#{questionController.selected.answer}" readonly="#{cc.attrs.readonlyTureFalse}"  p:id="myeditor"/>
+                <h:outputLabel value="#{messages.If}#{messages.Have},#{messages.Upload}#{messages.Image}"/>
+                <h:inputFile value="#{questionController.answerFile}" rendered="#{cc.attrs.readonlyTureFalse}"/>
+            </h:panelGroup>
+        </h:panelGrid>
+    </cc:implementation>
+</html>

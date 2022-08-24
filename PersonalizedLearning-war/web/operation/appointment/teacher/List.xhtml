@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Appointment}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:form  styleClass="jsfcrud_list_form"  prependId="false">
+                <h:panelGroup>  
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Publisher}"/>
+                        <h:selectOneMenu value="#{appointmentController.teacherAdmin}" immediate="true">
+                            <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                            <f:selectItems value="#{teacherAdminControllerA.allList}" var="teacher" itemLabel="#{teacher.secondname}#{teacher.firstname}" itemValue="#{teacher}"/>
+                            <f:ajax render="search"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.Date}"/>
+                        <h:inputText p:type="date" value="#{appointmentController.selectedDate}" immediate="true">
+                            <f:convertDateTime/>
+                            <f:ajax render="search"/>
+                        </h:inputText>
+                        <h:commandButton  id="search" value="#{messages.Search}" action="#{appointmentController.search()}" disabled="#{appointmentController.canSearch()}" />
+                        <h:commandButton  value="#{messages.I}#{messages.Published}#{messages.Appointment}" action="#{appointmentController.initProductList()}" immediate="true" />
+                 </h:panelGrid>
+                </h:panelGroup>
+                <hr/>
+                <h:panelGrid columns="1" rendered="#{roleinfoController.teacher}">
+                    <h:commandButton value="#{messages.Create}#{messages.Publish}" action="#{appointmentmessageController.prepareCreate()}"/>
+                </h:panelGrid>
+                <hr/>
+                <h:panelGrid >
+                    <h:dataTable value="#{appointmentController.productList}" id="knowledgeTbl" var="item" border="0" cellpadding="2" cellspacing="0" 
+                                 rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                                 columnClasses="editRemoveview">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{appointmentController.destroy(item)}"  value="#{messages.Destroy}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Begin}#{messages.Time}"/>
+                            </f:facet>
+                            <h:outputText p:type="datetime-local" value="#{item.starttime.year+1900}-#{item.starttime.month+1}-#{item.starttime.date}  #{item.starttime.hours}-#{item.starttime.minutes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.End}#{messages.Time}"/>
+                            </f:facet>
+                            <h:outputText p:type="datetime-local" value="#{item.endtime.year+1900}-#{item.endtime.month+1}-#{item.endtime.date}  #{item.endtime.hours}-#{item.endtime.minutes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Appointment}#{messages.Name1}"/>
+                            </f:facet>
+                            <h:outputText  value="#{item.studentid}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGrid>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

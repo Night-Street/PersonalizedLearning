@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!-- INTERFACE -->
+    <cc:interface> 
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+
+    <cc:implementation> 
+        <h:panelGrid columns="2">
+            <h:outputLabel value="#{messages.School}"/>
+            <h:selectOneMenu value="#{schoolController.selected}"  immediate="true">
+                <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                <f:selectItems value="#{schoolController.cadidateSchools}"/>
+                <f:ajax render="schoolStudents"/>
+            </h:selectOneMenu> 
+        </h:panelGrid>
+        <h:panelGrid columns="2">
+            <h:outputLabel value="#{messages.Student}"/>
+            <h:selectOneMenu value="#{studentController.selected}" id="schoolStudents" required="true" immediate="true">
+                <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                <f:selectItems value="#{studentControllerA.getStudentList(schoolController.selected)}"/>
+                <f:ajax render="studentRelated"/>
+            </h:selectOneMenu> 
+        </h:panelGrid>
+    </cc:implementation>
+</html>

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <h:head>
+        <title></title> 
+        <script src="https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js"></script>
+    </h:head>
+    <h:body>
+        <h:outputScript library="javaScript" name="remoteMathJax.js" target="head"/>
+        <h:form styleClass="jsfcrud_list_form" prependId="false">
+            <ezcomp:schoolStudent/>
+            <h:panelGrid columns="2" >
+                <h:outputLabel value="#{messages.Student}#{messages.Testpaper}"/>
+                <h:selectOneMenu  value="#{studenttestpaperController.selected}" immediate="true" id="studentRelated">
+                    <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                    <f:selectItems value="#{studenttestpaperController.getCurrentStudenttestpapers()}"/>
+                    <f:ajax render="schoolStudents"/>
+                </h:selectOneMenu>
+            </h:panelGrid>
+            <br/>
+            <!-- 下面显示学生信息  item is: HashMap<Student, List<Testpaper>> -->
+            <!-- show the Student information -->
+
+            <h:panelGroup  id="schoolStudents">
+                <c:forEach items="#{questionControllerA.getTestQuestion(studenttestpaperController.selected)}" var="question" varStatus="loop">
+                    <!--下面显示题目-->
+                    <h:outputLabel value="#{loop.index+1}."/>
+                    <h:outputText escape="false" value="#{questionControllerA.getTypeString(question)}"/>
+                    <!--题干-->
+                    <h:outputText escape="false"  value="#{question.valueinfo}"/><br/>
+                    <!--显示答案-->
+                    <c:if test="#{questionControllerA.isSingleSelection(question)}" >
+                        <h:outputLabel value="A."/><h:outputText escape="false"  value="#{questionController.getSelectionOptionStrings(question)[0]}"/><br/>
+                        <h:outputLabel value="B."/><h:outputText escape="false"  value="#{questionController.getSelectionOptionStrings(question)[1]}"/><br/>
+                        <h:outputLabel value="C."/><h:outputText escape="false"  value="#{questionController.getSelectionOptionStrings(question)[2]}"/><br/>
+                        <h:outputLabel value="D."/><h:outputText escape="false"  value="#{questionController.getSelectionOptionStrings(question)[3]}"/><br/>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isMultiSelection(question)}" >
+                        <h:outputLabel value="A."/><h:outputText escape="false"  value="#{questionController.getSelectionOptionStrings4Multi(question)[0]}"/><br/>
+                        <h:outputLabel value="B."/><h:outputText escape="false"  value="#{questionController. getSelectionOptionStrings4Multi(question)[1]}"/><br/>
+                        <h:outputLabel value="C."/><h:outputText escape="false"  value="#{questionController. getSelectionOptionStrings4Multi(question)[2]}"/><br/>
+                        <h:outputLabel value="D."/><h:outputText escape="false"  value="#{questionController. getSelectionOptionStrings4Multi(question)[3]}"/><br/>
+                        <h:outputLabel value="E."/><h:outputText escape="false"  value="#{questionController. getSelectionOptionStrings4Multi(question)[4]}" rendered=""/><br/>
+                    </c:if>
+                    <h:outputText escape="false"  value="#{messages.Reference} #{messages.Answer}:#{questionControllerA.getShownQuestionAnswer(question)}"/><br/>
+                    <!--显示题目结束 -->
+                </c:forEach>
+            </h:panelGroup>
+
+        </h:form>
+
+    </h:body>
+</html>
+

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{bundle.EditEnglishdictionaryTitle}"/>
+        </ui:define>
+        <ui:define name="body">
+<!--            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditEnglishdictionaryLabel_id}" for="id"  dir="RTL"/>
+                    <h:inputText id="id" value="#{englishdictionaryController.selected.id}" title="#{bundle.EditEnglishdictionaryTitle_id}" required="true" requiredMessage="#{bundle.EditEnglishdictionaryRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.EditEnglishdictionaryLabel_english}" for="english"  dir="RTL"/>
+                    <h:inputText id="english" value="#{englishdictionaryController.selected.english}" title="#{bundle.EditEnglishdictionaryTitle_english}" />
+                    <h:outputLabel value="#{bundle.EditEnglishdictionaryLabel_chinese}" for="chinese"  dir="RTL"/>
+                    <h:inputText id="chinese" value="#{englishdictionaryController.selected.chinese}" title="#{bundle.EditEnglishdictionaryTitle_chinese}" />
+                    <h:outputLabel value="#{bundle.EditEnglishdictionaryLabel_example}" for="example"  dir="RTL"/>
+                    <h:inputText id="example" value="#{englishdictionaryController.selected.example}" title="#{bundle.EditEnglishdictionaryTitle_example}" />
+                    <h:outputLabel value="#{bundle.EditEnglishdictionaryLabel_pronunciation}" for="pronunciation"  dir="RTL"/>
+                    <h:inputText id="pronunciation" value="#{englishdictionaryController.selected.pronunciation}" title="#{bundle.EditEnglishdictionaryTitle_pronunciation}" />
+                    <h:outputLabel value="#{bundle.EditEnglishdictionaryLabel_partofspeech}" for="partofspeech"  dir="RTL"/>
+                    <h:selectOneMenu id="partofspeech" value="#{englishdictionaryController.selected.partofspeech}" title="#{bundle.EditEnglishdictionaryTitle_partofspeech}" >
+                        <f:selectItems value="#{partofspeechController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink id="link1"  action="#{englishdictionaryController.update}" value="#{bundle.EditEnglishdictionarySaveLink}"/>
+                <br />
+                <br />
+                <h:link id="link2"  outcome="View" value="#{bundle.EditEnglishdictionaryViewLink}"/>
+                <br />
+                <h:commandLink id="link3"  action="#{englishdictionaryController.prepareList}" value="#{bundle.EditEnglishdictionaryShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link id="link4"  outcome="/index" value="#{bundle.EditEnglishdictionaryIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

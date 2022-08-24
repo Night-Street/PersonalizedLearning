@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Question}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="remoteMathJax.js" target="head"/>
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data" prependId="false">
+                <h2 id="workingIndicator" style="display: none">
+                    <h:graphicImage library="images" name="pleaseWait.gif"/>
+                </h2>
+                <h:outputScript name="jquery.min.js" library="javaScript" target="head"/>
+                <h:outputScript name="marked.min.js" library="javaScript" target="head"/>
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="2">
+                        <h:inputText value="#{questionController.searchName}" immediate="true">
+                            <f:ajax render="search"/>
+                        </h:inputText>
+                        <h:commandButton id="search" value="#{messages.Search}" action="#{questionController.search()}" immediate="true"
+                                         disabled="#{null==questionController.searchName}"/>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1">
+                        <ez:majorSubjectKnowledgeTemplate/>                           
+                    </h:panelGrid>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="#{messages.Question}#{messages.Number}:"/>
+                        <h:outputLabel value="#{questionControllerA.getQuestionSize4Knowledge(knowledgeController.selected)}"/>
+                        <h:outputLabel value="#{messages.Type}  "/>
+                        <h:selectOneMenu value="#{questionController.questionType}">
+                            <f:selectItem itemLabel="#{messages.Please} #{messages.Select}" itemValue="0"/>
+                            <f:selectItems value="#{questionControllerA.questionTypeItem}"/>
+                            <f:ajax render="uncertain" immediate="true"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" id="uncertain">
+
+                        <h:commandButton value="#{messages.View} #{messages.All}" action="#{questionController.prepareList()}">
+                            <f:ajax render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="#{messages.Create}" action="#{questionController.prepareCreate}" disabled="#{knowledgeController.selected.id==null}"/>
+                    </h:panelGrid>
+                    <h:panelGrid id="mysubjectList">
+                        <h:outputLabel escape="false" value="#{messages.Empty}" rendered="#{questionController.items.rowCount == 0}"/>
+                        <h:panelGroup rendered="#{questionController.items.rowCount > 0}" >
+                            <h:outputLabel value="#{questionController.pagination.pageFirstItem + 1}..#{questionController.pagination.pageLastItem + 1}/#{questionController.pagination.itemsCount}"/>&nbsp;
+                            <h:commandLink action="#{questionController.pageOperation.previous}" value="#{messages.Previous} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasPreviousPage}"/>&nbsp;
+                            <h:commandLink action="#{questionController.pageOperation.next}" value="#{messages.Next} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasNextPage}"/>&nbsp;
+                            <h:dataTable value="#{questionController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" >
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="&nbsp;"/>
+                                    </f:facet>
+                                    <h:commandLink action="#{questionController.prepareView()}" value="#{messages.View}"/>
+                                    &nbsp;
+                                    <h:commandLink action="#{questionController.prepareEdit()}" value="#{messages.Edit}" rendered="#{reexaminationController.isEditable(null, item)}"/>
+                                    &nbsp;
+                                    <h:commandLink action="#{questionController.destroy()}" value="#{messages.Destroy}" rendered="#{reexaminationController.isDeletable(null, item)}"   onclick="if (!confirm('#{messages.Delete}?'))
+                                                return false" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.QuestionTitle}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.valueinfo}" escape="false"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Selection}" />
+                                    </f:facet>
+                                    <h:outputText escape="false"  value="#{item.getSecondContenItems()}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Type}"/>
+                                    </f:facet>
+                                    <h:outputLabel value="#{questionControllerA.getTypeString(item.type)}"/>
+                                </h:column>                                    
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Answer}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{questionControllerA.getAnswer(item)}" escape="false"/>
+                                </h:column>                                    
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Score}"/>
+                                    </f:facet>
+                                    <h:outputLabel value="#{item.score}"/>
+                                </h:column>   
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Analysis}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.analysis}" escape="false"/>
+                                </h:column>   
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Createdby} #{messages.Name1}"/>
+                                    </f:facet>
+                                    <h:outputLabel value="#{questionController.showedName(item)}"/>
+                                </h:column>                                
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Knowledge}"/>
+                                    </f:facet>
+                                    <h:commandLink action ="#{knowledgeController.prepareView(item.knowledgeId)}" value="#{item.knowledgeId.name}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.Refer}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.refer}" escape="false"/>
+                                </h:column>  
+                            </h:dataTable>
+                            <h:outputLabel value="#{questionController.pagination.pageFirstItem + 1}..#{questionController.pagination.pageLastItem + 1}/#{questionController.pagination.itemsCount}"/>&nbsp;
+                            <h:commandLink action="#{questionController.pageOperation.previous}" value="#{messages.Previous} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasPreviousPage}"/>&nbsp;
+                            <h:commandLink action="#{questionController.pageOperation.next}" value="#{messages.Next} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasNextPage}"/>&nbsp;
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

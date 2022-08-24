@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.List}#{messages.Predicate}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data" prependId="false">
+                <h:panelGrid columns="4">
+                    <h:inputText value="#{predicateController.searchName}" immediate="true">
+                        <f:ajax render="search"/>
+                    </h:inputText>
+                    <h:commandButton id="search" value="#{messages.Search}" action="#{predicateController.search()}" immediate="true"
+                                     disabled="#{null==predicateController.searchName}"/>
+                    <h:commandButton value="#{messages.View} #{messages.All}" actionListener="#{predicateController.prepareList()}">
+                        <f:ajax render="@form"/>
+                    </h:commandButton>
+                    <h:commandButton value="#{messages.Create}" action="#{predicateController.prepareCreate}" />
+                </h:panelGrid>
+                <h:outputText escape="false" value="#{messages.List}#{messages.Empty}" rendered="#{predicateController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{predicateController.items.rowCount > 0}">
+                    <h:outputLabel value="#{predicateController.pagination.pageFirstItem + 1}..#{predicateController.pagination.pageLastItem + 1}/#{predicateController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{predicateController.pageOperation.previous}" value="#{messages.Previous} #{predicateController.pagination.pageSize}" rendered="#{predicateController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{predicateController.pageOperation.next}" value="#{messages.Next} #{predicateController.pagination.pageSize}" rendered="#{predicateController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{predicateController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" >
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{predicateController.prepareView()}" value="#{messages.View}"/>
+                            &nbsp;
+                            <h:commandLink action="#{predicateController.prepareEdit()}" value="#{messages.Edit}" rendered="#{predicateController.editable(item)}"/>
+                            &nbsp;
+                            <h:commandLink action="#{predicateController.destroy()}" value="#{messages.Destroy}" rendered="#{predicateController.isDeletable(item)}"   onclick="if (!confirm('#{messages.Delete}?'))
+                                        return false" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pname}"/>
+                        </h:column>
+                          <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Alias}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.myalias}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Meaning}"/>
+                            </f:facet>
+                            <h:outputText escape="false"  value="#{item.meaning}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Porder}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.porder}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Reflexivity}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reflexivity}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Transitivity}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.transitivity}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Symmetry}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.symmetry}"/>
+                        </h:column>
+                    </h:dataTable>
+                    <h:outputLabel value="#{predicateController.pagination.pageFirstItem + 1}..#{predicateController.pagination.pageLastItem + 1}/#{predicateController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{predicateController.pageOperation.previous}" value="#{messages.Previous} #{predicateController.pagination.pageSize}" rendered="#{predicateController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{predicateController.pageOperation.next}" value="#{messages.Next} #{predicateController.pagination.pageSize}" rendered="#{predicateController.pagination.hasNextPage}"/>&nbsp;
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

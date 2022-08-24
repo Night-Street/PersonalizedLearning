@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Testpaper}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="3" width="100%">
+                    <h:panelGrid>
+                        <h:graphicImage name="testpaper/testpaper.jpg" library="images" height="200px" width="200px"/>
+                        <h:commandLink value="1.#{messages.Create}#{messages.Testpaper}/#{messages.Practice}" action="#{testpaperController.toCreateTestpaper()}" class="mya"/>
+                    </h:panelGrid>
+                    <h:panelGrid>
+                        <h:graphicImage name="testpaper/testNow.jpg" library="images" height="200px" width="200px"/>
+                        <h:commandLink value="2.#{messages.Create} #{messages.Now} #{messages.Test} " action="#{testpaperController.inputTestpaper()}" class="mya"/>
+                    </h:panelGrid>
+                    <h:panelGrid>
+                        <h:graphicImage name="testpaper/score.jpg" library="images" height="200px" width="200px"/>
+                        <h:commandLink value="3.#{messages.View}#{messages.Score}" action="#{testpaperController.viewScore()}" class="mya" target="_blank"/>
+                    </h:panelGrid>
+                    <h:panelGrid>
+                        <h:graphicImage name="testpaper/viewTestpaper.jpg" library="images" height="200px" width="200px"/>
+                        <h:commandLink value="4.#{messages.View}#{messages.Testpaper}" action="#{testpaperController.viewTestpaper()}" class="mya"/>
+                    </h:panelGrid>
+                    <!--show scores-->
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

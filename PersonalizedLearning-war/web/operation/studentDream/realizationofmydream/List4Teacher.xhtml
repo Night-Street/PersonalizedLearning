@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Dream}"></h:outputLabel>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:outputLabel value=" #{messages.Incubate} #{messages.Dream}" style="color: red; font-size:3em; align-content: center"/>
+            <h:outputStylesheet library="css" name="jsfcrud.css"/>
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <!--词云的两个javascript-->
+            <h2 id="workingIndicator" style="display: none">
+                <h:graphicImage library="images" name="pleaseWait.gif"/>
+            </h2>
+            <h:form>
+                <h:dataTable value="#{realizationofmydreamController.items}" var="item"  id="studentDreamTbl" 
+                             border="0" cellpadding="2" cellspacing="0" 
+                             rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                             columnClasses="editRemoveview">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="&nbsp;"/>
+                        </f:facet>
+                        <h:commandLink  value="#{messages.Edit}" 
+                                        action="#{realizationofmydreamController.prepareEdit4Teacher(item)}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Datetime}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.recorderdate}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputLabel value="#{messages.Milestone}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.milestone}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

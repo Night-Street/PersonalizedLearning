@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
+        <h:outputStylesheet library="css" name="different.css"/>
+        <h:outputStylesheet library="css" name="common.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{publicFields.icon}"/>
+        <title>#{messages.Login}</title>
+
+    </h:head>
+
+    <h:body>
+        <div id="top" class="top">
+            <h:panelGrid columns="1" id="head" style="width: 100%">
+                <h:panelGrid columns="3" style="width: 100%">
+                    <a href="/faces/noLogin/contributors.xhtml" style="font-size: 30px">#{messages.Contributor}</a>
+                    <h:graphicImage library="images" name="top_logo.gif" style="width: 378px"/>
+                    <h:panelGrid columns="1" style="vertical-align: top;align-content: flex-end" styleClass="userInfo" >
+                        <h:form styleClass="jsfcrud_list_form">
+                            <h:commandLink value="#{localeController.getShownLanguage()}" action="#{localeController.switchLocale()}" style="text-align: left"/><br></br>
+                            <c:if test="#{!checkLogin.logined}">
+                                <h:outputLabel value="#{messages.Welcome}"/>&nbsp;&nbsp;
+                                <h:commandButton value="#{messages.Login}" action="#{commonSession.login()}" />
+                                &nbsp;&nbsp;
+                                <h:commandButton value="#{messages.Register}" action="#{checkLogin.register}" id="register" />
+                            </c:if>
+                            <c:if test="#{checkLogin.logined}">
+                                <h:outputLabel value="#{messages.Welcome}#{checkLogin.user.name}"/>&nbsp;&nbsp;
+                                <h:commandLink action="#{commonSession.logout}" value="#{messages.Logout}" style="color:#fff;text-decoration:none;"/>
+                            </c:if>
+                        </h:form>
+                    </h:panelGrid>
+                </h:panelGrid>      
+            </h:panelGrid>
+        </div>
+        <div id="content" class="nologinContent">
+            <div class="pageContent allNews">
+                <h1 class ="tableTitle">
+                    <h:outputLabel value="#{messages.News}"/>
+                </h1>
+                <h:form styleClass="jsfcrud_list_form">
+                    <table class ="tableStyle allNewsTable">
+                        <tr>
+                            <th><h:outputLabel value="#{messages.News}"/></th>
+                        </tr>
+                        <c:forEach items="#{messages.RoleArray.split(',')}" var="roleName">
+                            <c:forEach items="#{stuNewsBean.recentNews}" var="news">
+                                <tr>
+                                    <td>
+                                        <h:commandLink value="#{news.newstitle}"  action="#{stuNewsBean.directToNews()}">
+                                            <f:param value="#{news.id}" name="newsId"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:forEach>
+                    </table>
+                    <table class ="tableStyle allNewsTable">
+                        <c:forEach  items="#{messages.RoleArray.split(',')}" var="roleName">
+                            <tr>
+                                <th><h:outputLabel value="#{roleName}"/></th>
+                            </tr>
+                            <c:forEach items="#{newsBean.newsHashMap.get(roleName)}" var="news">
+                                <tr>
+                                    <td>
+                                        <h:commandLink value="#{news.newstitle}"  action="#{stuNewsBean.directToNews()}">
+                                            <f:param value="#{news.id}" name="nId"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:forEach>
+                    </table>
+
+                </h:form>
+                <p style ="clear:both;"></p>
+            </div>
+        </div>
+        <div id="bottom">
+            <h:panelGrid columns="1">
+                <h:outputLabel value="#{messages.CopyRight}"/>
+                <h:outputLabel value="#{messages.Email}:#{messages.ContactEmail}"/>
+            </h:panelGrid>
+        </div>
+    </h:body>
+
+</html>

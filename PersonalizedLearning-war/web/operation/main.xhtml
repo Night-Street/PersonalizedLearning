@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="default.css" library="css"/>
+        <h:outputStylesheet name="cssLayout.css" library="css"/>
+        <h:outputStylesheet name="main.css" library="css"/>
+        <h:outputStylesheet name="a.css" library="css"/>
+        <h:outputStylesheet name="jsfcrud.css" library="css"/>
+        <h:outputScript name="a.js" library="javaScript"/>
+        <h:outputScript name="wait.js" library="javaScript"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{publicFields.icon}"/>
+        <title>#{messages.SystemNameRef}</title>
+    </h:head>
+    <h:body>
+        <table width="100%" border="0">
+            <tr><td>
+                    <div  id="gaLink"  style="border: 0">
+                        <h:outputLink value="colorRate/color.xhtml">#{messages.Pagecolor}#{messages.Optimization}||</h:outputLink>
+                        <h:outputLink value="main1.xhtml" id="iga">#{messages.Switch}#{messages.Main1}</h:outputLink>
+                    </div>
+                </td></tr>
+            <tr id="top">
+                <td >
+                    <div style="float:left">
+                        <h:graphicImage
+                            library="images"
+                            name="top_logo.gif"
+                            style="width: 378px; align-self: flex-start"
+                            />
+                    </div>
+                    <div style="float:right; vertical-align: middle; margin-right: 5px">
+                        <h:form styleClass="jsfcrud_list_form">
+                            <c:if test="#{!commonSession.logined}">
+                                <h:outputLabel value="#{messages.Welcome}" />
+                                <h:commandButton value="#{messages.Register}"  action="#{checkLogin.register}" id="register"/>
+                                <h:commandButton
+                                    value="#{messages.Login}"
+                                    action="#{commonSession.login()}"
+                                    />
+                            </c:if>
+                            <c:if test="#{commonSession.logined}">
+                                <h:outputLabel  value="#{messages.Welcome} #{commonSession.user.secondname}#{commonSession.user.firstname}"/><br />
+                                <h:commandButton action="#{commonSession.logout}" value="#{messages.Logout}"/>&nbsp;&nbsp;
+                                <h:panelGrid columns="1" rendered="#{teacherAdminController.teacherLogined}">
+                                    <h:commandButton action="#{mySystemController.switch2Student()}" value="#{messages.Switch}#{messages.To}#{messages.Student}" 
+                                                     rendered="#{commonSession.change2Student()}"/>
+                                    <h:commandButton action="#{mySystemController.switch2Teacher()}" value="#{messages.Switch}#{messages.To}#{messages.Teacher}"
+                                                     rendered="#{commonSession.change2Teacher()}"/>
+                                </h:panelGrid>
+                            </c:if>
+                        </h:form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td id="left" class="aleft" valign="top" width="200px" >
+                    <h:form styleClass="jsfcrud_list_form">
+                        <c:forEach items="#{mainXhtml.resouceMap}" var="myresouce" varStatus="status">
+                            <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                <tr>
+                                    <td height="31" background="../javax.faces.resource/leftbg.gif?ln=images"  class="menu" id="imgmenu#{status.index}"  
+                                        onClick="showsubmenu(#{status.index})" style="cursor:hand; background-size: cover"
+                                        >&nbsp;&nbsp;
+                                        <img src="../javax.faces.resource/20102162.gif?ln=images" align="middle" />&nbsp; 
+                                        #{myresouce.root.name}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="31" id="submenu#{status.index}" style="display:none" width="100%">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td height="5"></td>
+                                            </tr>
+                                            <c:forEach items="#{myresouce.children}" var="child">
+                                                <tr>
+                                                    <td height="28" background="../javax.faces.resource/tbg00000.gif?ln=images" >&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <img src="../javax.faces.resource/20102163.gif?ln=images" align="absmiddle"
+                                                             />&nbsp;
+                                                        <h:commandLink value="#{child.name}" action="#{mainXhtml.setPageName(child.valueinfo)}" >
+                                                            <f:ajax render="content"/>
+                                                        </h:commandLink>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="5"></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </c:forEach>
+                    </h:form>
+                </td>
+                <td valign="top">
+                    <h:panelGroup  id="content" class="left_content"  style="border: 0" layout="block">
+                        <h:messages  id="myMessageLabel" errorStyle="color: red"  infoStyle="color: green"   fatalStyle="color: red"  layout="table"   styleClass="message"/>
+                        <ui:include src="#{mainXhtml.pageName}.xhtml" />
+                    </h:panelGroup >
+                </td>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr id="bottom">
+                <td align="center" valign="top" >
+                    <h:outputLabel value="#{messages.CopyRight}" /><br/>
+                    <h:outputLabel value="#{messages.Email}:#{messages.ContactEmail}" />
+                </td>
+            </tr>
+        </table>
+        <div style="display: none" id="ga_color">
+            #{colorController.bestColor}
+        </div>     
+        <script>
+            var td0 = document.getElementById("myMessageLabel").getElementsByTagName("td")[0];
+            if (typeof (td0) !== "undefined") {
+                if (#{commonSession.getCurrentEvenOdd()} === 2) {
+                    td0.style.backgroundColor = "Chartreuse";
+                    td0.style.width = "150px";
+                } else {
+                    td0.style.backgroundColor = "DarkOrange";
+                    td0.style.width = "300px";
+                }
+            }
+            //上面完成了向用户完成消息传递，并根据后台的奇偶数进行背景颜色变换
+            //下面根据用户的偏好进行颜色的替换
+            function parse(color) {
+                return "hsl(".concat(color.hue,
+                        ",").concat(color.saturation, "%,").concat(color.lightness, "%)");
+            }
+            var innertxt = document.querySelector("#ga_color").innerText.trim();
+            if (innertxt.length > 0) {
+                let  color = JSON.parse(innertxt);
+                if (color !== 0) {
+                    let style = document.createElement("style");
+                    style.type = "text/css";
+                    style.innerHTML = ".left_content{background:"
+                            + parse(color.content_background_color)
+                            + "}#top{color:".concat(parse(color.title_color), ";background:").concat(parse(color.background_color), ";}#left{color:").concat(parse(color.title_color), ";background:").concat(parse(color.aside_background_color), ";}td label{color:").concat(parse(color.font_color), ";}#bottom{color:").concat(parse(color.title_color), ";background:").concat(parse(color.background_color), ";}");
+                    document.getElementsByTagName("HEAD").item(0).appendChild(style);
+                }
+            }
+        </script>
+    </h:body>
+</html>

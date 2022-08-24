@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>test</title>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputScript library="javaScript" name="jquery.js" target="head"/>
+        <h:outputScript library="javaScript" name="bootstrap.js" target="head"/>
+    </h:head>
+    <h:body>
+            <h:form id="form1">
+                <h:selectOneMenu value="#{knowledgeController.relatedKnolwdge}" immediate="true" id="relatdKnowledge">
+                    <f:selectItem  itemLabel="#{messages.Please} #{messages.Select}"/>
+                    <f:selectItems value="#{knowledgeController.getKnowledgeList4Subject(0,knowledgeController.selected)}"/> 
+                    <f:ajax render="@form"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="#{knowledgeController.relatedKnolwdge}" p:id="txt1"/>
+            </h:form>
+    </h:body>
+</html>
+

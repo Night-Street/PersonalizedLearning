@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+        <h:form styleClass="jsfcrud_list_form">
+            <h:panelGrid columns="1">
+                <c:forEach items="#{studenttestpaperController.testpaperMap.get(testpaperController.typeOfPraOrExam)}" var="item">
+                    <!-- 下面显示学生信息  item is: HashMap<Student, List<Testpaper>> -->
+                    <!-- show the Student information -->
+                    <hr/>
+                    <h:outputLabel value="#{messages.School}:#{item.key.schoolId.name}"/>
+                    <h:outputLabel value="ID：#{item.key.name}"/>
+                    <h:outputLabel value="#{messages.Name1}:#{item.key.secondname}#{item.key.firstname}---#{messages.Testpaper}"/>
+                    <h:panelGrid columns="1">
+                        <c:forEach items="#{item.value}" var="temTestpaper" >
+                            <h:outputLabel value="#{temTestpaper.testscore}"/>
+                            <c:forEach items="#{questionControllerA.getTestQuestion(temTestpaper)}" var="question" varStatus="loop">
+                                <h:outputLabel value="--------------------------------------"/>
+                                <!--下面显示题目-->
+                                <h:outputLabel value="#{loop.index+1}"/>
+                                <!--题干-->
+                                <h:outputLabel   value="#{haveTest.getQuestionTitle(question)}" />
+                                <h:outputLabel value="#{messages.Your} #{messages.Answer}:"/>
+                                <!--显示学生答案与参考答案-->
+                                <c:if test="#{questionControllerA.isSingleFill(question)}" >
+                                    <h:outputLabel  value="#{studenttestpaperControllerA.getStudentAnswerStrings(temTestpaper)[loop.index]}"/>
+
+                                </c:if>
+                                <c:if test="#{questionControllerA.isJudgment(question)}" >
+                                    <h:selectOneRadio  value="#{studenttestpaperControllerA.getStudentAnswerStrings(temTestpaper)[loop.index]}">
+                                        <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                                        <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                                    </h:selectOneRadio>
+                                </c:if>
+
+                                <c:if test="#{questionControllerA.isSimpleAnswer(question)}" >
+                                    <h:outputLabel value="#{studenttestpaperControllerA.getStudentAnswerStrings(temTestpaper)[loop.index]}"/>
+                                </c:if>
+                                <c:if test="#{questionControllerA.isSingleSelection(question)}" >
+                                    <h:panelGrid columns="2">
+                                        <h:outputLabel value="A."/><h:outputLabel value="#{questionController.getSelectionOptionStrings(question)[0]}"/>
+                                        <h:outputLabel value="B."/><h:outputLabel value="#{questionController.getSelectionOptionStrings(question)[1]}"/>
+                                        <h:outputLabel value="C."/><h:outputLabel value="#{questionController.getSelectionOptionStrings(question)[2]}"/>
+                                        <h:outputLabel value="D."/><h:outputLabel value="#{questionController.getSelectionOptionStrings(question)[3]}"/>
+                                    </h:panelGrid>
+                                    <h:selectOneRadio  value="#{studenttestpaperControllerA.getStudentAnswerStrings(temTestpaper)[loop.index]}">
+                                        <f:selectItem itemLabel="A" itemValue="1"/>
+                                        <f:selectItem itemLabel="B" itemValue="2"/>
+                                        <f:selectItem itemLabel="C" itemValue="3"/>
+                                        <f:selectItem itemLabel="D" itemValue="4"/>  
+                                    </h:selectOneRadio>
+                                </c:if>
+
+
+                                <c:if test="#{questionControllerA.isMultiSelection(question)}" >
+                                    <h:panelGrid columns="2">
+                                        <h:outputLabel value="A."/><h:outputLabel value="#{questionController.getSelectionOptionStrings4Multi(question)[0]}"/>
+                                        <h:outputLabel value="B."/><h:outputLabel value="#{questionController.getSelectionOptionStrings4Multi(question)[1]}"/>
+                                        <h:outputLabel value="C."/><h:outputLabel value="#{questionController.getSelectionOptionStrings4Multi(question)[2]}"/>
+                                        <h:outputLabel value="D."/><h:outputLabel value="#{questionController.getSelectionOptionStrings4Multi(question)[3]}"/>
+                                        <h:outputLabel value="E."/><h:outputLabel value="#{questionController.getSelectionOptionStrings4Multi(question)[4]}"/>
+                                    </h:panelGrid>
+                                    <h:selectManyCheckbox  value="#{studenttestpaperControllerA.getSplitStrings(studenttestpaperControllerA.getStudentAnswerStrings(temTestpaper)[loop.index])}" readonly="true">
+                                        <f:selectItem itemLabel="A" itemValue="1"/>
+                                        <f:selectItem itemLabel="B" itemValue="2"/>
+                                        <f:selectItem itemLabel="C" itemValue="3"/>
+                                        <f:selectItem itemLabel="D" itemValue="4"/>  
+                                        <f:selectItem itemLabel="E" itemValue="5"/> 
+                                    </h:selectManyCheckbox>
+                                </c:if>
+                                <c:if test="#{questionControllerA.isMULTIFILL(question)}" >
+                                    <h:panelGrid columns="#{haveTest.getNumber(question)}">
+                                        <c:forEach items="#{haveTest.getMultiFillShow(studenttestpaperControllerA.getStudentAnswerStrings(temTestpaper)[loop.index])}"  var="ans" varStatus="status">
+                                            <h:outputLabel  value="#{ans}"/>
+                                        </c:forEach>
+                                    </h:panelGrid>
+                                </c:if>
+                                <h:outputLabel value="#{messages.Reference} #{messages.Answer}:#{questionControllerA.getShownQuestionAnswer(question)}"/>
+                                <!--显示题目结束 -->
+                            </c:forEach>
+                        </c:forEach>
+                    </h:panelGrid>
+                </c:forEach>
+            </h:panelGrid>
+        </h:form>
+        <!--  不能使用富文本，或者说不能使用JavaScript，因为，运行JS程序消耗内存，会导致CPU负荷太重，页面崩溃-->
+    </h:body>
+</html>
+

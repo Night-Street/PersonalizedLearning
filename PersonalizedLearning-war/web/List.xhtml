@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Question}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:form prependId="false" id="searchText">
+                <h:panelGrid columns="2">
+                    <h:inputText value="#{questionController.searchName}" immediate="true"/>
+                    <h:commandButton id="search" value="#{messages.Search}" action="#{questionController.search()}"  onclick="submitOrNot('searchText')"/>
+                </h:panelGrid>
+            </h:form>
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data">
+                <h:panelGrid columns="1">
+                    <h:panelGrid columns="1">
+                        <ez:majorSubjectKnowledgeTemplate/>                           
+                    </h:panelGrid>
+                    <h:panelGrid columns="2">
+                        <h:commandButton value="#{messages.View} #{messages.All}" actionListener="#{questionController.prepareList()}">
+                            <f:ajax render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton value="#{messages.Create}" action="#{questionController.prepareCreate}" immediate="true" />
+                    </h:panelGrid>
+                    <h:panelGrid id="mysubjectList">
+                        <h:outputLabel escape="false" value="#{messages.Empty}" rendered="#{questionController.items.rowCount == 0}"/>
+                        <h:panelGroup rendered="#{questionController.items.rowCount > 0}" >
+                            <h:outputLabel value="#{questionController.pagination.pageFirstItem + 1}..#{questionController.pagination.pageLastItem + 1}/#{questionController.pagination.itemsCount}"/>&nbsp;
+                            <h:commandLink action="#{questionController.pageOperation.previous}" value="#{messages.Previous} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasPreviousPage}"/>&nbsp;
+                            <h:commandLink action="#{questionController.pageOperation.next}" value="#{messages.Next} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasNextPage}"/>&nbsp;
+                            <h:dataTable value="#{questionController.items}" var="item" border="0"
+                                         cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" 
+                                         rules="all">
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputLabel value="#{messages.QuestionTitle}"/>
+                                    </f:facet>
+                                    <h:outputLabel value="#{item.valueinfo}" id="#{questionController.items.indexOf(item)}" escape="false" />
+                                </h:column>
+
+                            </h:dataTable>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+            <script>
+                $.get('newhtml1.html', function (response, status, xhr) {//这一行的newhtml1.html可以替换为其他的url
+                    $("#content").html(marked(response));
+                });
+            </script>
+               <script>
+            //检查元素是否不为空
+            function checkNull(element1) {
+                return document.getElementById(element1).value.trim().length===0;
+            }
+
+            function submitOrNot(element1) {
+                if (checkNull(element1)) {
+                    return false;
+                } 
+            }
+        </script>
+        </ui:define>
+    </ui:composition>
+</html>

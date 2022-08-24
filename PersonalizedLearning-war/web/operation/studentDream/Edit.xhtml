@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Dream}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <!--            <h:panelGroup id="messagePanel" layout="block">
+                            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                        </h:panelGroup>-->
+            <h:outputLabel value="#{studentDreamController.currentStudent.secondname} #{studentDreamController.currentStudent.firstname}" />
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data" id="form">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Title}" dir="RTL"/>
+                    <h:inputText  value="#{studentDreamController.selected.title}" required="true"/>
+                    <h:outputLabel value="#{messages.Dream}" dir="RTL"/>
+                    <h:inputTextarea  value="#{studentDreamController.selected.mydream}" required="true"/>
+                    <h:outputLabel value="#{messages.Realizationsteps}" dir="RTL"/>
+                    <h:inputTextarea  value="#{studentDreamController.selected.plan}" required="true"/>   
+                </h:panelGrid>
+                <h:commandLink action="#{studentDreamController.update}" value="#{messages.Save}"/>
+                <hr/>
+                <h:outputLabel value="#{messages.Subject}"/>
+                <h:selectManyListbox size="10"  value="#{studentDreamController.subjects2study}">
+                    <f:selectItems value="#{subjectControllerA.allList}" var="subject" itemValue="#{subject.id}" itemLabel="#{subject.name}"/>
+                </h:selectManyListbox>
+                <hr/>
+                <h:panelGrid columns="1">
+                    <c:forEach items="#{studentDreamController.pictures}" var="imageName">
+                        <img src="#{publicFields.fileRepository}studentDream/#{imageName}" />
+                        <h:commandButton action="#{studentDreamController.deleteFiles(imageName)}" value="#{messages.Delete}"  class="buttonStyle" 
+                                         onclick="if (!confirm('#{messages.Delete}?'))
+                                                     return false" />
+                    </c:forEach>
+                </h:panelGrid>
+                <hr/>
+                <h:outputLabel value="#{messages.Upload}#{messages.Image}"/>
+                <h:inputFile value="#{studentDreamController.picture}" validator="#{studentDreamController.fileValidate}"
+                             p:placeholder="#{messages.No}#{messages.More}#{messages.Than}#{learningresourceControllerA.maxSize}"/>
+                <hr/>
+                <h:commandLink action="#{studentDreamController.update()}" value="#{messages.Save}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

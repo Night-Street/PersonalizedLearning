@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Subject}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form">
+                <h2 id="workingIndicator" style="display: none">
+                    <h:graphicImage library="images" name="pleaseWait.gif"/>
+                </h2>
+                <h:panelGrid columns="4" >
+                    <h:inputText value="#{subjectController.searchName}" immediate="true">
+                        <f:ajax render="search"/>
+                    </h:inputText>
+                    <h:commandButton id="search" value="#{messages.Search} #{messages.Subject}" action="#{subjectController.search()}" immediate="true"
+                                     disabled="#{null==subjectController.searchName}"/>
+                    <h:commandButton value="#{messages.View} #{messages.All}" actionListener="#{subjectController.prepareList()}" immediate="true">
+                        <f:ajax render="@form"/>
+                    </h:commandButton>
+                    <h:commandButton value="#{messages.Create}" action="#{subjectController.prepareCreate}" immediate="true" />
+                </h:panelGrid>
+                <h:outputText escape="false" value="#{messages.Empty}" rendered="#{subjectController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{subjectController.items.rowCount > 0}">
+                    <h:outputText value="#{subjectController.pagination.pageFirstItem + 1}..#{subjectController.pagination.pageLastItem + 1}/#{subjectController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{subjectController.pageOperation.previous}" value="#{messages.Previous} #{subjectController.pagination.pageSize}" rendered="#{subjectController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{subjectController.pageOperation.next}" value="#{messages.Next} #{subjectController.pagination.pageSize}" rendered="#{subjectController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{subjectController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                                 columnClasses="editRemoveview">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{subjectController.prepareView}" value="#{messages.View}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{subjectController.prepareEdit}" value="#{messages.Edit}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages.Major}#{messages.Name}"/>
+                            </f:facet>
+                            <h:outputText value="#{majorsubjectControllerA.MajorNames4Subject(item)} "/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <c:if test="#{roleinfoControllerA.isSecreatary(teacherAdminController.logined)}">
+                                <h:selectOneMenu value="#{subjectController.candidateSubject}">
+                                    <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                                    <f:selectItems value="#{subjectControllerA.allList}" var="subject" itemValue="#{subject}" itemLabel="#{subject.name}"/>         
+                                </h:selectOneMenu>
+                                <h:commandLink action="#{subjectController.destroy}" value="#{messages.Destroy}"   onclick="if (!confirm('#{messages.Delete}?'))
+                                            return false" />
+                            </c:if>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

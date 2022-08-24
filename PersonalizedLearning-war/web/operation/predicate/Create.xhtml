@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Create}#{messages.Predicate}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <!-- <h:panelGroup id="messagePanel" layout="block">
+                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+             </h:panelGroup>-->
+            <h:outputScript library="javaScript" name="common.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="1">
+                    <hr/>
+                    <h:panelGrid columns="2" style="vertical-align: top">
+                        <h:outputLabel value="#{messages.Name}(#{messages.Chinese})" for="pname"  dir="RTL"/>
+                        <h:inputText p:id="pname" value="#{predicateController.selected.pname}" onkeyup="checkLength(this,#{predicateController.selected.pnameLength}, 'pnamelen', 'pname')" onfocus="this.removeAttribute('readOnly')" required="true" onblur="chekUp(this,1)"/>
+                        <h:outputLabel/>
+                        <h:outputLabel>#{messages.Can} #{messages.Input}<strong id="pnamelen" style="color: #FF0000">#{predicateController.selected.pnameLength}</strong>#{messages.Chars}</h:outputLabel>
+                        <h:outputLabel value="#{messages.Alias}(#{messages.English})" for="myalias"  dir="RTL"/>
+                        <h:inputText p:id="myalias" value="#{predicateController.selected.myalias}"  onkeyup="checkLength(this,#{predicateController.selected.myAliasLength}, 'myaliaslen', 'myalias')"  onfocus="this.removeAttribute('readOnly')"  required="true" onblur="chekUp(this,0)"/>
+                        <h:outputLabel/>
+                        <h:outputLabel>#{messages.Can} #{messages.Input}<strong id="myaliaslen" style="color: #FF0000">#{predicateController.selected.myAliasLength}</strong>#{messages.Chars}</h:outputLabel>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" style="vertical-align: top">
+                        <h:outputLabel value="#{messages.Porder}" for="porder"  dir="RTL"/>
+                        <h:selectOneMenu  id="porder" value="#{predicateController.selected.porder}"  required="true">
+                            <f:selectItem itemLabel="#{messages.Please} #{messages.Select}"/>
+                            <f:selectItems value="#{predicateControllerA.allPorder}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="#{messages.Reflexivity}" for="reflexivity"  dir="RTL"/>
+                        <h:selectOneRadio  id="reflexivity" value="#{predicateController.selected.reflexivity}" required="true" layout="lineDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                        <h:outputLabel value="#{messages.Transitivity}" for="transitivity"  dir="RTL"/>
+                        <h:selectOneRadio  id="transitivity" value="#{predicateController.selected.transitivity}" required="true" layout="lineDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                        <h:outputLabel value="#{messages.Symmetry}" for="symmetry"  dir="RTL"/>
+                        <h:selectOneRadio  id="symmetry" value="#{predicateController.selected.symmetry}" required="true" layout="lineDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" style="vertical-align: top">
+                        <h:outputLabel value="#{messages.Meaning}" for="meaning"  dir="RTL"/>
+                        <h:inputTextarea p:id="meaning" value="#{predicateController.selected.meaning}"  onkeyup="checkLength(this,#{predicateController.selected.meaningLength}, 'meaninglen', 'meaning')"  onfocus="this.removeAttribute('readOnly')"/>
+                        <h:outputLabel/>
+                        <h:outputLabel>#{messages.Can} #{messages.Input}<strong id="meaninglen" style="color: #FF0000">#{predicateController.selected.meaningLength}</strong>#{messages.Chars}</h:outputLabel>
+                        <h:outputLabel value="#{messages.Memo}" for="memo"  dir="RTL"/>
+                        <h:inputTextarea p:id="memo" value="#{predicateController.selected.memo}"  onkeyup="checkLength(this,#{predicateController.selected.memoLength}, 'memolen', 'memo')"  onfocus="this.removeAttribute('readOnly')"/>
+                        <h:outputLabel/>
+                        <h:outputLabel>#{messages.Can} #{messages.Input}<strong id="memolen" style="color: #FF0000">#{predicateController.selected.memoLength}</strong>#{messages.Chars}</h:outputLabel>
+
+                    </h:panelGrid>
+                    <h:commandButton action="#{predicateController.create}" value="#{messages.Save}" />
+                    <h:commandButton value="#{messages.Create}" action="#{predicateController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{predicateController.prepareList()}" immediate="true"/>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

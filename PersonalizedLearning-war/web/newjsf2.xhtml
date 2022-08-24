@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <h:outputScript name="jquery.js" library="javaScript"/>
+        <h:outputScript name="dropmenu.js" library="javaScript" id="smthemenewprint-css"/>
+        <h:outputStylesheet name="menu.css" library="css" id="smthemenewprint-css"/>
+        <title></title>
+    </h:head>
+    <h:body>
+        <script>
+            $(document).ready(function () {
+                $("#nav-one").dropmenu();
+            });
+        </script>
+        <table align="center" style="width:980px; background-color: #6666ff">
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <marquee scrollamount="3" behavior="ALTERNATE" scrolldelay="150">
+                                <font color="#0080FF" size="2">sdasfdasdfasfdasfd
+                                </font>
+                            </marquee>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul id="nav-one" class="dropmenu"> 
+                            <li class="haschildren"> 
+                                <a href="/acmhome/index.jsp" class="">首页  <span class="arrow"/>
+                                </a>
+                                <ul class="submenu" style="z-index: 1; display: none;"> 
+                                    <li><a href="/acmhome/index.jsp">返回首页</a></li>
+                                    <li><a href="/acmhome/heroList.do?&amp;method=showTeamList">优秀战队</a></li>
+                                    <li><a href="/acmhome/photoBox.do?&amp;method=photoList">照片</a></li>
+                                    <li><a href="/acmhome/news.do?&amp;method=newsDetail&amp;id=52a135222e4c7866012e52187ffb021f">竞赛简介</a></li>
+                                    <li><a href="/acmhome/classes.do?method=allClassUsers&amp;classID=2">集训队名单</a></li>
+                                </ul>
+                            </li>
+                            <li class="haschildren">
+                                <a href="/acmhome/login.jsp" class="">登录<span class="arrow"></span>
+                                </a>
+                                <div class="login submenu" style="z-index: 90; display: none;">
+                                    <form name="loginForm" method="post" 
+                                          action="" 
+                                          onsubmit="return validateLoginForm(this);">
+                                        <label for="userName">用户名:</label>
+                                        <input type="text" id="userName" name="userName" maxlength="16"/>
+                                        <label for="txtuser">密码:</label>
+                                        <input type="password" id="password" name="password" maxlength="16"/>
+                                        <label for="txtuser">验证码:</label>
+                                        <input type="text" id="validCode" name="validCode" 
+                                               maxlength="4" style="width:50px"/>
+                                        <div style="width:140px">
+                                            <input type="submit" class="button" value="登录"/>&nbsp;&nbsp;
+                                        </div>     
+                                    </form>
+                                    <script type="text/javascript" language="JavaScript">
+                                        <!--
+                                      var focusControl = document.forms["loginForm"].elements["userName"];
+
+                                        if (focusControl.type != "hidden" && !focusControl.disabled) {
+                                            focusControl.focus();
+                                        }
+                                        // -->
+                                    </script>
+
+
+                                    <ul>
+                                        <li>用户注册</li>
+                                        <li>找回密码</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="right">
+                                <a href="/acmhome/problemdetail.do;jsessionid=64BBC22757E4C099A7BE4FD1DBFF44AD?&amp;method=randProblem" style="float:left;padding:8px 0 0 8px;" title="随机选题">
+                                    <h:graphicImage name="bg.jpg" library="images"/>
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </h:body>
+</html>
+

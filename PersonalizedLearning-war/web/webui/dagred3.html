@@ -1,0 +1,16 @@
+/* Example */
+digraph {
+    /* Note: HTML labels do not work in IE, which lacks support for <foreignObject> tags. */
+    node [rx=5 ry=5 labelStyle="font: 300 14px 'Helvetica Neue', Helvetica"]
+    edge [labelStyle="font: 300 14px 'Helvetica Neue', Helvetica"]
+    A [labelType="html"
+       label="A <span style='font-size:32px'>Big</span> <span style='color:red;'>HTML</span> Source!"];
+    C;
+    E [label="Bold Red Sink" style="fill: #f77; font-weight: bold"];
+    A -> B -> C;
+    B -> D [label="A blue label" labelStyle="fill: #55f; font-weight: bold;"];
+    D -> E [label="A thick red edge" style="stroke: #f77; stroke-width: 2px;" arrowheadStyle="fill: #f77"];
+    C -> E;
+    A -> D [labelType="html" label="A multi-rank <span style='color:blue;'>HTML</span> edge!"];
+}
+  

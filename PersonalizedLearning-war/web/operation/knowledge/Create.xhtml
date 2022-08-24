@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Knowledge}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h:outputScript library="javaScript" name="graphlib-dot.js" target="head"/>
+            <h:outputScript library="javaScript" name="dagre-d3.js" target="head"/>
+            <h:outputStylesheet library="css" name="dagre.css"/>
+            <h:form styleClass="jsfcrud_list_form" prependId="false" id="myForm">
+                <h:panelGrid columns="3">
+                    <h:inputText value="#{knowledgeController.searchName}" id="searchText"/>
+                    <h:commandButton id="search" value="#{messages.Search} #{messages.Knowledge}" action="#{knowledgeController.search()}" 
+                                     onclick="submitOrNot('searchText')"/>
+                </h:panelGrid>
+            </h:form>
+            <h:form styleClass="jsfcrud_list_form" prependId="false" enctype="multipart/form-data" id="myForm1">
+                <h:panelGrid columns="1">
+                    <em:majorSubjectTemplate/>
+                </h:panelGrid>
+                <hr/>
+                <!--<embed src="/PersonalizedLearning-war/faces/javax.faces.resource/images/knowledge/1.svg"  type="image/svg+xml"/>-->
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="#{messages.Name}"  dir="RTL"/>
+                    <h:inputText id="name" value="#{knowledgeController.selected.name}" title="#{messages.Name}" required="true" 
+                                 requiredMessage="#{messages.Name}" maxlength="32"/>
+                    <h:outputLabel value="#{messages.Detail}"  dir="RTL"/>
+                                        <!--<h:outputLabel>#{messages.KnowledgeInssert}"</h:outputLabel>-->
+                    <h:inputTextarea id="detail"  value="#{knowledgeController.selected.details}"  required="true"
+                                     p:placeholer="#{messages.Nomorethan}10240" onblur="" />
+                    <h:outputLabel value="#{messages.Level}" dir="RTL"/>
+                    <h:selectOneMenu id="levelnumber" value="#{knowledgeController.selected.levelnumber}" required="true">
+                        <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                        <f:selectItems value="#{knowledgeController.levelMap.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}"/>
+                    </h:selectOneMenu>
+                    <!--查重需要大数据和深度学习模型支持，所以注释掉了     查是否重复开始
+                    <h2 id="workingIndicator" style="display: none">
+                        <h:graphicImage library="images" name="pleaseWait.gif"/>
+                    </h2>
+                    <h:outputLabel value="#{messages.Similar} #{messages.Knowledge}"/>
+                    <h:dataTable id="simiKnowledge" value="#{knowledgeController.getSimilarKnowledges()}" var="item" 
+                                 border="0" cellpadding="2" cellspacing="0" 
+                                 rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                                 columnClasses="editRemoveview" 
+                                 rendered="#{knowledgeController.showSimilarKnowledge()}">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Name}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Detail}"/>
+                            </f:facet>
+                            <h:inputTextarea value="#{item.details}" readonly="true"/>
+                        </h:column>
+                    </h:dataTable>
+                    -->
+                    <h:commandButton id="create" action="#{knowledgeController.create()}" value="#{messages.Next}#{messages.Step}"/>
+                </h:panelGrid>
+                <hr/>
+            </h:form>
+            <h:inputHidden p:id="inputGraph" p:name="inputGraph" value="#{knowledgeController.getKnowledgeRelationship4dagre(knowledgeController.selected)}" />
+            <svg width="960" height="600"> <g/></svg>
+            <script>
+                var svg = d3.select("svg"),
+                        inner = d3.select("svg g"),
+                        zoom = d3.zoom().on("zoom", function () {
+                    inner.attr("transform", d3.event.transform);
+                });
+                svg.call(zoom);
+
+                // Create and configure the renderer
+                var render = dagreD3.render();
+
+                var g;
+
+                var inputGraph = document.querySelector("#inputGraph");
+                try {
+                    g = graphlibDot.read(inputGraph.value);
+                } catch (e) {
+                    inputGraph.setAttribute("class", "error");
+                    throw e;
+                }
+
+                g.graph().transition = function (selection) {
+                    return selection.transition().duration(500);
+                };
+
+                // Render the graph into svg g
+                d3.select("svg g").call(render, g);
+            </script>
+             <script>
+            //检查元素是否不为空
+            function checkNull(element1) {
+                return document.getElementById(element1).value.trim().length===0;
+            }
+
+            function submitOrNot(element1) {
+                if (checkNull(element1)) {
+                    return false;
+                } 
+            }
+        </script>
+        </ui:define>
+    </ui:composition>
+</html>

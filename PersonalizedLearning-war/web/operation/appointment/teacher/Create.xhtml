@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Message}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:form prependId="false">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Message}"/>
+                    <h:inputTextarea value="#{appointmentmessageController.selected.message}" />
+                    <h:outputLabel value="#{messages.Start}#{messages.Time}"/>
+                    <h:inputText p:type="datetime-local" value="#{appointmentController.startTime}" converter="#{appointmentController.dateTimeConverter}">
+                    </h:inputText>
+                    <h:outputLabel value="#{messages.End}#{messages.Time}"/>
+                    <h:inputText p:type="datetime-local" value="#{appointmentController.endTime}"  converter="#{appointmentController.dateTimeConverter}">
+                    </h:inputText>
+                    <h:outputLabel value="#{messages.Time} #{messages.Interval}(#{messages.Minute})"/>
+                    <h:inputText p:type="number" value="#{appointmentController.interval}"/>
+                    <h:outputLabel value="#{messages.Max}#{messages.Service} #{messages.Number}"/>
+                    <h:inputText p:type="number" value="#{appointmentController.parallelNumber}"/>                
+                </h:panelGrid><hr></hr>
+                <h:panelGrid columns="2">
+                    <h:commandButton value="#{messages.Save}" action="#{appointmentController.view()}"/>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

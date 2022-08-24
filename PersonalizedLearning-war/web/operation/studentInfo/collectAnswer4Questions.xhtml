@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>#{messages.Test}</title>
+        <script src="https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js"></script>
+    </h:head>
+    <h:body>
+        <h:outputLabel style="font-size: 16px;color: red;" id="promptMsg" value="#{questionController.promptMsg}"/>
+        <h:form  styleClass="jsfcrud_list_form" enctype="multipart/form-data">
+            <c:forEach items="#{questionController.questions}" var="question" varStatus="status">
+                <h:outputLabel value="#{questionController.loop()}" style="display:none"></h:outputLabel>
+                <h:panelGrid columns="1" style=" margin-top: 20px;">
+                    <!--题干-->
+                    <h:outputLabel value="#{status.index + 1}.#{question.valueinfo}"/>
+                    <!--收集答案-->
+                    <c:if test="#{questionControllerA.isSingleFill(question)}" >
+                        <h:inputText  value="#{questionController.allAnswers[status.index]}" required="true" style="width: 100px"/>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isJudgment(question)}" >
+                        <h:selectOneRadio  value="#{questionController.allAnswers[status.index]}" required="true" >
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSingleSelection(question)}" >
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="A."/><h:outputLabel value="#{questionController.selections[0]}"/>
+                            <h:outputLabel value="B."/><h:outputLabel value="#{questionController.selections[1]}"/>
+                            <h:outputLabel value="C."/><h:outputLabel value="#{questionController.selections[2]}"/>
+                            <h:outputLabel value="D."/><h:outputLabel value="#{questionController.selections[3]}"/>
+                        </h:panelGrid>
+                        <h:selectOneRadio  value="#{questionController.allAnswers[status.index]}" required="true">
+                            <f:selectItem itemLabel="A" itemValue="1"/>
+                            <f:selectItem itemLabel="B" itemValue="2"/>
+                            <f:selectItem itemLabel="C" itemValue="3"/>
+                            <f:selectItem itemLabel="D" itemValue="4"/>  
+                        </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isMultiSelection(question)}" >
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="A."/><h:outputLabel value="#{questionController.selections[0]}"/>
+                            <h:outputLabel value="B."/><h:outputLabel value="#{questionController.selections[1]}"/>
+                            <h:outputLabel value="C."/><h:outputLabel value="#{questionController.selections[2]}"/>
+                            <h:outputLabel value="D."/><h:outputLabel value="#{questionController.selections[3]}"/>
+                        </h:panelGrid>
+                        <h:selectManyCheckbox value="#{questionController.allAnswers[status.index]}" required="true">
+                            <f:selectItem itemLabel="A" itemValue="1"/>
+                            <f:selectItem itemLabel="B" itemValue="2"/>
+                            <f:selectItem itemLabel="C" itemValue="3"/>
+                            <f:selectItem itemLabel="D" itemValue="4"/>  
+                        </h:selectManyCheckbox>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSimpleAnswer(question)}" >
+                        <h:inputTextarea  cols="20" rows="3" value="#{questionController.allAnswers[status.index]}" required="true" p:id="myeditor"/>
+                    </c:if>
+                </h:panelGrid>
+            </c:forEach>
+            <h:panelGrid columns="2" id="btn">
+                <h:commandButton value="#{messages.Submit}" action="#{questionController.correctAnswer()}" disabled="#{questionController.btnFlag}"></h:commandButton>
+                <c:if test="#{questionController.btnFlag}">
+                    <h:commandButton value="返回继续学习" action="#{questionController.getLearningResourcePage()}"></h:commandButton>
+                </c:if>
+            </h:panelGrid>
+        </h:form> 
+        <script>
+            window.onload = function () {
+                var divs = document.getElementsByTagName("textarea");
+                [].forEach.call(divs, function (div) {
+                    CKEDITOR.replace(div, {
+                        extraPlugins: 'mathjax',
+                        mathJaxLib: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML',
+                        height: 120
+                    });
+                });
+            };
+        </script>
+    </h:body>
+</html>
+

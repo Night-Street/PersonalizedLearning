@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{bundle.CreateContributorsTitle}"/>
+        </ui:define>
+        <ui:define name="body">
+<!--            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateContributorsLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{contributorsController.selected.id}" title="#{bundle.CreateContributorsTitle_id}" required="true" requiredMessage="#{bundle.CreateContributorsRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateContributorsLabel_CName}" for="CName" />
+                    <h:inputText id="CName" value="#{contributorsController.selected.CName}" title="#{bundle.CreateContributorsTitle_CName}" />
+                    <h:outputLabel value="#{bundle.CreateContributorsLabel_CDate}" for="CDate" />
+                    <h:inputText id="CDate" value="#{contributorsController.selected.CDate}" title="#{bundle.CreateContributorsTitle_CDate}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateContributorsLabel_CTask}" for="CTask" />
+                    <h:inputText id="CTask" value="#{contributorsController.selected.CTask}" title="#{bundle.CreateContributorsTitle_CTask}" />
+                </h:panelGrid>
+                <br />
+                <h:commandLink id="link1" action="#{contributorsController.create}" value="#{bundle.CreateContributorsSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink id="link2"  action="#{contributorsController.prepareList}" value="#{bundle.CreateContributorsShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link id="link3"  outcome="/index" value="#{bundle.CreateContributorsIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

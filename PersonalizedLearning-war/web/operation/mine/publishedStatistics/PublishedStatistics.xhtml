@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Question}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form" enctype="multipart/form-data" prependId="false">
+                <h:outputScript name="jquery.min.js" library="javaScript" target="head"/>
+                <h:outputScript name="marked.min.js" library="javaScript" target="head"/>
+                <h:outputLabel escape="false" value="#{messages.Empty}" rendered="#{questionController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{questionController.items.rowCount > 0}" >
+                    <h:outputLabel value="#{questionController.pagination.pageFirstItem + 1}..#{questionController.pagination.pageLastItem + 1}/#{questionController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{questionController.pageOperation.previous}" value="#{messages.Previous} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{questionController.pageOperation.next}" value="#{messages.Next} #{questionController.pagination.pageSize}" rendered="#{questionController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{questionController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" >
+                        <!--目前先把从这个页面进入编辑、查看、删除等内容注释，存在问题-->
+                        <!--<h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{myPublishedQuestionController.prepareView()}" value="#{messages.View}"/>
+                            &nbsp;
+                            <h:commandLink action="#{myPublishedQuestionController.prepareEdit()}" value="#{messages.Edit}" />
+                            &nbsp;
+                            <h:commandLink action="#{myPublishedQuestionController.destroy()}" value="#{messages.Destroy}" onclick="JSalert()"/>
+                        </h:column>
+                        -->
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.QuestionTitle}"/>
+                            </f:facet>
+                            <h:outputText escape="false" value="#{item.valueinfo}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Selection}" />
+                            </f:facet>
+                            <h:inputTextarea readonly="true"  value="#{item.getSecondContenItems()}" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Type}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{questionControllerA.getTypeString(item.type)}"/>
+                        </h:column>                                    
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Answer}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{questionControllerA.getAnswer(item)}"/>
+                        </h:column>                                    
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Score}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.score}"/>
+                        </h:column>   
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Analysis}"/>
+                            </f:facet>
+                            <h:outputText escape="false"  value="#{item.analysis}" />
+                        </h:column>   
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Knowledge}"/>
+                            </f:facet>
+                            #{item.knowledgeId.name}
+                            <!--<h:commandLink action ="#{knowledgeController.prepareView(item.knowledgeId)}" value="#{item.knowledgeId.name}"/>-->
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Subject}"/>
+                            </f:facet>
+                            #{item.knowledgeId.subjectId.name}
+                            <!--<h:commandLink action ="#{knowledgeController.prepareView(item.knowledgeId)}" value="#{item.knowledgeId.name}"/>-->
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

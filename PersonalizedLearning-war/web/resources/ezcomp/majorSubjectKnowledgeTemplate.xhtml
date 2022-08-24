@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGrid columns="2" >
+            <h:outputLabel value="#{messages.Major}"/>
+            <h:selectOneMenu value="#{majorController.selected}"  immediate="true" required="true" requiredMessage="#{messages.Please}#{messages.Select}">
+                <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                <f:selectItems value="#{majorControllerA.allList}"/>
+                <f:ajax render="MajorSubjectCon"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="#{messages.Subject}" />
+            <h:selectOneMenu value="#{subjectController.selected}" id="MajorSubjectCon" immediate="true" required="true"  requiredMessage="#{messages.Please}#{messages.Select}">
+                <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                <f:selectItems value="#{subjectController.selectedSubjects4Major}"/>
+                <f:ajax render="knowledge"/>
+            </h:selectOneMenu>
+            <h:outputLabel value="#{messages.Knowledge}"/>
+            <h:selectOneMenu value="#{knowledgeController.selected}" id="knowledge" immediate="true" requiredMessage="#{messages.Please}#{messages.Select}">
+                <f:selectItem  itemLabel="#{messages.Please}#{messages.Select}"/> 
+                <f:selectItems value="#{knowledgeController.getKnowledgeList4Subject(1,null)}"/>
+                <f:ajax render="@form"/>
+            </h:selectOneMenu>
+        </h:panelGrid>
+    </cc:implementation>
+</html>

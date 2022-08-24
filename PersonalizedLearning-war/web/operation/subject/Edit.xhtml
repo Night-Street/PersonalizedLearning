@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Subject}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Name}"  />
+                    <h:inputText value="#{subjectController.selected.name}" title="#{messages.Name}" required="true" requiredMessage="#{messages.Name}"/>
+                </h:panelGrid>
+
+                <h:panelGroup > 
+                    <h:panelGroup style="width: 45%;float: left;">
+                        <h:outputLabel value="#{messages.Belong}#{messages.Following}#{messages.Major}"/><br/>
+                        <h:selectManyListbox value="#{majorsubjectController.selectedMajors}" size="8" >
+                            <f:selectItems value="#{majorControllerA.candidateMajors}"/>
+                            <f:ajax render="id4Transfer"/>
+                        </h:selectManyListbox>
+                    </h:panelGroup>
+                    <h:panelGroup style="width: 45%;float: left;">
+                        <h:outputLabel value="#{messages.Predecessornode}#{messages.Subject}"/><br/>
+                        <h:selectManyListbox value="#{subjectController.selectedParentsSubjects}" size="8" >
+                            <f:selectItems value="#{subjectController.getSubjectList(0)}"/>
+                            <f:ajax render="id4Transfer"/>
+                        </h:selectManyListbox>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGrid columns="3">
+                    <h:commandButton action="#{subjectController.update()}" value="#{messages.Save}" />
+                   <!-- <h:commandButton value="#{messages.Create}" action="#{subjectController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{subjectController.prepareList()}" immediate="true"/>
+                   -->
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

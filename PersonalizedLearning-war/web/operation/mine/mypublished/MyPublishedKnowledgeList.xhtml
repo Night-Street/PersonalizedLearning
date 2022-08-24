@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Knowledge}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputStylesheet library="css" name="dagre.css"/>
+            <h:form styleClass="jsfcrud_list_form"  prependId="false">
+               <!-- <h:commandButton action="#{knowledgeController.renameStartAndEnd()}" value="renameStart"/>-->
+                <h:outputLabel escape="false" value="#{messages.Empty}" rendered="#{myPublishedKnowledgeController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{myPublishedKnowledgeController.items.rowCount > 0}" >
+                    <h:outputLabel value="#{myPublishedKnowledgeController.pagination.pageFirstItem + 1}..#{myPublishedKnowledgeController.pagination.pageLastItem + 1}/#{myPublishedKnowledgeController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{myPublishedKnowledgeController.pageOperation.previous}" value="#{messages.Previous} #{myPublishedKnowledgeController.pagination.pageSize}" rendered="#{myPublishedKnowledgeController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{myPublishedKnowledgeController.pageOperation.next}" value="#{messages.Next} #{myPublishedKnowledgeController.pagination.pageSize}" rendered="#{myPublishedKnowledgeController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{myPublishedKnowledgeController.items}" id="knowledgeTbl" var="item" border="0" cellpadding="2" cellspacing="0" 
+                                 rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" 
+                                 columnClasses="editRemoveview">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{myPublishedKnowledgeController.prepareView()}" value="#{messages.View}"/>
+                            <h:outputLabel value=" "/>
+                            <h:commandLink action="#{myPublishedKnowledgeController.prepareEdit()}" value="#{messages.Edit}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Name}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Detail}"/>
+                            </f:facet>
+                            <h:outputText escape="false"  value="#{item.details}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Question}#{messages.Number}"/>
+                            </f:facet>
+                            <h:commandLink action ="#{questionController.prepareList(item.getQuestionSet())}" value="#{item.getQuestionSet().size()}" rendered="#{item.getQuestionSet().size()>0}"/>
+                            <h:outputLabel value="0" rendered="#{item.getQuestionSet().size()==0}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Subject}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.subjectId.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="点赞数"/>
+                            </f:facet>
+                            <h:outputLabel value="#{item.praiseCnt}"></h:outputLabel>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputLabel value="#{messages.Createdby} #{messages.Name1}"/>
+                            </f:facet>
+                            <h:outputLabel value="#{knowledgeController.showedName(item)}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Student}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form" >
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{messages.Account}"/>
+                    <h:outputText value="#{studentController.selected.name}" title="#{messages.Account}"/>
+                    <h:outputText value="#{messages.Firstname}"/>
+                    <h:outputText value="#{studentController.selected.firstname}" title="#{messages.Firstname}"/>
+                    <h:outputText value="#{messages.Secondname}"/>
+                    <h:outputText value="#{studentController.selected.secondname}" title="#{messages.Secondname}"/>
+                    <h:outputText value="#{messages.Email}"/>
+                    <h:outputText value="#{studentController.selected.email}" title="#{messages.Email}"/>
+                    <h:outputText value="#{messages.Phone}"/>
+                    <h:outputText value="#{studentController.selected.phone}" title="#{messages.Phone}"/>
+                    <h:commandButton value="#{messages.Create}" action="#{studentController.prepareCreate}" immediate="true" />
+                    <h:commandButton value="#{messages.View} #{messages.All}" action="#{studentController.prepareList()}" immediate="true"/>
+                    <!--<h:commandButton value="#{messages.Edit}" action="#{studentController.prepareEdit}"/>-->
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

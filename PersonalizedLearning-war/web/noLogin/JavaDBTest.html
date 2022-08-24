@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+    <!--
+    
+        DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+    
+        Copyright (c) 2010-2017 Oracle and/or its affiliates. All rights reserved.
+    
+        The contents of this file are subject to the terms of either the GNU
+        General Public License Version 2 only ("GPL") or the Common Development
+        and Distribution License("CDDL") (collectively, the "License").  You
+        may not use this file except in compliance with the License.  You can
+        obtain a copy of the License at
+        https://oss.oracle.com/licenses/CDDL+GPL-1.1
+        or LICENSE.txt.  See the License for the specific
+        language governing permissions and limitations under the License.
+    
+        When distributing the software, include this License Header Notice in each
+        file and include the License file at LICENSE.txt.
+    
+        GPL Classpath Exception:
+        Oracle designates this particular file as subject to the "Classpath"
+        exception as provided by Oracle in the GPL Version 2 section of the License
+        file that accompanied this code.
+    
+        Modifications:
+        If applicable, add the following below the License Header, with the fields
+        enclosed by brackets [] replaced by your own identifying information:
+        "Portions Copyright [year] [name of copyright owner]"
+    
+        Contributor(s):
+        If you wish your version of this file to be governed by only the CDDL or
+        only the GPL Version 2, indicate your decision by adding "[Contributor]
+        elects to include this software in this distribution under the [CDDL or GPL
+        Version 2] license."  If you don't indicate a single choice of license, a
+        recipient has the option to distribute your version of this file under
+        either the CDDL, the GPL Version 2 or to extend the choice of license to
+        its licensees as provided above.  However, if you add GPL Version 2 code
+        and therefore, elected the GPL Version 2 license, then the option applies
+        only if the new code is made subject to such option by the copyright
+        holder.
+    
+    -->
+
+    <head>
+        <style type="text/css">
+            body{margin-top:0}
+            body,td,p,div,span,a,ul,ul li, ol, ol li, ol li b, dl,h1,h2,h3,h4,h5,h6,li {font-family:geneva,helvetica,arial,"lucida sans",sans-serif; font-size:10pt}
+            h1 {font-size:18pt}
+            h2 {font-size:14pt}
+            h3 {font-size:12pt}
+            code,kbd,tt,pre {font-family:monaco,courier,"courier new"; font-size:10pt;}
+            li {padding-bottom: 8px}
+            p.copy, p.copy a {font-family:geneva,helvetica,arial,"lucida sans",sans-serif; font-size:8pt}
+            p.copy {text-align: center}
+            table.grey1,tr.grey1,td.grey1{background:#f1f1f1}
+            th {color:#ffffff; font-family:geneva,helvetica,arial,"lucida sans",sans-serif; font-size:12pt}
+            td.insidehead {font-weight:bold; background:white; text-align: left;}
+            a {text-decoration:none; color:#3E6B8A}
+            a:visited{color:#917E9C}
+            a:hover {text-decoration:underline}
+        </style>
+        <title>MyPages</title>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    </head>
+    <body bgcolor="#ffffff" text="#000000" link="#594fbf" vlink="#1005fb" alink="#333366">
+        <h1>请完成下面3题。完成后，把数据库和项目文件都打包压缩，文件名为：s学号名＋（1，2，3），分别表示第1，2和3对应的压缩文件。
+        </h1>
+        <h1>1.</h1>
+        请新建数据库，名称为SCHOOLNAMESTUDENTNAME,用户名为STUDENTNAME，密码为STUDENTNAME(4分)。<br>
+        该数据库包括3个表： STUDENTNAMEstudent, STUDENTNAMEsubject, STUDENTNAMEscore(2分)。
+        <ul>
+            <li>表STUDENTNAMEstudent的结构为包括3个字段：第一个字段名称为id，类型为整型，约束为主键；第二个字段名称为name，类型为变长字符，最长为20；第三个字段名称为password，类型为变长字符，最长为100(2分)。</li> 
+            <li>表STUDENTNAMEsubject的结构为包括2个字段：第一个字段名称为id，类型为整型，约束为主键；第二个字段名称为name，类型为变长字符，最长为20(2分)。</li> 
+            <li>STUDENTNAMEscore结构为包括4个字段：第一个字段名称为id，类型为整型，约束为主键；第二个字段名称为student，类型为整型，约束为引用表STUDENTNAMEstudent的外键；第三个字段名称为subject，类型为整型，约束为引用表STUDENTNAMEsubject的外键；第四个字段名称为score，类型为整型(2分)。</li> 
+        </ul>
+        该数据库中这3个表包含的记录如下：<br>
+        <ul>
+            <li>表STUDENTNAMEstudent包含2条记录，对应于id,name,password这3个字段的值分别为：1,"STUDENTNAME", "STUDENTNAME"的加密内容；2，"zhangsan"，"zhangsan"的加密内容(4分)。</li>
+            <li>表STUDENTNAMEsubject包含2条记录，对应于id,name这2个字段的值分别为：1,"database";2,"operatingSystem"(2分)</li>
+            <li>STUDENTNAMEscore包含2条记录，对应于id,student,subject,score这4个字段的值分别为：1,1,1,87;2,1,2,86;3,2,1,85;4,2,2,88(2分)。</li>
+        </ul>
+
+        <h1>2.</h1>
+        使用Swing和MVC模式，设计一个原型系统，实现如下功能：
+        <ul>
+            <li>登录功能：能根据表STUDENTNAMEstudent中的记录，实现登录用户的合法性检查(10分)；</li>
+            <li>查看成绩功能：能根据登录用户的信息，通过下拉列表框，选择STUDENTNAMEsubject中的课程，从而实现查看且只能查看其本人在表STUDENTNAMEscore中的对应成绩(10分)。</li>
+        </ul>
+        <h1>3.</h1>
+        使用JSF与MVC模式，设计一个以网页为视图的原型系统，以实现对STUDENTNAMEstudent，STUDENTNAMEsubject，STUDENTNAMEscore中数据的增删改查（2分）要求EJB对应的连接池名称为STUDENTNAMEpool，JNDI名称为jdbc/STUDENTNAME（2分）。
+        另外，需要实现如下功能：<br>
+        <ul>
+            <li>在网页上不显示各个表的id值（2分）；
+            <li>在网页上的表格表头用中文显示各字段名称（2分）；
+            <li>在STUDENTNAMEscore对应的网页上，显示STUDENTNAMEstudent中的name值，而不是id值；同理，显示STUDENTNAMEsubject中的name值，而不是id值（2分）；
+            <li>使用JSF的模板生成主页框架，通过超链接实现类似于菜单的功能，并把所有的链接网页显示在content部分（5分）；
+            <li>用控制器实现超链接的设置与跳转（5分）。
+        </ul>
+
+    </body>
+</html>

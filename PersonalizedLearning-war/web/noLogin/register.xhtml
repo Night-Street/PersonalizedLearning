@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="login.css"/>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{publicFields.icon}"/>
+        <h:outputScript library="javaScript" name="checkPassword.js"/>
+        <title>#{messages.Login}</title>
+    </h:head>
+
+    <h:body>
+        <div class ="main" >
+            <div class ="main_body">
+                <div class ="logo" >
+                    <h:graphicImage library="images" name="logo.gif"/>
+                </div>
+                <div class ="loingcontent" align="center">
+                    <h:panelGroup>
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table" styleClass="message"/>
+                    </h:panelGroup>
+                    <h:form styleClass="jsfcrud_list_form" id="myForm1">  
+                        <h:panelGrid columns="3" rendered="#{checkLogin.rendered}" >
+                            <h:outputLabel  value="#{messages.Account}"/>
+                            <h:inputText  id="userid" value="#{checkLogin.user.name}" required="true"  requiredMessage="#{messages.Name}" />
+                            <h:outputLabel/>
+                            <h:outputLabel  value="#{messages.Password}"/>
+                            <h:inputSecret  p:id="password" value="#{checkLogin.user.password}" required="true" requiredMessage="#{messages.Password}"/>
+                            <h:outputLabel/>
+                            <h:outputLabel  value="#{messages.Password}"/>
+                            <h:inputSecret  p:id="secondPassword"  required="true" requiredMessage="#{messages.Password}" onblur=""/>
+                            <h:outputLabel/>
+                            <h:outputLabel value="#{messages.Validate}#{messages.Code}"/>
+                            <h:inputText id="validatorCode"  value="#{checkLogin.rand}" required="true"  requiredMessage="#{messages.InputValCode}"/>
+                            <img src="../../resources/images/image.jsp"/>
+                            <h:outputLabel value="#{messages.Role}"/>
+                            <h:selectOneMenu id="selectRole" value="#{checkLogin.roleinfo}"  required="true">
+                                <f:selectItem itemLabel="#{messages.Please} #{messages.Select}"/>
+                                <f:selectItems value="#{roleinfoControllerA.allSet}" var="role" itemLabel="#{messages.getString(role.rolename)}"/>
+                                <f:ajax render="loginButton"/>
+                            </h:selectOneMenu>
+                            <h:outputLabel/>
+                            <h:outputLabel/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" id="loginButton" >
+                            <c:if test="#{checkLogin.roleinfo!=null}" >
+                                <h:commandButton id="mySubmit" action="#{checkLogin.registerSave()}" value="#{messages.Register}" disabled="#{!checkLogin.loginButtonSwitch.status}"/>
+                            </c:if>
+                        </h:panelGrid>
+                        <h:outputLabel  rendered="#{!checkLogin.rendered}" >#{messages.TryFaild}</h:outputLabel>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</ui:composition>

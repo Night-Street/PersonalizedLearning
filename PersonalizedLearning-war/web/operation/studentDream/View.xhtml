@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Dream}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <!--            <h:panelGroup id="messagePanel" layout="block">
+                            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                        </h:panelGroup>-->
+            <h:outputLabel value="#{studentDreamController.currentStudent.secondname} #{studentDreamController.currentStudent.firstname}" />
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel  value="#{messages.Title}" dir="RTL"/>
+                    <h:outputText escape="false"  value="#{studentDreamController.selected.title}"/>
+                    <h:outputLabel value="#{messages.Dream}" dir="RTL"/>
+                    <h:outputText escape="false"  value="#{studentDreamController.selected.mydream}"/>
+                    <h:outputLabel value="#{messages.Realizationsteps}" dir="RTL"/>
+                    <h:outputText escape="false"  value="#{studentDreamController.selected.plan}" />   
+                </h:panelGrid>
+                <hr/>
+                 <h:outputLabel value="#{messages.Subject}"/>
+                 <h:selectManyListbox size="10" value="#{studentDreamController.subjects2study}" readonly="true">
+                    <f:selectItems value="#{subjectControllerA.allList}" var="subject" itemValue="#{subject.id}" itemLabel="#{subject.name}"/>
+                </h:selectManyListbox>
+                <hr/>
+                <c:forEach items="#{studentDreamController.pictures}" var="imageName">
+                    <img src="#{publicFields.fileRepository}studentDream/#{imageName}" />
+                </c:forEach>
+                <h:commandLink action="#{studentDreamController.prepareEdit()}" value="#{messages.Edit}"/>&nbsp;&nbsp;
+                <h:commandLink action="#{studentDreamController.prepareCreate()}" value="#{messages.Create}"/>&nbsp;&nbsp;
+                <h:commandLink action="#{studentDreamController.prepareList()}" value="#{messages.View} #{messages.All}"/>
+                <br/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

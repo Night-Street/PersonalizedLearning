@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Teacher} #{messages.Information}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="2" rendered="#{teacherAdminController.canUpdate}">
+                    <h:outputText value="#{messages.Account}"/>
+                    <h:outputText value="#{teacherAdminController.logined.name}"/>
+                    <h:outputText value="#{messages.Firstname}"/>
+                    <h:inputText value="#{teacherAdminController.logined.firstname}"/>
+                    <h:outputText value="#{messages.Secondname}"/>
+                    <h:inputText value="#{teacherAdminController.logined.secondname}"/>
+                    <h:outputText value="#{messages.Email}"/>
+                    <h:inputText value="#{teacherAdminController.logined.email}"/>
+                    <h:outputText value="#{messages.Phone}"/>
+                    <h:inputText value="#{teacherAdminController.logined.phone}">
+                        <f:validateRegex for="telephone" pattern="((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)" />
+                    </h:inputText>
+                    
+                    <h:commandButton action="#{teacherAdminController.personalUpdate}" value="#{messages.Save}"/>
+                    <h:commandButton action="#{teacherAdminController.naviChangePassword()}" value="#{messages.Update}#{messages.Password}"
+                                     immediate="true"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" rendered="#{!teacherAdminController.canUpdate}">
+                    <h:outputText value="#{messages.Account}"/>
+                    <h:outputText value="#{teacherAdminController.logined.name}"/>
+                    <h:outputText value="#{messages.Firstname}"/>
+                    <h:outputText value="#{teacherAdminController.logined.firstname}"/>
+                    <h:outputText value="#{messages.Secondname}"/>
+                    <h:outputText value="#{teacherAdminController.logined.secondname}"/>
+                    <h:outputText value="#{messages.Email}"/>
+                    <h:outputText value="#{teacherAdminController.logined.email}"/>
+                    <h:outputText value="#{messages.Phone}"/>
+                    <h:outputText value="#{teacherAdminController.logined.phone}"/>
+                    <h:commandLink action="#{teacherAdminController.setUpdate}" value="#{messages.Edit}"/>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
+

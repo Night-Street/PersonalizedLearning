@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{bundle.EditPartofspeechTitle}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+<!--            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditPartofspeechLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{partofspeechController.selected.id}" title="#{bundle.EditPartofspeechTitle_id}" required="true" requiredMessage="#{bundle.EditPartofspeechRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.EditPartofspeechLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{partofspeechController.selected.name}" title="#{bundle.EditPartofspeechTitle_name}" />
+                    <h:outputLabel value="#{bundle.EditPartofspeechLabel_chinese}" for="chinese" />
+                    <h:inputText id="chinese" value="#{partofspeechController.selected.chinese}" title="#{bundle.EditPartofspeechTitle_chinese}" />
+                    <h:outputLabel value="#{bundle.EditPartofspeechLabel_memo}" for="memo" />
+                    <h:inputText id="memo" value="#{partofspeechController.selected.memo}" title="#{bundle.EditPartofspeechTitle_memo}" />
+                </h:panelGrid>
+                <h:commandLink id="link1"  action="#{partofspeechController.update}" value="#{bundle.EditPartofspeechSaveLink}"/>
+                <br />
+                <br />
+                <h:link id="link2"  outcome="View" value="#{bundle.EditPartofspeechViewLink}"/>
+                <br />
+                <h:commandLink id="link3"  action="#{partofspeechController.prepareList}" value="#{bundle.EditPartofspeechShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link  id="link4" outcome="/index" value="#{bundle.EditPartofspeechIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

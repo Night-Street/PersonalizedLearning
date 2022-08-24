@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>#{messages.Wrong}#{messages.Question}</title>
+    </h:head>
+    <h:body>
+        <h:outputScript library="javaScript" name="remoteMathJax.js" target="head"/>
+        <h:form  styleClass="jsfcrud_list_form" enctype="multipart/form-data">
+            <h:outputScript library="javaScript" name="ckeditor5-build-classic/ckeditor.js" target="head"/>
+                <!--有错题-->
+                <h:outputLabel value="#{messages.Wrong}#{messages.Question}:#{haveTest.getIndex()+1}/#{haveTest.wrongQuestionListSize()}"/>
+                <hr/>
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="#{messages.Createdby} #{messages.Name1}#{questionController.showedName(haveTest.wrongQuestion)}"/>
+                    <hr/>
+                    <h:outputLabel value="#{haveTest.questionType}"/>
+                    <hr/>
+                    <!--题干-->
+                    #{haveTest.getQuestionTitle(haveTest.wrongQuestion)}
+                    <!--呈现答案-->
+                    <h:outputLabel value="#{messages.Your} #{messages.Answer}:"/>
+                    <c:if test="#{questionControllerA.isSingleFill(haveTest.wrongQuestion)}" >
+                        #{haveTest.studentanswer}
+                    </c:if>
+                    <c:if test="#{questionControllerA.isJudgment(haveTest.wrongQuestion)}" >
+                        <h:selectOneRadio  value="#{haveTest.studentanswer}"  readonly="true" layout="pageDirection">
+                            <f:selectItem itemLabel="#{messages.True}" itemValue="T"/>
+                            <f:selectItem itemLabel="#{messages.False}" itemValue="F"/>
+                        </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSingleSelection(haveTest.wrongQuestion)}">
+                        <h:selectOneRadio  value="#{haveTest.studentanswer}" readonly="true" layout="pageDirection">
+                            <f:selectItem itemEscaped="false"  itemLabel="A. #{questionController.selectionString1}" itemValue="1"/>
+                            <f:selectItem itemEscaped="false"  itemLabel="B. #{questionController.selectionString2}" itemValue="2"/>
+                            <f:selectItem  itemEscaped="false" itemLabel="C. #{questionController.selectionString3}" itemValue="3"/>
+                            <f:selectItem  itemEscaped="false" itemLabel="D. #{questionController.selectionString4}" itemValue="4"/>  
+                        </h:selectOneRadio>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isMultiSelection(haveTest.wrongQuestion)}" >
+                        <h:selectManyCheckbox  value="#{haveTest.studentAnswer4multi}" readonly="true" layout="pageDirection">
+                            <f:selectItem  itemEscaped="false" itemLabel="A.#{questionController.selectionString1}" itemValue="1"/>
+                            <f:selectItem itemEscaped="false"  itemLabel="B.#{questionController.selectionString2}" itemValue="2"/>
+                            <f:selectItem  itemEscaped="false" itemLabel="C.#{questionController.selectionString3}" itemValue="3"/>
+                            <f:selectItem  itemEscaped="false" itemLabel="D.#{questionController.selectionString4}" itemValue="4"/>  
+                            <f:selectItem  itemEscaped="false" itemLabel="E.#{questionController.selectionString5}" itemValue="5"/> 
+                        </h:selectManyCheckbox>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isMULTIFILL(haveTest.wrongQuestion)}" >
+                        <h:panelGrid columns="#{haveTest.getNumber(question)}">
+                            <c:forEach items="#{haveTest.data}"  var="ans" varStatus="status">
+                                <h:outputLabel  value="#{ans}" />
+                            </c:forEach>
+                        </h:panelGrid>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSimpleAnswer(haveTest.wrongQuestion)}" >
+                        <h:outputLabel  value="#{haveTest.studentanswer}" />
+                    </c:if>
+                    <c:if test="#{questionControllerA.isObjectiveProgram(haveTest.wrongQuestion)}">
+                        <h:outputLabel value="#{messages.Comingsoon}"/>
+                    </c:if>
+                    <c:if test="#{questionControllerA.isSubjectiveProgram(haveTest.wrongQuestion)}">
+                        <h:outputLabel value="#{messages.Comingsoon}"/>
+                    </c:if>
+                </h:panelGrid>
+                <hr/>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Reference}#{messages.Answer}:"/>
+                    <h:outputLabel value="#{questionControllerA.getShownQuestionAnswer(haveTest.wrongQuestion)}"/>
+                    <h:outputLabel  value="#{messages.Analysis}:"/>
+                    <h:outputText escape="false"  value="#{haveTest.wrongQuestion.analysis}" />
+                    <h:outputLabel value="#{messages.Belong}:"/>
+                    <h:outputLabel  value="#{haveTest.wrongQuestion.knowledgeId.name}"/>
+                    <h:outputLabel value="#{messages.Detail}:"/>
+                    <h:outputText escape="false"  value="#{haveTest.wrongQuestion.knowledgeId.details}"/>
+                </h:panelGrid>
+                <hr/>
+                <h:outputLabel value="#{messages.Wrong}#{messages.Reason}"/>
+                <h:selectOneMenu value="#{wrongReasonController.selected}" required="true">
+                    <f:selectItem itemLabel="#{messages.Please}#{messages.Select}"/>
+                    <f:selectItems value="#{wrongReasonControllerA.allList}" var="wr" itemLabel="#{wr.name}"/>
+                </h:selectOneMenu>
+                <hr/>
+                <h:panelGrid columns="2">
+                    <h:commandButton action="#{haveTest.previousWrongquest()}"  value="#{messages.Previous}#{messages.Question}"  
+                                     rendered="#{haveTest.index!=0}"/>
+                    <h:commandButton action="#{haveTest.nextWrongQues()}" value="#{messages.Next}#{messages.Question}"/>
+                </h:panelGrid>
+
+        </h:form>
+      
+    </h:body>
+</html>

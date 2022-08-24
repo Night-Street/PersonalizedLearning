@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{messages.Teacher}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{messages.Name}" for="name"   dir="RTL"/>
+                    <h:inputText id="name" value="#{teacherAdminController.selected.name}" title="#{messages.Name}" required="true" requiredMessage="#{messages.EditStudentRequiredMessage_name}"/>
+                    <h:outputLabel value="#{messages.Firstname}" for="firstname"   dir="RTL"/>
+                    <h:inputText id="firstname" value="#{teacherAdminController.selected.firstname}" title="#{messages.Firstname}" />
+                    <h:outputLabel value="#{messages.Secondname}" for="secondname"   dir="RTL"/>
+                    <h:inputText id="secondname" value="#{teacherAdminController.selected.secondname}" title="#{messages.Secondname}" />
+                    <h:outputLabel value="#{messages.Email}" for="email" />
+                    <h:inputText id="email" p:type="email" value="#{teacherAdminController.selected.email}" title="#{messages.Email}" />
+                    <h:outputLabel value="#{messages.Phone}" for="phone"   dir="RTL"/>
+                    <h:inputText id="phone" value="#{teacherAdminController.selected.phone}" title="#{messages.Phone}" />
+                    <h:outputLabel value="#{messages.Major}" style="vertical-align: text-top"  dir="RTL"/>
+                    <h:outputLabel value="#{messages.Belong}"/><br/>
+                    <h:selectManyListbox value="#{teachermajorController.teachMajors}" size="8" >
+                        <f:selectItems value="#{majorControllerA.candidateMajors}"/>
+                        <f:ajax render="id4submit"/>
+                    </h:selectManyListbox>
+                    <h:outputLabel value=""/>
+                    <h:panelGrid columns="3">
+                        <h:commandButton action="#{teacherAdminController.update}" value="#{messages.Save}"/>
+                        <h:commandButton value="#{messages.Create}" action="#{teacherAdminController.prepareCreate}" immediate="true" />
+                        <h:commandButton value="#{messages.View} #{messages.All}" action="#{teacherAdminController.prepareList()}" immediate="true"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

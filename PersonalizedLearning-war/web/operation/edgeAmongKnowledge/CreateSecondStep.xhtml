@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Edge}"/>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="d3.v4.js" target="head"/>
+            <h:outputScript library="javaScript" name="graphlib-dot.js" target="head"/>
+            <h:outputScript library="javaScript" name="dagre-d3.js" target="head"/>
+            <h:outputStylesheet library="css" name="dagre.css"/>
+            <h:form styleClass="jsfcrud_list_form" id="myForm">
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="#{messages.Already}#{messages.Input}:"/>
+                    <h:panelGrid columns="2" bgcolor="white">
+                        <h:outputLabel value="#{messages.Knowledge}#{messages.Name}"   dir="RTL"/>
+                        <h:outputLabel id="name" value="#{knowledgeController.selected.name}" title="#{messages.Name}"/>
+                        <c:forEach items="#{edgeamongknowledgeController.getPrecessorEdgeamongknowledge(knowledgeController.selected)}" var="edge">
+                            <h:panelGroup>
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel value="#{messages.Predicate}#{messages.Name}"   dir="RTL"/>
+                                    <h:outputLabel value="#{edge.predicate.pname}"/>
+                                    <h:outputLabel value="#{messages.Knowledge}#{messages.Name}"   dir="RTL"/>
+                                    <h:outputLabel value="#{edge.predecessornode.name}"/>
+                                </h:panelGrid>
+                                <h:commandButton value="#{messages.Delete}" action="#{edgeamongknowledgeControllerA.remove(edge)}"/>
+                                <h:commandButton value="#{messages.Return}" action="#{knowledgeController.gotoView()}" immediate="true"/>
+                            </h:panelGroup>
+                            <hr/>
+                        </c:forEach>
+                    </h:panelGrid>
+                    <hr/>                   
+                    <!--<embed src="/PersonalizedLearning-war/faces/javax.faces.resource/images/knowledge/3.svg"  type="image/svg+xml" />-->
+                    <h:outputLabel value="#{messages.Upload}#{messages.Learningresource}"/>
+                    <h:panelGroup style="float: left">
+                        <!-- 连接到在知识点中新建学习资源，包括图像、音频和视频等 -->
+                        <c:forEach items="#{learningresourceControllerA.mediaMap}" var="resource">
+                            <h:commandButton action="#{learningresourceController.prepareAndUpdate(resource.key)}" 
+                                             value="#{messages.Add}#{resource.value}"/>&nbsp;&nbsp;
+                        </c:forEach>
+                    </h:panelGroup>
+                    <hr/>
+                    <!--<embed src="/PersonalizedLearning-war/faces/javax.faces.resource/images/knowledge/4.svg" type="image/svg+xml" />-->
+                    <!--<h:outputLabel value="2. #{messages.No}#{messages.Upload}"/>-->
+                    <h:panelGroup style="float: left">
+                        <h:commandButton value="#{messages.Continue} #{messages.Add} #{messages.Edge} "
+                                         action="#{edgeamongknowledgeController.prepareCreate()}"/>
+                        <h:commandButton value="#{messages.Finish}#{messages.Maintain}#{messages.Edge}" action="#{knowledgeController.finishAddEdge()}"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:form>
+            <!--因为当前正在新建知识点，其前驱后继尚未确定-->
+            <h:inputHidden p:id="inputGraph" p:name="inputGraph" value="#{knowledgeController.getKnowledgeRelationship4dagre(knowledgeController.selected)}"/>
+
+            <svg width="960" height="600"> <g/></svg>
+            <script>
+                var svg = d3.select("svg"),
+                        inner = d3.select("svg g"),
+                        zoom = d3.zoom().on("zoom", function () {
+                    inner.attr("transform", d3.event.transform);
+                });
+                svg.call(zoom);
+
+                // Create and configure the renderer
+                var render = dagreD3.render();
+
+                var g;
+
+                var inputGraph = document.querySelector("#inputGraph");
+                try {
+                    g = graphlibDot.read(inputGraph.value);
+                } catch (e) {
+                    inputGraph.setAttribute("class", "error");
+                    throw e;
+                }
+
+                g.graph().transition = function (selection) {
+                    return selection.transition().duration(500);
+                };
+
+                // Render the graph into svg g
+                d3.select("svg g").call(render, g);
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

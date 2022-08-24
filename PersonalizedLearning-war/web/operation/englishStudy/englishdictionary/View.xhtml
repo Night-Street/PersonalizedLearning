@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{bundle.ViewEnglishdictionaryTitle}"/>
+        </ui:define>
+        <ui:define name="body">
+<!--            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>-->
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.ViewEnglishdictionaryLabel_id}"/>
+                    <h:outputLabel value="#{englishdictionaryController.selected.id}" title="#{bundle.ViewEnglishdictionaryTitle_id}"/>
+                    <h:outputLabel value="#{bundle.ViewEnglishdictionaryLabel_english}"/>
+                    <h:outputLabel value="#{englishdictionaryController.selected.english}" title="#{bundle.ViewEnglishdictionaryTitle_english}"/>
+                    <h:outputLabel value="#{bundle.ViewEnglishdictionaryLabel_chinese}"/>
+                    <h:outputLabel value="#{englishdictionaryController.selected.chinese}" title="#{bundle.ViewEnglishdictionaryTitle_chinese}"/>
+                    <h:outputLabel value="#{bundle.ViewEnglishdictionaryLabel_example}"/>
+                    <h:outputLabel value="#{englishdictionaryController.selected.example}" title="#{bundle.ViewEnglishdictionaryTitle_example}"/>
+                    <h:outputLabel value="#{bundle.ViewEnglishdictionaryLabel_pronunciation}"/>
+                    <h:outputLabel value="#{englishdictionaryController.selected.pronunciation}" title="#{bundle.ViewEnglishdictionaryTitle_pronunciation}"/>
+                    <h:outputLabel value="#{bundle.ViewEnglishdictionaryLabel_partofspeech}"/>
+                    <h:outputLabel value="#{englishdictionaryController.selected.partofspeech}" title="#{bundle.ViewEnglishdictionaryTitle_partofspeech}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink id="link1"  action="#{englishdictionaryController.destroyAndView}" value="#{bundle.ViewEnglishdictionaryDestroyLink}"/>
+                <br />
+                <br />
+                <h:link id="link2"  outcome="Edit" value="#{bundle.ViewEnglishdictionaryEditLink}"/>
+                <br />
+                <h:commandLink id="link3"  action="#{englishdictionaryController.prepareCreate}" value="#{bundle.ViewEnglishdictionaryCreateLink}" />
+                <br />
+                <h:commandLink id="link4"  action="#{englishdictionaryController.prepareList}" value="#{bundle.ViewEnglishdictionaryShowAllLink}"/>
+                <br />
+                <br />
+                <h:link id="link5"  outcome="/index" value="#{bundle.ViewEnglishdictionaryIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

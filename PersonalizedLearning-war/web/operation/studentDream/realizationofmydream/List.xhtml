@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputLabel value="#{messages.Dream}"></h:outputLabel>
+        </ui:define>
+        <ui:define name="body">
+            <h:outputScript library="javaScript" name="wait.js" target="head"/>
+            <h:form styleClass="jsfcrud_list_form">
+                <h2 id="workingIndicator" style="display: none">
+                    <h:graphicImage library="images" name="pleaseWait.gif"/>
+                </h2>
+                <h:commandButton value="#{messages.View} #{messages.All}"  actionListener="#{realizationofmydreamController.prepareList()}"/>                
+                <h:commandButton value="#{messages.Create}" action="#{realizationofmydreamController.prepareCreate()}" immediate="true" />
+                <h:panelGrid columns="1">
+                    <h:outputLabel escape="false" value="#{messages.Empty}" rendered="#{studentDreamController.items.rowCount==0}" />
+                    <h:panelGroup rendered="#{realizationofmydreamController.items.rowCount > 0}">
+                        <h:outputLabel value="#{realizationofmydreamController.pagination.pageFirstItem + 1}..#{realizationofmydreamController.pagination.pageLastItem + 1}/#{realizationofmydreamController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{realizationofmydreamController.pageOperation.previous}" value="#{messages.Previous} #{realizationofmydreamController.pagination.pageSize}" rendered="#{realizationofmydreamController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{realizationofmydreamController.pageOperation.next}" value="#{messages.Next} #{realizationofmydreamController.pagination.pageSize}" rendered="#{realizationofmydreamController.pagination.hasNextPage}"/>&nbsp;
+                        <h:dataTable value="#{realizationofmydreamController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" columnClasses="editRemoveview">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="&nbsp;"/>
+                                </f:facet>
+                                <h:commandLink action="#{realizationofmydreamController.prepareView}" value="#{messages.View}"/>
+                                <h:outputLabel value=" "/>
+                                <h:commandLink action="#{realizationofmydreamController.prepareEdit}" value="#{messages.Edit}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Datetime}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.recorderdate}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputLabel value="#{messages.Milestone}"/>
+                                </f:facet>
+                                <h:outputText escape="false" value="#{item.milestone}" />
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
